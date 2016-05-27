@@ -1,22 +1,5 @@
 <?php
 
-/*
- * Copyright (C) 2013 peredur.net
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 include_once 'psl-config.php';
 
 function sec_session_start() {
@@ -45,7 +28,7 @@ function sec_session_start() {
 
 function login($email, $password, $mysqli) {
     // Using prepared statements means that SQL injection is not possible. 
-    if ($stmt = $mysqli->prepare("SELECT id, username, password, salt 
+    if ($stmt = $mysqli->prepare("SELECT id, username, password, salt, permissions 
 				  FROM members 
                                   WHERE email = ? LIMIT 1")) {
         $stmt->bind_param('s', $email);  // Bind "$email" to parameter.
@@ -53,7 +36,7 @@ function login($email, $password, $mysqli) {
         $stmt->store_result();
 
         // get variables from result.
-        $stmt->bind_result($user_id, $username, $db_password, $salt);
+        $stmt->bind_result($user_id, $username, $db_password, $salt, $permissions);
         $stmt->fetch();
 
         // hash the password with the unique salt.
@@ -82,6 +65,7 @@ function login($email, $password, $mysqli) {
 
                     $_SESSION['username'] = $username;
                     $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
+                    $_SESSION['permissions'] = $permissions;
 
                     // Login successful. 
                     return true;
@@ -183,6 +167,16 @@ function login_check($mysqli) {
         return false;
     }
 }
+
+function role_check() {
+    //Set variable permissions for the different roles
+    $permissions = $_SESSION['permissions'];
+
+    //$permissions = 0 for normal users
+    //$permissions = 1 for super users
+    return $permissions;
+}
+
 
 function esc_url($url) {
 
