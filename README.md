@@ -1,5 +1,10 @@
 # crossWordPuzzle
 
+Update 27/05/2016
+- Done with login page, made it look nicer with Bootstrap
+- WH did basic Xword puzzle fill-in.
+- Added 2 roles - super user and basic user.
+
 Update 26/05/2016
 - Created the github for sharing of files.
 - Added basic login page from online with all the various protection. Not fully debugged
