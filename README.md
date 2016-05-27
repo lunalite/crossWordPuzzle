@@ -1,5 +1,10 @@
 # crossWordPuzzle
 
+Update 27/05/2016
+- WH did basic Xword puzzle addition
+- Login page is up.
+- Different roles are up. Currently only Super user and Normal user.
+
 Update 26/05/2016
 - Created the github for sharing of files.
 - Added basic login page from online with all the various protection. Not fully debugged
