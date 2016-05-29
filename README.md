@@ -1,4 +1,9 @@
 # crossWordPuzzle
+Update 29/05/2016
+-Uploaded main_xword.html which is the page players will see
+-Added ability to save puzzles to and load from database
+NOTE* To test out main_xword.html on chrome, u have to install Allow Origin Addon as currently, for testing purposes, the php scripts are executed from another domain which chrome disallows by default.
+Valid Puzzle Names: P2,P3,MyPuzzle
 
 Update 27/05/2016
 - Done with login page, made it look nicer with Bootstrap
