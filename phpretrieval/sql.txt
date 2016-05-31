@@ -1,0 +1,15 @@
+create table crosswordMasterDB (
+id int primary key auto_increment,
+crosswordId int,
+crosswordDescription varchar(500),
+TIME_ADDED timestamp
+);
+
+create table crosswordPuzzles (
+id int primary key auto_increment,
+question varchar(500),
+answer varchar(50),
+crosswordId int
+);
+
+add
