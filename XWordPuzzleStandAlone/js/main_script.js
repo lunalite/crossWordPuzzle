@@ -14,7 +14,11 @@
 	var mouseX=0;
 	var mouseY=0;
 	var tiles = [];
+	var questionList=[];
+	var answerList=[];
+	var tileCodeList=[];
 	var title=prompt("Please enter the title of the puzzle");
+	var noOfFields=6;
 	
 	var Tile = function(x, y,id,char) { //Class Declaration for Tile Object
 		this.x = x;
@@ -26,38 +30,79 @@
 	
 	function getTiles(){
 		console.log("Getting data");
-		var url="http://lewspage.hostei.com/xword_php/getXword.php";
-		jQuery.getJSON(url, {name:title}, function(data) {
+		var url="../phpretrieval/includes/getIdFromName.php";
+		jQuery.getJSON(url, {title:title}, function(data) {
         // ... handle response as above
-			console.log("Data is "+data);
 			var str = JSON.stringify(data);
-			console.log("String is "+str);
-			var index=str.search("tiles")+8;
-			var end=str.search("}]}")-1;
-			var tilesString=str.substring(index,end);
-			console.log("Final String is "+tilesString);
-			createTilesFromString(tilesString);
-			console.log("Tiles are now "+tiles);
+			console.log(str);
+			var crosswordID=getIDfromStr(str);
+			console.log("ID is "+crosswordID);
+			var url="../phpretrieval/includes/qnOutput.php";
+			jQuery.getJSON(url, {crosswordId:crosswordID}, function(data) {
+				 str = JSON.stringify(data);
+				 console.log(str);
+				 var arr=jQuery.map(data,function(e1){return e1;});
+				 var size=arr.length/noOfFields;
+				 console.log("Array is of size "+size);
+				for (i=0;i<size;i++){
+					questionList.push(arr[3+i*noOfFields]);
+					answerList.push(arr[4+i*noOfFields]);
+					tileCodeList.push(arr[5+i*noOfFields]);
+				}		
+				console.log("Questions: "+questionList);	
+				console.log("Answers: "+answerList);	
+				console.log("Codes: "+tileCodeList);
+				console.log(answerList.length);
+				for (i=0;i<answerList.length;i++){
+					console.log("Now filling the "+i+"th answer");
+					createTilesFromString(tileCodeList[i],answerList[i]);
+				}
+			});
 		});	
      }
+	 
+	 function getIDfromStr(str){
+		 var s,e,counter;
+		 counter=0;
+		 for (i=0;i<str.length;i++){
+			 if (str.charAt(i)=='"')
+			 {s=i;console.log(s);counter++;}
+			 else if(str.charAt(i)=='"' && counter ==1){
+				 e=i;
+			 }
+		 }
+		 console.log(s);
+		 console.log(e);
+		 console.log(str.substring(s+1,e))
+			return str.substring(3,5);
+	 }
 	
-	function createTilesFromString(str){
-		var c='';
-		var i =0;
-		c=str.charAt(i);
-		var length=str.length;
-		while ( i < length ){
-			var tileID = str.substring(i,i+3);
-			var char =str.charAt(i+3);
-			var pos = tileIDtoPos(tileID);
-			var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,i/5,char);
-			console.log("Created Tile "+ tile.id +" : "+tile.char+" at position " + pos);
-			tile.drawFaceDown();
-			tiles.push(tile);
-			i+=5;
-			c=str.charAt(i);
+	function createTilesFromString(str,ans){
+		var ID1= str.substring(0,3);
+		var ID2= str.substring(3,6);
+		ID1=parseInt(ID1);
+		ID2=parseInt(ID2);
+		console.log("Decoding "+ID1+" and "+ID2+" for "+ans);
+		var diff=ID2-ID1;
+		console.log("Difference is "+diff);
+		console.log("Length of word is "+ans.length);
+				for(j=0;j<ans.length;j++){
+					console.log("Now at Tile "+ID1);
+					var pos = tileIDtoPos(ID1);
+					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j));
+					console.log("Inserting character "+ans.charAt(j));
+					tile.drawFaceDown();
+					tiles.push(tile);
+					if (diff>=NUM_ROWS) //Go Down
+						ID1+=NUM_ROWS;
+					else if (diff>0) //Go Right
+						ID1++;
+					else if (diff<=-NUM_ROWS)
+						ID1+=NUM_ROWS;
+					else if (diff < 0)
+						ID1--;
+				}
 		}
-	}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
 		var ID = (parseInt((y-pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
