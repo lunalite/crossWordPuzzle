@@ -7,7 +7,7 @@
 	$answer = $_GET["answer"];
 	$title=$_GET["title"];
 
-    $sql = "UPDATE " .$crosswordBankName. " SET TileCode =" .$tileCode. " WHERE Answer = '" .$answer. "' AND CrosswordID =".$crosswordId;
+    $sql = "UPDATE " .$crosswordBankName. " SET TileCode ='" .$tileCode. "' WHERE Answer = '" .$answer. "' AND CrosswordID =".$crosswordId;
 	$sql2 = "UPDATE " .$tableName. " SET PuzzleName='" .$title. "' WHERE crosswordId = '" .$crosswordId. "'"; 
 	echo $sql;
     $result = $conn->query($sql);

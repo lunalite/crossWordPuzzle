@@ -123,7 +123,7 @@
 		console.log("Tiles String: "+tiles_string);
 		var url="../phpretrieval/includes/updateTiles.php";
 		for (i=0;i<answerList.length;i++){
-			console.log("Saving...");
+			console.log("Saving tilecode "+answerMap[answerList[i]]);
 			var jqxhr = jQuery.get( url,{id:crosswordId,answer:answerList[i],tileCode:answerMap[answerList[i]],title:title}, function() {
 					console.log("Save successfully");
 			});
@@ -131,7 +131,7 @@
 	}}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
-		var ID = (parseInt((y-pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
+		var ID = (parseInt((y-2*pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
 		return ID;
 	}
 	
