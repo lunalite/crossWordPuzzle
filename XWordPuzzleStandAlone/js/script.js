@@ -23,6 +23,7 @@
 	
 	var overall_list = document.getElementById("questionList");	
 	var questionList = [];
+	var answerList=[];
 	
 	var rad = document.myform.direction;
 	for(var i = 0; i < rad.length; i++) {
@@ -48,6 +49,7 @@
 		console.log("Array is of size "+size);
 		for (i=0;i<size;i++)
 			questionList.push(arr[4+i*noOfFields]);
+		answerList=questionList.slice();
 		console.log("Answer list formed: "+questionList);
 		populate(questionList);
 		});	
@@ -119,12 +121,14 @@
 		}
 		tiles_string=tiles_string.slice(0,-1);
 		console.log("Tiles String: "+tiles_string);
-		var url="http://lewspage.hostei.com/xword_php/saveXword.php?name="+title+"&tiles="+tiles_string;
-		var jqxhr = jQuery.get( url, function() {
-				window.alert("Save successfully!");
-		})
+		var url="../phpretrieval/includes/updateTiles.php";
+		for (i=0;i<answerList.length;i++){
+			console.log("Saving...");
+			var jqxhr = jQuery.get( url,{id:crosswordId,answer:answerList[i],tileCode:answerMap[answerList[i]],title:title}, function() {
+					console.log("Save successfully");
+			});
 		// Insert code here to save tiles into database
-	}
+	}}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
 		var ID = (parseInt((y-pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
