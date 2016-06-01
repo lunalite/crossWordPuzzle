@@ -5,11 +5,14 @@ crosswordDescription varchar(500),
 TIME_ADDED timestamp
 );
 
-create table crosswordPuzzles (
-id int primary key auto_increment,
-question varchar(500),
-answer varchar(50),
-crosswordId int
-);
+CREATE TABLE `crosswordpuzzles` (
+  `Index` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `CrosswordID` tinyint(4) NOT NULL,
+  `QnsID` tinyint(4) NOT NULL,
+  `Question` varchar(900) COLLATE latin1_general_ci NOT NULL,
+  `Answer` varchar(900) COLLATE latin1_general_ci NOT NULL,
+  `TileCode` varchar(900) COLLATE latin1_general_ci NOT NULL,
+  PRIMARY KEY (`Index`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=20 ;
 
 add
