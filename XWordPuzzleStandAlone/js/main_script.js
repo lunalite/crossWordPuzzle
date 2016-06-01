@@ -27,6 +27,7 @@
 		this.char=c;
 		this.id=id;
 		this.qns_id=qns_id;
+		this.intersected=false;
 		//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
 	};
 	
@@ -64,25 +65,26 @@
      }
 	 
 	 function getIDfromStr(str){
-		 var s,e,counter;
-		 counter=0;
-		 for (i=0;i<str.length;i++){
-			 if (str.charAt(i)=='"')
-			 {s=i;console.log(s);counter++;}
-			 else if(str.charAt(i)=='"' && counter ==1){
-				 e=i;
-			 }
-		 }
-		 console.log(s);
-		 console.log(e);
-		 console.log(str.substring(s+1,e))
-			return str.substring(3,5);
+		str=str.substring(3);
+		console.log("Chopped str is "+str);
+		var ID=parseInt(str);
+			return ID;
 	 }
 	 
 	 function printTiles(){
 		for (b=0;b<tiles.length;b++)
 			console.log(tiles[b]);
 	 }
+	 
+	 function containsTile(id, list) {
+		var i;
+		for (i = 0; i < list.length; i++) {
+			if (list[i].id == id) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	function createTilesFromString(str,ans){
 		var ID1= str.substring(0,3);
@@ -99,7 +101,12 @@
 					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j),i);
 					console.log("Inserting character "+ans.charAt(j));
 					tile.drawFaceDown();
-					tiles.push(tile);
+					if (containsTile(ID1,tiles)){
+						console.log("Collision detected on Tile: "+ans.charAt(j));
+						getTileFromId(ID1).intersected=true;
+					}
+					else
+						tiles.push(tile);
 					if (diff>=NUM_ROWS) //Go Down
 						ID1+=NUM_ROWS;
 					else if (diff>0) //Go Right
@@ -132,8 +139,14 @@
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);
+		var tile=getTileFromId(tileSelected);
+		if (tile.intersected){
+			window.alert("Pick a non intersecting tile!");
+			return ;
+		}
+		var question=questionList[tile.qns_id];
 		console.log("Selected Tile: "+tileSelected);
-		var word=prompt("Please enter your answer");
+		var word=prompt(question);
 		var correct=checkAnswer(word,tileSelected);
 		if (correct)
 			wordToTiles(word,tileSelected);
