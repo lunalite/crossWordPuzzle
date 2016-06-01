@@ -43,7 +43,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 var crosswordId = "<?php echo $id ?>";
 </script> 
  
-<script language="javascript" type="text/javascript" src="scripts/script.js">
+<script language="javascript" type="text/javascript" src="js/script.js">
 </script> 
  
 <div class="submit">

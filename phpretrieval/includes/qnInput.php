@@ -55,5 +55,5 @@
         $counter ++;
     }
     unset($qn2BAdded); // break the reference with the last element
-        header("location:master_template.php?id=".urlencode($latestCrossWordId));   
+        header("location:../../XWordPuzzleStandAlone/master_template.php?id=".urlencode($latestCrossWordId));   
 ?>		

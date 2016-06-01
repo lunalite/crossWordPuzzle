@@ -2,7 +2,7 @@
     include_once 'php-connect.php';
     include_once 'phpVariables.php';
     
-    $crosswordId = '5';
+    $crosswordId = $_GET["crosswordId"];
 
     $sql = "SELECT * FROM " . $crosswordBankName . " WHERE crosswordId = " . $crosswordId ;
 

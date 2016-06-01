@@ -17,11 +17,12 @@
 	var answerMap = {};
 	var inputDirection="horizontal";
 	var header=document.getElementById('instructions');
+	var noOfFields=6;
 	// add a item
         console.log("Latest id is "+crosswordId);
 	
 	var overall_list = document.getElementById("questionList");	
-	var questionList =["Why","What","Where"];
+	var questionList = [];
 	
 	var rad = document.myform.direction;
 	for(var i = 0; i < rad.length; i++) {
@@ -39,12 +40,18 @@
 
         function getAnswers(){
 		console.log("Getting data");
-		var url="http://lewspage.hostei.com/xword_php/qnOut.php";
+		var url="../phpretrieval/includes/qnOutput.php";
 		jQuery.getJSON(url, {crosswordId:crosswordId}, function(data) {
         // ... handle response as above
-			console.log("Received String is "+data);
+		var arr=jQuery.map(data,function(e1){return e1;});
+		var size=arr.length/noOfFields;
+		console.log("Array is of size "+size);
+		for (i=0;i<size;i++)
+			questionList.push(arr[4+i*noOfFields]);
+		console.log("Answer list formed: "+questionList);
+		populate(questionList);
 		});	
-           }
+       }
 	
 	function populate(list){
 		while (overall_list.firstChild) {
@@ -58,9 +65,7 @@
 		}
 	}
 
-        getAnswers();
-	
-	populate(questionList);
+    getAnswers();
 	
 	window.alert("Welcome to the Master Template! Start by clicking a tile and enter the word desired. The Master Template will first attempt to fill by row if possible. Otherwise, it tries to fill by column instead!");
 	
