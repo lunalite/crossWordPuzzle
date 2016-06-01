@@ -1,5 +1,9 @@
 # crossWordPuzzle
 
+Update 1/6/16
+Players should be able to enter and check their answers for the crossword
+Admin is able to create xword with questions and answers and save to db
+
 Update 29/05/2016                                                   
 -Uploaded main_xword.html which is the page players will see                         
 -Added ability to save puzzles to and load from database                                            
