@@ -20,12 +20,14 @@
 	var title=prompt("Please enter the title of the puzzle");
 	var noOfFields=6;
 	
-	var Tile = function(x, y,id,char) { //Class Declaration for Tile Object
+	var Tile = function(x, y,id,c,qns_id) { //Class Declaration for Tile Object
 		this.x = x;
 		this.y = y;
 		this.width = tileWidth;
-		this.char=char;
-		this.id=id;		//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
+		this.char=c;
+		this.id=id;
+		this.qns_id=qns_id;
+		//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
 	};
 	
 	function getTiles(){
@@ -76,6 +78,11 @@
 		 console.log(str.substring(s+1,e))
 			return str.substring(3,5);
 	 }
+	 
+	 function printTiles(){
+		for (b=0;b<tiles.length;b++)
+			console.log(tiles[b]);
+	 }
 	
 	function createTilesFromString(str,ans){
 		var ID1= str.substring(0,3);
@@ -87,9 +94,9 @@
 		console.log("Difference is "+diff);
 		console.log("Length of word is "+ans.length);
 				for(j=0;j<ans.length;j++){
-					console.log("Now at Tile "+ID1);
+					console.log("Now at Tile "+ID1+",with i = "+i);
 					var pos = tileIDtoPos(ID1);
-					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j));
+					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j),i);
 					console.log("Inserting character "+ans.charAt(j));
 					tile.drawFaceDown();
 					tiles.push(tile);
@@ -102,6 +109,7 @@
 					else if (diff < 0)
 						ID1--;
 				}
+				printTiles();
 		}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
@@ -126,12 +134,36 @@
 		var tileSelected=posToTileID(mouseX,mouseY);
 		console.log("Selected Tile: "+tileSelected);
 		var word=prompt("Please enter your answer");
-		
+		var correct=checkAnswer(word,tileSelected);
+		if (correct)
+			wordToTiles(word,tileSelected);
+		else
+			window.alert("WRONG!");
   }
+  
+		function getTileFromId(tileID){
+			for (z=0;z<tiles.length;z++){
+			  var tile=tiles[z];
+			  if(tile.id == tileID)
+				  return tile;
+			}
+		}
+  
+	  function checkAnswer(word,tileID){
+			var tile=getTileFromId(tileID);
+			console.log(tile);
+			var correctAnswer=answerList[tile.qns_id];
+			console.log("Answer is "+correctAnswer);
+			if (correctAnswer==word)
+				return true;
+			else
+				return false;		  
+	  }
   
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
 		for ( i=0; i < word.length ; i++){
-			var tile=tiles[tileID+i];
+			var tile=getTileFromId(tileID);
+			console.log(tile.id);
 			console.log(tile.char + "," + word.charAt(i));
 			if (tile.char != '' && tile.char != word.charAt(i))
 				return true;			
@@ -141,7 +173,7 @@
 	
 	function checkCollisionY(word,tileID){ //Check for collision of the same letters in the vertical direction
 		for ( i=0; i < word.length ; i++){
-			var tile=tiles[tileID+i*NUM_ROWS];
+			var tile=getTileFromId(tileID);
 			console.log(tile.char + "," + word.charAt(i));
 			if (tile.char != '' && tile.char != word.charAt(i))
 				return true;			
@@ -149,34 +181,15 @@
 		return false;
 	}
 	
-	function wordToTiles(word,tileID){	//Insert a word entered by the user into the appropriate tiles
-		var pos=new Array();
-		pos=tileIDtoPos(tileID);
-		console.log("POS: "+pos);
-		var length=word.length;
-		console.log("Length of word: "+length);
-		if (length+pos[0]<=(NUM_ROWS) && !checkCollisionX(word,tileID)){
-			for ( i=0; i < length ; i++){
-				var tile=tiles[tileID+i];
-				console.log("Current tile is at "+tile.x+","+tile.y);
-				tile.char=word.charAt(i);
-				tile.drawFaceDown();
+	function wordToTiles(word){	//Insert a word entered by the user into the appropriate tiles
+		var qns_id=answerList.indexOf(word);
+		for (a=0;a<tiles.length;a++){
+			var tile=tiles[a];
+			if (tile.qns_id==qns_id){
+				tile.drawAns();
+				console.log("Drawn on tile "+tile.char);
 			}
-			return ;
-		}
-		if (length+pos[1]<=(NUM_COLS) && !checkCollisionY(word,tileID)){
-			for ( i=0; i < length ; i++){
-				var tile=tiles[tileID+i*NUM_ROWS];
-				console.log("Current tile is at "+tile.x+","+tile.y);
-				tile.char=word.charAt(i);
-				tile.drawFaceDown();
-			}
-			return ;
-		}
-		if(length+pos[1]>(NUM_COLS) && length+pos[0]>(NUM_ROWS))
-			window.alert("Word is too long!");
-		else
-			window.alert("Collision detected in both row and column!");
+		}	
 	}
 
 	Tile.prototype.drawFaceDown = function() { //Function to draw the tile
@@ -184,6 +197,14 @@
 		ctx.rect(this.x,this.y, this.width,this.width);
 		ctx.fillStyle = "grey";
 		ctx.fill();
+	};
+	
+	Tile.prototype.drawAns = function() { //Function to draw the tile
+		ctx.beginPath();
+		ctx.fillStyle = "white";
+		ctx.fillText(this.char,this.x+(tileWidth/2),(this.y+(tileWidth/2)),tileWidth);
+		ctx.fill();
+
 	};
 	
 	getTiles();
