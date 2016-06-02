@@ -37,6 +37,7 @@ if (login_check($mysqli) == true) {
     </head>
     
     <body>
+        <!-- PHP code for checking if there's an error logging in by $_GET error -->
         <?php
         if (isset($_GET['error'])) {
             echo '<p class="error">Error Logging In!</p>';
