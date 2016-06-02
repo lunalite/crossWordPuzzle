@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 2/6/16
+- Added the master page for superuser such that they can create sessions for users to join.
+- Have not done users joining of session yet.
 
 Update 1/6/16
 Players should be able to enter and check their answers for the crossword
