@@ -13,12 +13,12 @@ if (isset($_POST['email'], $_POST['p'])) {
         // Login success 
         if (role_check($mysqli) == 0) {
             // Normal user
-            header("Location: ../protected_page.php");
+            header("Location: ../user.php");
             exit();
         }
         else
             // Super user 
-            header('Location: ../xword.php');
+            header('Location: ../master.php');
     } else {
         // Login failed 
         header('Location: ../index.php?error=1');

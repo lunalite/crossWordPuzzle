@@ -177,6 +177,68 @@ function role_check() {
     return $permissions;
 }
 
+// For checking of available sessions into table
+function sessionCheck($mysqli) {
+    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online = 1");
+    if (mysqli_num_rows($result) == 0) {
+        echo '<tr><td>No sessions online.</td></tr>';
+    }
+    else {
+        while ($row=mysqli_fetch_row($result)) {
+            $tbp = '<tr><td>' . $row[0] . '</td><td>' . $row[1] . '</td><td>Yes</td>';
+
+            $innerQuery = "SELECT username FROM members WHERE id in 
+            (SELECT userId FROM sessionJoin WHERE sessId = " . $row[0] . ")";
+
+            $innerResult = $mysqli->query($innerQuery);
+            if (mysqli_num_rows($innerResult) == 0) {
+                $tbp = $tbp . '<td> No teams </td></tr>';
+            }
+            else {
+                $tbp = $tbp . '<td>';
+                while ($innerRow=mysqli_fetch_row($innerResult)) {
+                     $tbp = $tbp . $innerRow[0] . ' ';
+                }
+                $tbp = $tbp . '</td></tr>';
+            }
+
+            echo $tbp;
+        }
+    }
+}
+
+
+// For available sessions into select box
+function sessionCheckD($mysqli) {
+    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online = 1");
+    if (mysqli_num_rows($result) == 0) {
+        echo '<option value=\"NoSessOn\">No sessions online</option>';
+    }
+    else {
+        while ($row=mysqli_fetch_row($result)) {
+            $tbp = '<option value="' . $row[0] . '">'. $row[0] .'</option>';
+            echo $tbp;
+        }
+    }
+}
+
+function sessionUserCheck($mysqli) {
+    $query = "SELECT * FROM sessionJoin WHERE sessid = 
+    (SELECT sessId FROM sessionJoin WHERE userId = " . $_SESSION['user_id'] . ")";
+    $result = $mysqli->query($query);
+    if (mysqli_num_rows($result) == 0) {
+        echo '<tr><td>Some error happened.</td></tr>';
+    }
+    else {
+        while ($row=mysqli_fetch_row($result)) {
+            $innerQuery = "SELECT username FROM members WHERE id = " . $row[1];
+            $innerResult = $mysqli->query($innerQuery);
+            $innerRow=mysqli_fetch_row($innerResult);
+            $tbp = '<tr><td>' . $innerRow[0] . '</td></tr>';
+            echo $tbp;
+        }
+    }
+}
 
 function esc_url($url) {
 

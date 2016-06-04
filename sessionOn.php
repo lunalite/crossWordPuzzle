@@ -31,7 +31,7 @@ sec_session_start(); // Our custom secure way of starting a PHP session.
         <link rel="stylesheet" href="styles/main.css" />
     </head>
     <body>
-        <p>You can now go back to the <a href="xword.php">master page</a></p>
+        <p>You can now go back to the <a href="master.php">master page</a></p>
     </body>
 </html>
 

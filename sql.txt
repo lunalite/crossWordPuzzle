@@ -77,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `sessionJoin` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`userId` int(11) NOT NULL,
 	`sessId` int(11) REFERENCES availableSessions(sessId),
-	`online` int(11) DEFAULT 0,
     PRIMARY KEY(id)
 )
 

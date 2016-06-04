@@ -42,7 +42,19 @@ if (login_check($mysqli) == true) {
         if (isset($_GET['error'])) {
             echo '<p class="error">Error Logging In!</p>';
         }
+
+        // role_check() == 0 for the case of super users
+        elseif ((login_check($mysqli) == true) && role_check() == 1) {
+            header('Location: master.php');
+        }
+
+        // role_check() == 0 for the case of normal users
+        elseif ((login_check($mysqli) == true) && role_check() == 0) {
+            header('Location: user.php');
+        }
         ?> 
+
+
         <div class="container">
             <form class="form-signin" action="includes/process_login.php" method="post" name="login_form">
                 <h2 class="form-signin-heading">Please sign in</h2>
