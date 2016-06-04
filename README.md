@@ -1,4 +1,9 @@
 # crossWordPuzzle
+Update 4/6/16
+- Allowed for users to join available sessions.
+- Allowed for superusers to create new sessions.
+- Error checking is not done yet.
+
 Update 2/6/16
 - Added the master page for superuser such that they can create sessions for users to join.
 - Have not done users joining of session yet.
