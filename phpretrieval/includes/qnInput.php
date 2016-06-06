@@ -1,6 +1,7 @@
 <?php
     include_once 'php-connect.php';
     include_once 'phpVariables.php';
+	$defaultTileCode='Not Assigned yet';
     //echo $_POST["questions"]."<br>";
     $string = $_POST["questions"];
     $questions = preg_split("/\d\)\s+/",$string);
@@ -46,7 +47,7 @@
         $qn2BAddedAgain = preg_split("/".$answer[0]."/", $qn2BAdded);
         echo $qn2BAddedAgain[0] . "<br>";
         $sql = "INSERT INTO " . $crosswordBankName . " VALUES (0," . $latestCrossWordId . ", "
-        . $counter . ",\"" . $qn2BAddedAgain[0] . "\", \"" . $answer[0] . "\",\"" . $answer[0] . "\")";
+        . $counter . ",\"" . $qn2BAddedAgain[0] . "\", \"" . $answer[0] . "\",\"" . $defaultTileCode . "\")";
         if ($conn->query($sql) === TRUE) {
             echo "New record created successfully" . "<br>";
         } else {

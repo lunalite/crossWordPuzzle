@@ -8,8 +8,8 @@
     c.height = screenHeight;
 	var NUM_COLS = 40;
 	var NUM_ROWS = 40;
-	var tileCellWidth=screenHeight/NUM_ROWS;
-	var Tilepadding=0;
+	var tileCellWidth=screenWidth/NUM_ROWS;
+	var Tilepadding=6;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
 	var mouseY=0;
@@ -210,7 +210,7 @@
 	Tile.prototype.drawFaceDown = function() { //Function to draw the tile
 		ctx.beginPath();
 		ctx.rect(this.x,this.y, this.width,this.width);
-		ctx.fillStyle = "grey";
+		ctx.fillStyle = "black";
 		ctx.fill();
 	};
 	

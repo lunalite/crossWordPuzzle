@@ -9,14 +9,8 @@ $id=$_GET["id"];
 <div id="instructions">Start by clicking on an answer from the list. You can change the direction to allocate the answers below.</div>
   <title></title>
   <style>
-.canvas,.mylist{
+.canvas,.qnsradio{
     float: left;
-}
-.radio{
-  clear:both;
-}
-.submit{
-  clear:both;
 }
 </style>
 </head>
@@ -27,15 +21,23 @@ $id=$_GET["id"];
 Your browser does not support the HTML5 canvas tag.</canvas>
 </div>
  
-<div class="mylist">
-<ul id="questionList"></ul>
-</div>
- 
-<div class="radio">
-<form name="myform" action="">
-  <input type="radio" checked="checked" name="direction" value="horizontal">Horizontal<br>
-  <input type="radio" name="direction" value="vertical">Vertical
-</form>
+<div class="qnsradio">
+
+	<div class="mylist" style="cursor:pointer;">
+	<ul id="questionList"></ul>
+	</div>
+	 
+	<div class="radio">
+	<form name="myform" action="">
+	  <input type="radio" checked="checked" name="direction" value="horizontal">Horizontal<br>
+	  <input type="radio" name="direction" value="vertical">Vertical
+	</form>
+	</div>
+	
+	<div class="submit">
+	<button onClick="save()">Save</button>
+	</div>
+
 </div>
  
 <script type="text/javascript">
@@ -45,9 +47,7 @@ var crosswordId = "<?php echo $id ?>";
 <script language="javascript" type="text/javascript" src="js/script.js">
 </script> 
  
-<div class="submit">
-<button onClick="save()">Save</button>
-</div>
+
  
 </body>
 </html>
