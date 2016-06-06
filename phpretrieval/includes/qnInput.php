@@ -42,6 +42,7 @@
         echo $qn2BAdded . "<br>";
         echo $answer[0] . "<br>";
         $answer[0]=trim($answer[0]);
+		$answer[0]=strtoupper($answer[0]);
         $qn2BAddedAgain = preg_split("/".$answer[0]."/", $qn2BAdded);
         echo $qn2BAddedAgain[0] . "<br>";
         $sql = "INSERT INTO " . $crosswordBankName . " VALUES (0," . $latestCrossWordId . ", "

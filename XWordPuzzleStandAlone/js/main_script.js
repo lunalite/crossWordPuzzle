@@ -6,8 +6,8 @@
 	var screenHeight=window.innerHeight;
 	c.width = screenWidth;
     c.height = screenHeight;
-	var NUM_COLS = 20;
-	var NUM_ROWS = 20;
+	var NUM_COLS = 40;
+	var NUM_ROWS = 40;
 	var tileCellWidth=screenHeight/NUM_ROWS;
 	var Tilepadding=0;
 	var tileWidth=tileCellWidth-Tilepadding;
@@ -87,8 +87,8 @@
 	}
 	
 	function createTilesFromString(str,ans){
-		var ID1= str.substring(0,3);
-		var ID2= str.substring(3,6);
+		var ID1= str.substring(0,4);
+		var ID2= str.substring(4,8);
 		ID1=parseInt(ID1);
 		ID2=parseInt(ID2);
 		console.log("Decoding "+ID1+" and "+ID2+" for "+ans);
@@ -104,9 +104,9 @@
 					if (containsTile(ID1,tiles)){
 						console.log("Collision detected on Tile: "+ans.charAt(j));
 						getTileFromId(ID1).intersected=true;
+						tile.intersected=true;
 					}
-					else
-						tiles.push(tile);
+					tiles.push(tile);
 					if (diff>=NUM_ROWS) //Go Down
 						ID1+=NUM_ROWS;
 					else if (diff>0) //Go Right
@@ -133,9 +133,10 @@
 		return pos;
 	}
 	
-	function getPosition(e) {		//Function called when a tile is clicked
+	function getPosition(e) {
+		var scrollTop = $(window).scrollTop();		//Function called when a tile is clicked
 		mouseX = e.clientX;
-		mouseY = e.clientY;
+		mouseY = e.clientY+scrollTop;
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);
@@ -147,6 +148,7 @@
 		var question=questionList[tile.qns_id];
 		console.log("Selected Tile: "+tileSelected);
 		var word=prompt(question);
+		word=word.toUpperCase();
 		var correct=checkAnswer(word,tileSelected);
 		if (correct)
 			wordToTiles(word,tileSelected);

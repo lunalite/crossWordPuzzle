@@ -4,11 +4,11 @@
 	var ctx = c.getContext("2d");
 	var screenWidth=window.innerWidth;
 	var screenHeight=window.innerHeight;
-	c.width = screenWidth/2;
-        c.height = screenHeight;
-	var NUM_COLS = 20;
-	var NUM_ROWS = 20;
-	var tileCellWidth=screenHeight/NUM_ROWS;
+	c.width = screenWidth*0.75;
+    c.height = c.width;
+	var NUM_COLS = 40;
+	var NUM_ROWS = 40;
+	var tileCellWidth=(screenWidth*0.75)/NUM_COLS;
 	var Tilepadding=5;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
@@ -35,7 +35,7 @@
 	overall_list.addEventListener("click",function(e) {
         if(e.target && e.target.nodeName == "LI") {
             answerSelected=e.target.textContent;
-			header.innerHTML = 'Now select a tile where you want to place your answer at';
+			header.innerHTML = 'Selected "'+answerSelected+'"! Now select a tile where you want to place your answer at';
         }
     });
 
@@ -144,9 +144,11 @@
 		return pos;
 	}
 	
-	function getPosition(e) {		//Function called when a tile is clicked
+	function getPosition(e) {	
+		var scrollTop = $(window).scrollTop();
+		console.log("Scrolled "+scrollTop);//Function called when a tile is clicked
 		mouseX = e.clientX;
-		mouseY = e.clientY;
+		mouseY = e.clientY+scrollTop;
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);
@@ -187,15 +189,19 @@
 				var tile=tiles[tileID+i];
 				if (i==0){
 					if (tile.id < 10)
-						tileID1+="00";
+						tileID1+="000";
 					else if (tile.id < 100)
+						tileID1+="00";
+					else if (tile.id < 1000)
 						tileID1+="0";
 					tileID1+=tile.id;
 				}
 				else if (i==length-1){
 					if (tile.id < 10)
-						tileID2+="00";
+						tileID2+="000";
 					else if (tile.id < 100)
+						tileID2+="00";
+					else if (tile.id < 1000)
 						tileID2+="0";
 					tileID2+=tile.id;
 				}
@@ -214,16 +220,20 @@
 				var tile=tiles[tileID+i*NUM_ROWS];
 				if (i==0){
 					if (tile.id < 10)
-						tileID1+="00";
+						tileID1+="000";
 					else if (tile.id < 100)
+						tileID1+="00";
+					else if (tile.id < 1000)
 						tileID1+="0";
 					tileID1+=tile.id;
 				}
 				else if (i==length-1){
 					if (tile.id < 10)
-						tileID2+="00";
+						tileID2+="000";
 					else if (tile.id < 100)
-						tileID2+="0";
+						tileID2+="00";
+					else if (tile.id < 1000)
+						tileID1+="0";
 					tileID2+=tile.id;
 				}
 				console.log("Current tile is at "+tile.x+","+tile.y);
@@ -236,7 +246,7 @@
 			updateList();
 			return ;
 		}
-		if(length+pos[1]>(NUM_COLS) || length+pos[0]>(NUM_ROWS))
+		if((length+pos[0]>(NUM_COLS) && inputDirection == "horizontal" )|| (length+pos[1]>(NUM_ROWS) && inputDirection == "vertical"))
 			window.alert("Word is too long in the current direction! Select another tile!");
 		else
 			window.alert("Collision detected!Select another tile!");
