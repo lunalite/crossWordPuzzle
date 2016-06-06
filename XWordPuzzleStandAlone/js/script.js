@@ -69,8 +69,6 @@
 
     getAnswers();
 	
-	window.alert("Welcome to the Master Template! Start by clicking a tile and enter the word desired. The Master Template will first attempt to fill by row if possible. Otherwise, it tries to fill by column instead!");
-	
 	var Tile = function(x, y,id) { //Class Declaration for Tile Object
 		this.x = x;
 		this.y = y;
