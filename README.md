@@ -1,4 +1,8 @@
 # crossWordPuzzle
+Update 9/6/16
+- Merged all together
+- Xword basic scoring system added
+
 Update 4/6/16
 - Allowed for users to join available sessions.
 - Allowed for superusers to create new sessions.
