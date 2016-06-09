@@ -1,18 +1,181 @@
-create table crosswordMasterDB (
-id int primary key auto_increment,
-crosswordId int,
-crosswordDescription varchar(500),
-TIME_ADDED timestamp
-);
+-- phpMyAdmin SQL Dump
+-- version 4.2.11
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jun 09, 2016 at 04:43 AM
+-- Server version: 5.6.21
+-- PHP Version: 5.5.19
 
-CREATE TABLE `crosswordpuzzles` (
-  `Index` tinyint(4) NOT NULL AUTO_INCREMENT,
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `database`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE IF NOT EXISTS `accounts` (
+`id` int(11) NOT NULL,
+  `username` varchar(10) NOT NULL,
+  `password` varchar(15) NOT NULL,
+  `email` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES
+(1, 'w31ha0', '1234', 'none');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `crosswordmasterdb`
+--
+
+CREATE TABLE IF NOT EXISTS `crosswordmasterdb` (
+`crosswordId` tinyint(4) NOT NULL,
+  `PuzzleName` varchar(100) COLLATE latin1_general_ci NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=111 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+--
+-- Dumping data for table `crosswordmasterdb`
+--
+
+INSERT INTO `crosswordmasterdb` (`crosswordId`, `PuzzleName`) VALUES
+(110, ''),
+(109, ''),
+(108, 'cui'),
+(106, 'MasterPiece');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `crosswordpuzzles`
+--
+
+CREATE TABLE IF NOT EXISTS `crosswordpuzzles` (
+`Index` int(200) NOT NULL,
   `CrosswordID` tinyint(4) NOT NULL,
   `QnsID` tinyint(4) NOT NULL,
   `Question` varchar(900) COLLATE latin1_general_ci NOT NULL,
   `Answer` varchar(900) COLLATE latin1_general_ci NOT NULL,
-  `TileCode` varchar(900) COLLATE latin1_general_ci NOT NULL,
-  PRIMARY KEY (`Index`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=20 ;
+  `TileCode` varchar(900) COLLATE latin1_general_ci NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
-add
+--
+-- Dumping data for table `crosswordpuzzles`
+--
+
+INSERT INTO `crosswordpuzzles` (`Index`, `CrosswordID`, `QnsID`, `Question`, `Answer`, `TileCode`) VALUES
+(80, 109, 1, 'Barry and Best Biscuit Company bought 10,000 biscuits from a bakery for resale to supermarkets and confectionaries. These transactions can be classified as _. (2 words) ', 'OPERATING ACTIVITIES', 'Not Assigned yet'),
+(79, 108, 3, '_ BLAH BLAH. (2 words) ', 'ABC LOL', '02110217'),
+(77, 108, 1, 'BLAH BLAH _ . (2 words) ', 'OPERATING ACTIVITIES', '02930312'),
+(78, 108, 2, 'BLAH BLAH _ BLAH BLAH. (1 word) ', 'COOL', '02130333'),
+(71, 106, 6, 'When a company sells goods on account, an asset called _ will increase. (2 words) accounts receivable\r\n', 'ACCOUNTS RECEIVABLE', '00430061'),
+(72, 106, 7, '_ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings\r\n', 'RETAINED EARNINGS', '00130653'),
+(73, 106, 8, 'A company signs a contractual agreement with a bank for a loan to buy a property. This transaction will result in an increase in an asset and a corresponding increase in _. (2 words) note payable', 'NOTE PAYABLE', '00910102'),
+(69, 106, 4, 'Barry Best Biscuit Company was engaging in _ activities when they sold off the old delivery truck and bought a new one. (1 word) investing\r\n', 'INVESTING', '05330541'),
+(70, 106, 5, 'Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement\r\n', 'INCOME STATEMENT', '05391139'),
+(66, 106, 1, 'Barry and Best Biscuit Company bought 10,000 biscuits from a bakery for resale to supermarkets and confectionaries. These transactions can be classified as _. (2 words) Operating activities\r\n', 'OPERATING ACTIVITIES', '02170236'),
+(67, 106, 2, 'The bakery that sells biscuits to Barry Best Biscuit Company and the supermarkets and confectionaries that buy biscuits from the company are _ of the company. (1 word) stakeholders\r\n', 'STAKEHOLDERS', '01470587'),
+(68, 106, 3, 'Based on the _ principle, a property acquired 10 years ago at $2 million should continue to be recorded in the books of the company at $2 million although the value of the property has appreciated to $10 million. (2 words) historical cost\r\n', 'HISTORICAL COST', '01720186'),
+(81, 109, 2, 'The bakery that sells biscuits to Barry Best Biscuit Company and the supermarkets and confectionaries that buy biscuits from the company are _ of the company. (1 word) ', 'STAKEHOLDERS', 'Not Assigned yet'),
+(82, 109, 3, 'Based on the _ principle, a property acquired 10 years ago at $2 million should continue to be recorded in the books of the company at $2 million although the value of the property has appreciated to $10 million. (2 words) ', 'HISTORICAL COST', 'Not Assigned yet'),
+(83, 109, 4, 'Barry Best Biscuit Company was engaging in _ activities when they sold off the old delivery truck and bought a new one. (1 word) ', 'INVESTING', 'Not Assigned yet'),
+(84, 109, 5, 'Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) ', 'INCOME STATEMENT', 'Not Assigned yet'),
+(85, 109, 6, 'When a company sells goods on account, an asset called _ will increase. (2 words) ', 'ACCOUNTS RECEIVABLE', 'Not Assigned yet'),
+(86, 109, 7, '_ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) ', 'RETAINED EARNINGS', 'Not Assigned yet'),
+(87, 109, 8, 'A company signs a contractual agreement with a bank for a loan to buy a property. This transaction will result in an increase in an asset and a corresponding increase in _. (2 words) ', 'NOTE PAYABLE', 'Not Assigned yet'),
+(88, 110, 1, 'Barry and Best Biscuit Company bought 10,000 biscuits from a bakery for resale to supermarkets and confectionaries. These transactions can be classified as _. (2 words) ', 'OPERATING ACTIVITIES', 'Not Assigned yet'),
+(89, 110, 2, 'The bakery that sells biscuits to Barry Best Biscuit Company and the supermarkets and confectionaries that buy biscuits from the company are _ of the company. (1 word) ', 'STAKEHOLDERS', 'Not Assigned yet'),
+(90, 110, 3, 'Based on the _ principle, a property acquired 10 years ago at $2 million should continue to be recorded in the books of the company at $2 million although the value of the property has appreciated to $10 million. (2 words) ', 'HISTORICAL COST', 'Not Assigned yet'),
+(91, 110, 4, 'Barry Best Biscuit Company was engaging in _ activities when they sold off the old delivery truck and bought a new one. (1 word) ', 'INVESTING', 'Not Assigned yet'),
+(92, 110, 5, 'Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) ', 'INCOME STATEMENT', 'Not Assigned yet'),
+(93, 110, 6, 'When a company sells goods on account, an asset called _ will increase. (2 words) ', 'ACCOUNTS RECEIVABLE', 'Not Assigned yet'),
+(94, 110, 7, '_ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) ', 'RETAINED EARNINGS', 'Not Assigned yet'),
+(95, 110, 8, 'A company signs a contractual agreement with a bank for a loan to buy a property. This transaction will result in an increase in an asset and a corresponding increase in _. (2 words) ', 'NOTE PAYABLE', 'Not Assigned yet');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE IF NOT EXISTS `posts` (
+`id` int(11) NOT NULL,
+  `username` varchar(10) NOT NULL,
+  `message` text NOT NULL,
+  `time` date NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `username`, `message`, `time`) VALUES
+(1, 'w31ha0', 'hi there', '0000-00-00'),
+(38, 'w31ha0', 'hello', '0000-00-00'),
+(39, 'w31ha0', 'suprise', '0000-00-00'),
+(40, 'w31ha0', 'yo', '0000-00-00'),
+(41, 'w31ha0', 'leibniz', '0000-00-00');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `crosswordmasterdb`
+--
+ALTER TABLE `crosswordmasterdb`
+ ADD PRIMARY KEY (`crosswordId`);
+
+--
+-- Indexes for table `crosswordpuzzles`
+--
+ALTER TABLE `crosswordpuzzles`
+ ADD PRIMARY KEY (`Index`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `crosswordmasterdb`
+--
+ALTER TABLE `crosswordmasterdb`
+MODIFY `crosswordId` tinyint(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=111;
+--
+-- AUTO_INCREMENT for table `crosswordpuzzles`
+--
+ALTER TABLE `crosswordpuzzles`
+MODIFY `Index` int(200) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=96;
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
