@@ -8,13 +8,17 @@ sec_session_start();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Secure Login: Protected Page</title>
+        <title>Xword: user page</title>
         <link rel="stylesheet" href="styles/main.css" />
     </head>
     <body>
         <?php if ((login_check($mysqli) == true) && role_check() == 0) : ?>
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
         <p>You are currently logged <?php echo $logged ?> as <?php echo htmlentities($_SESSION['username'])?>.</p>
+
+        <!-- Option to start Xword game when gate is opened -->
+        
+
 
         <table id="sessionsOnline">
             <tr>Available sessions</tr>
@@ -28,6 +32,8 @@ sec_session_start();
             ?>
         </table>
 
+        <?php if (!userInSession($mysqli)) : ?>
+
         <form action="includes/sessionJoin.php" id="sessionJoin" method="post">
             <select name="sessId" form="sessionJoin">
             <?php
@@ -37,6 +43,12 @@ sec_session_start();
             <input type="submit" name="joinSession" value="Join Session">
         </form>
 
+        <?php elseif (userInSession($mysqli)) : ?>
+        <p>You are already in a session. Please wait...</p>
+                    <?php if(gateCheck($mysqli)) {
+                        header('Location: /xwordpuzzlestandalone/main_xword.html');}
+                    ?>
+        <?php endif; ?>
 
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->

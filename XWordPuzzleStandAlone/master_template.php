@@ -40,6 +40,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 </div>
  
+    <a href="../master.php">Click here to go back after addition</a>
+
 <script type="text/javascript">
 var crosswordId = "<?php echo $id ?>";
 </script> 

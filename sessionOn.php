@@ -20,7 +20,7 @@ sec_session_start(); // Our custom secure way of starting a PHP session.
             if ($mysqli->query($sql) === TRUE) {
                 echo "Record updated successfully";
             } else {
-                echo "Error updating record: " . $conn->error;
+                echo "Error updating record: " . $mysqli->error;
             }
         }
 ?>

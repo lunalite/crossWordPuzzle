@@ -222,6 +222,15 @@ function sessionCheckD($mysqli) {
     }
 }
 
+function userInSession($mysqli){
+    $query = 'SELECT * FROM sessionJoin WHERE userId = ' . $_SESSION['user_id'];
+    $result = $mysqli->query($query);
+    if (mysqli_num_rows($result) == 0) 
+        return FALSE;
+    else
+        return TRUE;
+}
+
 function sessionUserCheck($mysqli) {
     $query = "SELECT * FROM sessionJoin WHERE sessid = 
     (SELECT sessId FROM sessionJoin WHERE userId = " . $_SESSION['user_id'] . ")";
@@ -236,6 +245,24 @@ function sessionUserCheck($mysqli) {
             $innerRow=mysqli_fetch_row($innerResult);
             $tbp = '<tr><td>' . $innerRow[0] . '</td></tr>';
             echo $tbp;
+        }
+    }
+}
+
+function gateCheck($mysqli) {
+    $query = 'SELECT * FROM availablesessions WHERE sessid = ' . $_SESSION['sess_id'];
+    $result = $mysqli->query($query);
+    if (mysqli_num_rows($result) == 0) {
+        echo 'Error';
+        return FALSE;
+    }
+    else {
+        while ($row=mysqli_fetch_row($result)) {
+            if ($row[2] == 2) {
+                return TRUE;
+                }
+            else
+                return FALSE;
         }
     }
 }

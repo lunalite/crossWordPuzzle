@@ -17,8 +17,9 @@
 	var questionList=[];
 	var answerList=[];
 	var tileCodeList=[];
-	var title=prompt("Please enter the title of the puzzle");
+	//var title=prompt("Please enter the title of the puzzle");
 	var noOfFields=6;
+	var attempts = [];
 	
 	var Tile = function(x, y,id,c,qns_id) { //Class Declaration for Tile Object
 		this.x = x;
@@ -34,46 +35,54 @@
 	function getTiles(){
 		console.log("Getting data");
 		var url="../phpretrieval/includes/getIdFromName.php";
-		jQuery.getJSON(url, {title:title}, function(data) {
-        // ... handle response as above
-			var str = JSON.stringify(data);
-			console.log(str);
-			var crosswordID=getIDfromStr(str);
-			console.log("ID is "+crosswordID);
-			var url="../phpretrieval/includes/qnOutput.php";
-			jQuery.getJSON(url, {crosswordId:crosswordID}, function(data) {
-				 str = JSON.stringify(data);
-				 console.log(str);
-				 var arr=jQuery.map(data,function(e1){return e1;});
-				 var size=arr.length/noOfFields;
-				 console.log("Array is of size "+size);
-				for (i=0;i<size;i++){
-					questionList.push(arr[3+i*noOfFields]);
-					answerList.push(arr[4+i*noOfFields]);
-					tileCodeList.push(arr[5+i*noOfFields]);
-				}		
-				console.log("Questions: "+questionList);	
-				console.log("Answers: "+answerList);	
-				console.log("Codes: "+tileCodeList);
-				console.log(answerList.length);
-				for (i=0;i<answerList.length;i++){
-					console.log("Now filling the "+i+"th answer");
-					createTilesFromString(tileCodeList[i],answerList[i]);
-				}
-			});
+		jQuery.getJSON(url, function (data) {
+		    // ... handle response as above
+		    //var str = JSON.stringify(data);
+		    //console.log(str);
+		    //var crosswordID=getIDfromStr(str);
+
+		    console.log(data);
+		    var crosswordID = data;
+
+		    console.log("ID is " + crosswordID);
+		    var url = "../phpretrieval/includes/qnOutput.php";
+		    jQuery.getJSON(url, { crosswordId: crosswordID }, function (data) {
+		        str = JSON.stringify(data);
+		        console.log(str);
+		        var arr = jQuery.map(data, function (e1) { return e1; });
+		        var size = arr.length / noOfFields;
+		        console.log("Array is of size " + size);
+		        for (i = 0; i < size; i++) {
+		            questionList.push(arr[3 + i * noOfFields]);
+		            answerList.push(arr[4 + i * noOfFields]);
+		            tileCodeList.push(arr[5 + i * noOfFields]);
+		            attempts.push(0);
+		        }
+		        console.log("Questions: " + questionList);
+		        console.log("Answers: " + answerList);
+		        console.log("Codes: " + tileCodeList);
+		        console.log("Attempts: " + attempts);
+		        console.log(answerList.length);
+		        for (i = 0; i < answerList.length; i++) {
+		            console.log("Now filling the " + i + "th answer");
+		            createTilesFromString(tileCodeList[i], answerList[i]);
+		        }
+		    });
 		});	
      }
 	 
+     /*
 	 function getIDfromStr(str){
 		str=str.substring(3);
 		console.log("Chopped str is "+str);
 		var ID=parseInt(str);
 			return ID;
 	 }
-	 
+	 */
+
 	 function printTiles(){
-		for (b=0;b<tiles.length;b++)
-			console.log(tiles[b]);
+		//for (b=0;b<tiles.length;b++)
+			//console.log(tiles[b]);
 	 }
 	 
 	 function containsTile(id, list) {
@@ -93,13 +102,13 @@
 		ID2=parseInt(ID2);
 		console.log("Decoding "+ID1+" and "+ID2+" for "+ans);
 		var diff=ID2-ID1;
-		console.log("Difference is "+diff);
-		console.log("Length of word is "+ans.length);
+		//console.log("Difference is "+diff);
+		//console.log("Length of word is "+ans.length);
 				for(j=0;j<ans.length;j++){
-					console.log("Now at Tile "+ID1+",with i = "+i);
+					//console.log("Now at Tile "+ID1+",with i = "+i);
 					var pos = tileIDtoPos(ID1);
 					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j),i);
-					console.log("Inserting character "+ans.charAt(j));
+					//console.log("Inserting character "+ans.charAt(j));
 					tile.drawFaceDown();
 					if (containsTile(ID1,tiles)){
 						console.log("Collision detected on Tile: "+ans.charAt(j));
@@ -147,13 +156,16 @@
 		}
 		var question=questionList[tile.qns_id];
 		console.log("Selected Tile: "+tileSelected);
-		var word=prompt(question);
-		word=word.toUpperCase();
-		var correct=checkAnswer(word,tileSelected);
-		if (correct)
-			wordToTiles(word,tileSelected);
-		else
-			window.alert("WRONG!");
+        if (attempts[tile.qns_id] > 1) ;
+        else {
+		    var word=prompt(question);
+		    word=word.toUpperCase();
+		    var correct=checkAnswer(word,tileSelected);
+		    if (correct)
+			    wordToTiles(word,tileSelected);
+		    else 
+			    window.alert("WRONG! " + attempts[tile.qns_id] + " attempt");
+        }
   }
   
 		function getTileFromId(tileID){
@@ -168,11 +180,18 @@
 			var tile=getTileFromId(tileID);
 			console.log(tile);
 			var correctAnswer=answerList[tile.qns_id];
+            console.log('qns id ' + tile.qns_id);
 			console.log("Answer is "+correctAnswer);
-			if (correctAnswer==word)
+			if (correctAnswer==word) {
+			    addScore(tile.qns_id);
+			    console.log('score added: ' + scoreAdded(tile.qns_id));
 				return true;
-			else
+                }
+			else {
+			    attempts[tile.qns_id]++;
+			    console.log(attempts);
 				return false;		  
+                }
 	  }
   
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
@@ -223,3 +242,72 @@
 	};
 	
 	getTiles();
+
+
+
+/************ AJAX implementation for scoring purposes ************/
+var xmlHTTP = createXMLhttpRequestObject();
+
+function createXMLhttpRequestObject() {
+    var xmlHTTP;
+
+    if (window.ActiveXObject) {
+        try {
+            xmlHTTP = new ActiveXObject("Microsoft.XMLHTTML");
+        } catch(e) {
+            xmlHTTP = false;
+        }
+    } else {
+        try {
+            xmlHTTP = new XMLHttpRequest();
+        } catch(e) {
+            xmlHTTP = false;
+        }
+    }
+
+    if (!xmlHTTP)
+        alert("can't create Object!");
+    else
+        return xmlHTTP;
+}
+
+function scoreAdded(qid) {
+    // Check number of attempts;
+    var att = attempts[qid];
+    
+    // Give amount of scores based on attempts
+    switch(att) {
+        case 0: 
+            return 3;
+            break;
+        case 1: 
+            return 2;
+            break;
+        case 2: 
+            return 0;
+            break;
+        default:
+            return 99;
+    }
+}
+
+function addScore(qid) {
+    if (xmlHTTP.readyState == 0 || xmlHTTP.readyState == 4) {
+        xmlHTTP.open("GET", "./includes/addScore.php?score=" + scoreAdded(qid), true);
+        xmlHTTP.onreadystatechange = handleServerResponse;
+        xmlHTTP.send(null); //null for $_GET responses.
+    } 
+}
+
+function handleServerResponse() {
+    if (xmlHTTP.readyState == 4) {
+        if (xmlHTTP.status == 200 ) {
+            xmlResponse = xmlHTTP.responseXML;
+            xmlDocumentElement = xmlResponse.documentElement;
+            message = xmlDocumentElement.firstChild.data;
+            console.log(message);
+        } else {
+        alert('something went wrong');
+        }
+    }
+}

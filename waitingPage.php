@@ -11,11 +11,10 @@ sec_session_start();
     <head>
         <meta charset="utf-8" />
         <title></title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-        <script src="js/teamUpdateCheck.js"></script>
+       
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true)) : ?>
+        <?php if ((login_check($mysqli) == true) && userInSession($mysqli)) : ?>
         <p>You have joined the session.</p>
         <table>
             <tr>
@@ -25,7 +24,15 @@ sec_session_start();
                     sessionUserCheck($mysqli);                 
                ?>
         </table>
-            <p>Return to <a href="index.php">login page</a></p>
+            
+            <?php 
+                if (gateCheck($mysqli))
+                header('Location: /xwordpuzzlestandalone/main_xword.html');
+            ?>
+
+        <?php elseif (!userInSession($mysqli)) : ?>
+            <p> You are not in session. Please go <a href='user.php'>back</a> and join a Session</p>
+
         <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.

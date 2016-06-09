@@ -48,7 +48,9 @@ sec_session_start();
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
         <p>You are currently logged <?php echo $logged ?> as <?php echo htmlentities($_SESSION['username'])?>.</p>
 
-        Assume that adding of crossword is done.
+        Adding of crosswords:<br>
+        <a href="phpretrieval/crosswordAddition.php">Click here</a>
+        <br>
         <br>
         Commands:<br>
         list - returns the available crosswords with their descriptions<br>
@@ -73,6 +75,15 @@ sec_session_start();
             ?>
         </table>
 
+
+        <form action="includes/sessionStart.php" id="startSession" method="post">
+            <select name="sessId" form="startSession">
+            <?php
+                sessionCheckD($mysqli);
+            ?>
+            </select>
+            <input type="submit" name="startSession" value="Start Session">
+        </form>
 
         <!--*********************************************-->
         <!-- For the case of not being a super user -->
