@@ -27,7 +27,7 @@ sec_session_start();
             
             <?php 
                 if (gateCheck($mysqli))
-                header('Location: /xwordpuzzlestandalone/main_xword.html');
+                header('Location: XWordPuzzleStandAlone/main_xword.html');
             ?>
 
         <?php elseif (!userInSession($mysqli)) : ?>

@@ -1,11 +1,26 @@
 <html>
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="themes/alertify.core.css" />
+	<link rel="stylesheet" href="themes/alertify.default.css" id="toggleCSS" />
   <title></title>
+  <style>
+ .alertify-log-custom {
+			background: blue;
+		}
+@font-face {
+  font-family: "Eileen Caps Black";
+  src: url(../fonts/pdark.ttf) format("truetype");
+}
+.title { font-family: "Eileen Caps Black", sans-serif ;
+	font-size:30px}
+	</style>
 </head>
 <body>
-
-<canvas id="myCanvas" style="border:1px solid #d3d3d3;">
+	<div class="title"><p id="title" >HELLO</p></div>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="lib/alertify.min.js"></script>
+<canvas id="myCanvas">
 Your browser does not support the HTML5 canvas tag.</canvas>
  
 <script language="javascript" type="text/javascript" src="js/main_script.js">

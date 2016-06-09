@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/php-connect.php';
+include_once 'includes/php-connect.php';
 include_once '../includes/psl-config.php';
 ?>
 

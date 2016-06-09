@@ -20,6 +20,18 @@
 	//var title=prompt("Please enter the title of the puzzle");
 	var noOfFields=6;
 	var attempts = [];
+	var noOfQuestions=0;
+	var audio = new Audio('music.wav');
+	audio.play();
+	var title="Accounting";
+		
+	exitGame();
+	
+	c.onmouseover = function(e) {
+		console.log("Moved");
+		if (c.isPointInPath)
+			console.log("Hovering...");
+  }
 	
 	var Tile = function(x, y,id,c,qns_id) { //Class Declaration for Tile Object
 		this.x = x;
@@ -31,6 +43,18 @@
 		this.intersected=false;
 		//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
 	};
+	
+	function getTitle(){
+		var url2="../phpretrieval/includes/getTitle.php";
+		console.log("getting title");
+		jQuery.getJSON(url2, function (data) {
+			console.log("RECEIVED");
+			str = JSON.stringify(data);
+			str=str.substring(3,str.length-3);
+			document.getElementById("title").innerHTML =str;
+
+		});
+	}
 	
 	function getTiles(){
 		console.log("Getting data");
@@ -65,6 +89,7 @@
 		        console.log(answerList.length);
 		        for (i = 0; i < answerList.length; i++) {
 		            console.log("Now filling the " + i + "th answer");
+					noOfQuestions++;
 		            createTilesFromString(tileCodeList[i], answerList[i]);
 		        }
 		    });
@@ -151,22 +176,28 @@
 		var tileSelected=posToTileID(mouseX,mouseY);
 		var tile=getTileFromId(tileSelected);
 		if (tile.intersected){
-			window.alert("Pick a non intersecting tile!");
+			alertify.alert("Pick a non intersecting tile!");
 			return ;
 		}
 		var question=questionList[tile.qns_id];
 		console.log("Selected Tile: "+tileSelected);
-        if (attempts[tile.qns_id] > 1) ;
-        else {
-		    var word=prompt(question);
-		    word=word.toUpperCase();
-		    var correct=checkAnswer(word,tileSelected);
-		    if (correct)
-			    wordToTiles(word,tileSelected);
-		    else 
-			    window.alert("WRONG! " + attempts[tile.qns_id] + " attempt");
+        if (attempts[tile.qns_id] > 1) alertify.error("You have exceeded the number of attempts for this question!");
+        else {	
+		    	alertify.prompt(question, function (e, word) {
+				if (e) {
+					word=word.toUpperCase();
+					var correct=checkAnswer(word,tileSelected);
+					if (correct){
+						wordToTiles(word,tileSelected);
+						alertify.success("CORRECT!");
+					}
+					else 
+						alertify.error("WRONG!");
+				}
+			}, "");
+
         }
-  }
+     }
   
 		function getTileFromId(tileID){
 			for (z=0;z<tiles.length;z++){
@@ -175,6 +206,12 @@
 				  return tile;
 			}
 		}
+		
+	function stateChange() {
+		setTimeout(function () {
+		window.location.replace("includes/deleteSessions.php");
+		}, 5000);
+	}
   
 	  function checkAnswer(word,tileID){
 			var tile=getTileFromId(tileID);
@@ -185,6 +222,9 @@
 			if (correctAnswer==word) {
 			    addScore(tile.qns_id);
 			    console.log('score added: ' + scoreAdded(tile.qns_id));
+				noOfQuestions--;
+				if (noOfQuestions==0)
+					exitGame();
 				return true;
                 }
 			else {
@@ -192,6 +232,18 @@
 			    console.log(attempts);
 				return false;		  
                 }
+	  }
+	  
+	  function exitGame(){
+		  alertify.alert("The Game Has ended!");
+		  var url="../phpretrieval/includes/getScore.php";
+		  jQuery.getJSON(url, function (data) {
+				var str = JSON.stringify(data);
+				str=str.substring(2,str.length-1);
+				var score=parseInt(str);
+				console.log("Got score"+score);	
+			});
+		  stateChange();
 	  }
   
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
@@ -242,7 +294,7 @@
 	};
 	
 	getTiles();
-
+	getTitle();
 
 
 /************ AJAX implementation for scoring purposes ************/
