@@ -24,6 +24,42 @@
 	var overall_list = document.getElementById("questionList");	
 	var questionList = [];
 	var answerList=[];
+	var ansStack=[];
+	var tileCodeStack=[];
+	
+	function undo(){
+		if (ansStack.length <= 0 || tileCodeStack.length <= 0)
+			return ;
+		var lastAns=ansStack.pop();
+		var lastID=tileCodeStack.pop();
+		console.log("Removing answer "+lastAns);
+		questionList.push(lastAns);
+		populate(questionList);
+		removeTiles(lastID,lastAns.length);
+	}
+	
+	function removeTiles(tileCodeID,length){
+		var tileID1=tileCodeID.substring(0,4);
+		var tileID2=tileCodeID.substring(4,8);
+		console.log("Removing tiles "+tileID1+" and "+tileID2);
+		tileID1=parseInt(tileID1);
+		tileID2=parseInt(tileID2);
+		var diff=tileID2-tileID1;
+		for (i=0;i<length;i++){
+			var tile=tiles[tileID1];
+			console.log("Removing tile "+tile.char+" now...");
+			if (diff>=NUM_ROWS) //Go Down
+						tileID1+=NUM_ROWS;
+					else if (diff>0) //Go Right
+						tileID1++;
+					else if (diff<=-NUM_ROWS)
+						tileID1+=NUM_ROWS;
+					else if (diff < 0)
+						tileID1--;
+			tile.char="";
+			tile.drawFaceDown();
+		}
+	}
 	
 	var rad = document.myform.direction;
 	for(var i = 0; i < rad.length; i++) {
@@ -34,12 +70,12 @@
 	}
 	overall_list.addEventListener("click",function(e) {
         if(e.target && e.target.nodeName == "LI") {
-            answerSelected=e.target.textContent;
+            answerSelected=e.target.textContent ;
 			header.innerHTML = 'Selected "'+answerSelected+'"! Now select a tile where you want to place your answer at';
         }
     });
 
-        function getAnswers(){
+    function getAnswers(){
 		console.log("Getting data");
 		var url="../phpretrieval/includes/qnOutput.php";
 		jQuery.getJSON(url, {crosswordId:crosswordId}, function(data) {
@@ -152,7 +188,7 @@
 		var tileSelected=posToTileID(mouseX,mouseY);
 		console.log("Selected Tile: "+tileSelected);
 		console.log("Inserting word "+answerSelected);
-		wordToTiles(answerSelected,tileSelected);
+		wordToTiles(answerSelected.replace(/\s/g,''),tileSelected);
   }
   
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
@@ -210,7 +246,10 @@
 			var encodedID=tileID1+tileID2;
 			console.log("Encoded ID:"+encodedID);
 			answerMap[answerSelected]=encodedID;
+			ansStack.push(answerSelected);
 			updateList();
+			tileCodeStack.push(encodedID);
+			console.log("Stack now contains "+ansStack);
 			return ;
 		}
 		if (inputDirection =="vertical" && length+pos[1]<=(NUM_COLS) && !checkCollisionY(word,tileID)){
@@ -241,7 +280,10 @@
 			var encodedID=tileID1+tileID2;
 			console.log("Encoded ID:"+encodedID);
 			answerMap[answerSelected]=encodedID;
+			ansStack.push(answerSelected);
 			updateList();
+			tileCodeStack.push(encodedID);
+			console.log("Stack now contains "+ansStack);
 			return ;
 		}
 		if((length+pos[0]>(NUM_COLS) && inputDirection == "horizontal" )|| (length+pos[1]>(NUM_ROWS) && inputDirection == "vertical"))
@@ -253,9 +295,9 @@
 	Tile.prototype.drawFaceDown = function() { //Function to draw the tile
 		ctx.beginPath();
 		ctx.rect(this.x,this.y, this.width,this.width);
-		ctx.fillStyle = "grey";
-		ctx.fill();
 		ctx.fillStyle = "white";
+		ctx.fill();
+		ctx.fillStyle = "black";
 		ctx.fillText(this.char,this.x+(tileWidth/2),(this.y+(tileWidth/2)),tileWidth);
 	};
 	

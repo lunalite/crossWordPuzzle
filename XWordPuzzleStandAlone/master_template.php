@@ -12,6 +12,9 @@ $id=$_GET["id"];
 .canvas,.qnsradio{
     float: left;
 }
+ .canvas{
+    background-color: black;
+}
 </style>
 </head>
 <body>
@@ -48,8 +51,8 @@ var crosswordId = "<?php echo $id ?>";
  
 <script language="javascript" type="text/javascript" src="js/script.js">
 </script> 
- 
 
- 
+<button type="button" onClick="undo()" id="undo" >Undo</button>
+
 </body>
 </html>

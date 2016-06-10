@@ -1,4 +1,6 @@
 	var pixelSize=10;
+	var pixelSizeX=0;
+	var pixelSizeY=60;
 	var c = document.getElementById("myCanvas");
 	c.addEventListener("click", getPosition,false);
 	var ctx = c.getContext("2d");
@@ -24,8 +26,6 @@
 	var audio = new Audio('music.wav');
 	audio.play();
 	var title="Accounting";
-		
-	exitGame();
 	
 	c.onmouseover = function(e) {
 		console.log("Moved");
@@ -169,8 +169,8 @@
 	
 	function getPosition(e) {
 		var scrollTop = $(window).scrollTop();		//Function called when a tile is clicked
-		mouseX = e.clientX;
-		mouseY = e.clientY+scrollTop;
+		mouseX = e.clientX+pixelSizeX;
+		mouseY = e.clientY+scrollTop-pixelSizeY;
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);

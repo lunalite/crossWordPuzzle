@@ -14,7 +14,7 @@
     $array=mysqli_fetch_all($result,MYSQLI_NUM);
     echo json_encode($array);*/
 
-    echo json_encode($_SESSION['sess_id']);
-   //echo json_encode(111);
+    //echo json_encode($_SESSION['sess_id']);
+   echo json_encode(111);
     
 ?>

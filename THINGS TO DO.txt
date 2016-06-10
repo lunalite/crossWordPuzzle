@@ -1,0 +1,5 @@
+change password
+master must be able to see the xword during gameplay
+does not allow for refresh during gameplay
+have a new table to track which questions are answered
+see score ater gameplay
