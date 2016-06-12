@@ -1,4 +1,14 @@
 # crossWordPuzzle
+
+Update 12/06/16
+- Changed name of getIDFromTitle to getIdFromsSess
+- Changed session ID to AUTO_INCREMENT so that every session will be unique
+- Added attempts and answered array to Xword mainscript.js and save it in a session storage so that refreshing the browser will not change the number of attempts and correctly answered questions
+- Added in change password function for super users
+- removed puzzlename from availableSessions as it doesn't make sense for it to remain as a primary key. Instead, crosswordID is used to replace puzzleName as the identifier
+- added questionAnswered table for database which is used to keep track of who answered what correctly and at what time
+- Scoring given only for first team to answer qn correctly.
+
 Update 9/6/16
 - Merged all together
 - Xword basic scoring system added
