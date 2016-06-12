@@ -10,11 +10,11 @@ if ($_POST) {
     $q = $_POST['searchQ'];
 
     if ($q == 'list') {
-        $result = $mysqli->query("SELECT crosswordId, crosswordDescription,PuzzleName FROM 
+        $result = $mysqli->query("SELECT crosswordId, crosswordDescription, PuzzleName FROM 
         crosswordmasterdb");
     }
     else {
-        $result = $mysqli->query("SELECT crosswordId, crosswordDescription,PuzzleName FROM 
+        $result = $mysqli->query("SELECT crosswordId, crosswordDescription, PuzzleName FROM 
         crosswordmasterdb WHERE crosswordId = $q");
         }
 

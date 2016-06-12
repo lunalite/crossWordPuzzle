@@ -13,7 +13,7 @@
     //echo $questions[3] . "<br>";
 
     // Checks for the first id from crosswordmasterdb.
-    $sql = "SELECT crosswordId FROM " . $tableName;
+    $sql = "SELECT crosswordId FROM " . $tableName; 
     $result = $mysqli->query($sql);
     $latestCrossWordId = 0;
 
@@ -31,7 +31,7 @@
         $latestCrossWordId --;
     }
     $latestCrossWordId ++;
-    echo $latestCrossWordId . "<br>";
+    //echo $latestCrossWordId . "<br>";
 
     // Inserting into master database id of the new crossword to be added.
     $sql = "INSERT INTO " . $tableName . " (crosswordId) VALUES (" . $latestCrossWordId . ")";

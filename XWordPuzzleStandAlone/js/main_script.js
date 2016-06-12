@@ -1,4 +1,6 @@
-	var pixelSize=10;
+	
+// Declaration of all variables
+    var pixelSize=10;
 	var pixelSizeX=0;
 	var pixelSizeY=60;
 	var c = document.getElementById("myCanvas");
@@ -21,12 +23,44 @@
 	var tileCodeList=[];
 	//var title=prompt("Please enter the title of the puzzle");
 	var noOfFields=6;
-	var attempts = [];
+	var attempts = [];    
+    var answered = []; // 0 - not answered / answered wrongly 1 - answered correctly
 	var noOfQuestions=0;
-	var audio = new Audio('music.wav');
-	audio.play();
+	//var audio = new Audio('music.wav');
+	//audio.play();
 	var title="Accounting";
-	
+
+
+// function to obtain session storage information
+// Note that it is one-off storage of data. Closing of session will cause data to be gone
+    function recallStorage(size) {
+        attemptsData = JSON.parse(sessionStorage.getItem('attempts'));
+        answeredData = JSON.parse(sessionStorage.getItem('answered'));
+        if (attemptsData != null) {
+            attempts = attemptsData.slice(0);
+            answered = answeredData.slice(0);
+            /*
+            ** NEED UPDATE HERE
+            ** A code for converting the correctly answered tiles to word using wordToTiles();
+            ** I've no idea how it works so i'll leave it to you.
+            */
+        }
+        else {
+            // for case where no data is present
+            for (i = 0; i < size; i++) {
+                attempts.push(0);
+                answered.push(0);
+            }
+        }
+    }
+
+
+// function to store information into session
+    function storeData() {
+        sessionStorage.setItem('attempts', JSON.stringify(attempts));
+        sessionStorage.setItem('answered', JSON.stringify(answered));
+    }
+
 	c.onmouseover = function(e) {
 		console.log("Moved");
 		if (c.isPointInPath)
@@ -45,20 +79,19 @@
 	};
 	
 	function getTitle(){
-		var url2="../phpretrieval/includes/getTitle.php";
+		var url2="includes/getTitle.php";
 		console.log("getting title");
 		jQuery.getJSON(url2, function (data) {
-			console.log("RECEIVED");
-			str = JSON.stringify(data);
-			str=str.substring(3,str.length-3);
-			document.getElementById("title").innerHTML =str;
-
+		    console.log("RECEIVED");
+		    str = JSON.stringify(data);
+		    str = str.substring(3, str.length - 3);
+		    document.getElementById("title").innerHTML = str;
 		});
 	}
 	
 	function getTiles(){
 		console.log("Getting data");
-		var url="../phpretrieval/includes/getIdFromName.php";
+		var url="../phpretrieval/includes/getIdFromsSess.php";
 		jQuery.getJSON(url, function (data) {
 		    // ... handle response as above
 		    //var str = JSON.stringify(data);
@@ -76,17 +109,21 @@
 		        var arr = jQuery.map(data, function (e1) { return e1; });
 		        var size = arr.length / noOfFields;
 		        console.log("Array is of size " + size);
+
+                // Recalling storage for number of attempts / answered qns in case of refresh
+                recallStorage(size);
+
 		        for (i = 0; i < size; i++) {
 		            questionList.push(arr[3 + i * noOfFields]);
 		            answerList.push(arr[4 + i * noOfFields]);
 		            tileCodeList.push(arr[5 + i * noOfFields]);
-		            attempts.push(0);
 		        }
 		        console.log("Questions: " + questionList);
 		        console.log("Answers: " + answerList);
 		        console.log("Codes: " + tileCodeList);
-		        console.log("Attempts: " + attempts);
 		        console.log(answerList.length);
+                console.log('Saved attempts are: ' + attempts);
+                console.log('Saved answered are: ' + answered);
 		        for (i = 0; i < answerList.length; i++) {
 		            console.log("Now filling the " + i + "th answer");
 					noOfQuestions++;
@@ -181,20 +218,29 @@
 		}
 		var question=questionList[tile.qns_id];
 		console.log("Selected Tile: "+tileSelected);
+
+        // Check if number of attempts exceeded 2 times
         if (attempts[tile.qns_id] > 1) alertify.error("You have exceeded the number of attempts for this question!");
-        else {	
-		    	alertify.prompt(question, function (e, word) {
-				if (e) {
-					word=word.toUpperCase();
-					var correct=checkAnswer(word,tileSelected);
-					if (correct){
-						wordToTiles(word,tileSelected);
-						alertify.success("CORRECT!");
-					}
-					else 
-						alertify.error("WRONG!");
-				}
-			}, "");
+
+        // Check if question is answered correctly. If it is, do nothing
+        else if (answered[tile.qns_id] == 1) ;
+
+        // If question is unanswered or 1 attempt remains, do this
+        else {
+            alertify.prompt(question, function (e, word) {
+                if (e) {
+                    word = word.toUpperCase();
+                    var correct = checkAnswer(word, tileSelected);
+
+                    if (correct) {
+                        // Write down the words onto the tiles
+                        wordToTiles(word);
+                        alertify.success("CORRECT!");
+                    }
+                    else
+                        alertify.error("WRONG!");
+                }
+            }, "");
 
         }
      }
@@ -215,21 +261,35 @@
   
 	  function checkAnswer(word,tileID){
 			var tile=getTileFromId(tileID);
-			console.log(tile);
 			var correctAnswer=answerList[tile.qns_id];
             console.log('qns id ' + tile.qns_id);
 			console.log("Answer is "+correctAnswer);
+
+            // Checking mechanism
 			if (correctAnswer==word) {
+                
+                // Change answered array for that qn to 1 and store it
+			    answered[tile.qns_id] = 1;
+			    storeData();
+
+                // Scores are only added to the first person who answered correctly
 			    addScore(tile.qns_id);
 			    console.log('score added: ' + scoreAdded(tile.qns_id));
+
+                // Once all answers are answered correctly, call for exitGame()
 				noOfQuestions--;
 				if (noOfQuestions==0)
 					exitGame();
 				return true;
                 }
+
 			else {
 			    attempts[tile.qns_id]++;
 			    console.log(attempts);
+
+                // Store attempts into session in case user refreshes browser
+			    storeData();
+
 				return false;		  
                 }
 	  }
@@ -277,6 +337,8 @@
 			}
 		}	
 	}
+
+
 
 	Tile.prototype.drawFaceDown = function() { //Function to draw the tile
 		ctx.beginPath();
@@ -345,7 +407,7 @@ function scoreAdded(qid) {
 
 function addScore(qid) {
     if (xmlHTTP.readyState == 0 || xmlHTTP.readyState == 4) {
-        xmlHTTP.open("GET", "./includes/addScore.php?score=" + scoreAdded(qid), true);
+        xmlHTTP.open("GET", "./includes/addScore.php?score=" + scoreAdded(qid) + "&qid=" + qid, true);
         xmlHTTP.onreadystatechange = handleServerResponse;
         xmlHTTP.send(null); //null for $_GET responses.
     } 

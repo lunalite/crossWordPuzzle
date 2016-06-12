@@ -6,23 +6,22 @@ include_once 'includes/functions.php';
 sec_session_start(); // Our custom secure way of starting a PHP session.
 
     $q = $_POST['crosswordSearch'];
-	echo $q;
     $result = $mysqli->query("SELECT crosswordDescription FROM crosswordmasterdb WHERE crosswordId = $q ");
-	$result2 = $mysqli->query("SELECT PuzzleName FROM crosswordmasterdb WHERE crosswordId = $q ");
+	// $result2 = $mysqli->query("SELECT PuzzleName FROM crosswordmasterdb WHERE crosswordId = $q ");
         if (mysqli_num_rows($result) == 0) {
-            $test = 'Error..';
-            echo $test;
+            echo 'No such crosswordID';
         }
         else {
             $arr = mysqli_fetch_row($result);
             $des = '\''.$arr[0].'\'';
-			$arr2 = mysqli_fetch_row($result2);
-            $title = '\''.$arr2[0].'\'';
+			//$arr2 = mysqli_fetch_row($result2);
+            //$title = '\''.$arr2[0].'\'';
             
-            $sql = "INSERT INTO availablesessions VALUES ($q, $des, 1,$title)";
-            
+            $sql = "INSERT INTO availablesessions (description, online, crosswordID) VALUES ($des, 1, $q)";
+
             if ($mysqli->query($sql) === TRUE) {
-                echo "Record updated successfully";
+                echo "Session is created. Redirecting back to previous page in 3 seconds,";
+                header('Refresh: 3; url=master.php');
             } else {
                 echo "Error updating record: " . $mysqli->error;
             }
@@ -35,7 +34,7 @@ sec_session_start(); // Our custom secure way of starting a PHP session.
         <link rel="stylesheet" href="styles/main.css" />
     </head>
     <body>
-        <p>You can now go back to the <a href="master.php">master page</a></p>
+        <p>Click <a href="master.php">here</a> to go back.</p>
     </body>
 </html>
 

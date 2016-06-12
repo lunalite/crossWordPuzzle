@@ -33,9 +33,6 @@ sec_session_start();
                         }
                     });
                 });
-
-
-
             });
 
         </script>
@@ -46,21 +43,33 @@ sec_session_start();
         <?php if ((login_check($mysqli) == true) && role_check() == 1) : ?>
 
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
-        <p>You are currently logged <?php echo $logged ?> as <?php echo htmlentities($_SESSION['username'])?>.</p>
+        <p>You are currently logged in as <?php echo htmlentities($_SESSION['username'])?>.</p>
+
+        Change password: <br>
+        <a href="passwordChange.php">Click here</a><br><br>
 
         Adding of crosswords:<br>
         <a href="phpretrieval/crosswordAddition.php">Click here</a>
         <br>
+        <ul>
+            Commands:
+            <li>Default value:
+                list - returns the available crosswords with their descriptions</li>
+            <li>submitting the crossword ID itself - creates a session</li>
+            <li>Example - [[a,b,c]]</li>
+            <li>a = Crossword ID</li>
+            <li>b = Crossword Description</li>
+            <li>c = puzzle name</li>
+        </ul>
         <br>
-        Commands:<br>
-        list - returns the available crosswords with their descriptions<br>
-        submitting the crosswordName itself - creates a session<br>
-        <br>
+
+        <!-- Form for the crossword ID search and creation of session -->
         <form id="createSession" action="sessionOn.php" method="post">
-            <input type="text" name="crosswordSearch" id="crosswordSearch">
+            <input type="text" name="crosswordSearch" id="crosswordSearch" value="list">
             <input type="submit" value="Create Session">
         </form>
         <br>
+
         <div id="result"></div><br>
         <table id="sessionsOnline">
             <tr>Available sessions</tr>

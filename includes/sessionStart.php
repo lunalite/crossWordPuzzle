@@ -35,4 +35,6 @@
     $sql2 = 'UPDATE availablesessions SET online = 2 WHERE sessId = ' . $sessId;
     $mysqli->query($sql2);
 
+    // Add
+
 ?>

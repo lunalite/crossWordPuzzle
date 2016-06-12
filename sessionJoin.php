@@ -4,7 +4,6 @@ include_once 'includes/functions.php';
 
 sec_session_start();
 
-$sql = ""
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +12,11 @@ $sql = ""
         <meta charset="utf-8" />
         <title></title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-        <script src="js/teamUpdateCheck.js"></script>
+        <script>
+            // Remove storage whenever user joins new session
+            sessionStorage.removeItem('attempts');
+            sessionStorage.removeItem('answered');
+        </script>
     </head>
     <body>
         <?php if ((login_check($mysqli) == true)) : ?>
