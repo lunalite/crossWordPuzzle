@@ -47,15 +47,21 @@
 		var diff=tileID2-tileID1;
 		for (i=0;i<length;i++){
 			var tile=tiles[tileID1];
-			console.log("Removing tile "+tile.char+" now...");
-			if (diff>=NUM_ROWS) //Go Down
+				if (diff>=NUM_ROWS) //Go Down
 						tileID1+=NUM_ROWS;
-					else if (diff>0) //Go Right
+				else if (diff>0) //Go Right
 						tileID1++;
-					else if (diff<=-NUM_ROWS)
+				else if (diff<=-NUM_ROWS)
 						tileID1+=NUM_ROWS;
-					else if (diff < 0)
+				else if (diff < 0)
 						tileID1--;
+			if (tile.intersected == true){
+				tile.intersected=false;
+				console.log("Skipping tile "+tile.char);
+				tile.drawFaceDown();
+				continue;
+			}
+			console.log("Removing tile "+tile.char+" now...");
 			tile.char="";
 			tile.drawFaceDown();
 		}
@@ -110,7 +116,8 @@
 		this.y = y;
 		this.width = tileWidth;
 		this.char='';
-		this.id=id;		//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
+		this.id=id;	
+		this.intersected=false;//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
 	};
 	
 	function updateList(){
@@ -221,6 +228,13 @@
 		if ( inputDirection == "horizontal" && length+pos[0]<=(NUM_ROWS) && !checkCollisionX(word,tileID)){
 			for ( i=0; i < length ; i++){
 				var tile=tiles[tileID+i];
+				console.log("Current tile "+tile.char+" is at "+tile.x+","+tile.y);
+				var len=tile.char.length;
+				console.log(len);
+				if (tile.char.length > 0){
+					tile.intersected=true;
+					console.log("COLLISION DETECTED ON TILE "+tile.char);
+				}
 				if (i==0){
 					if (tile.id < 10)
 						tileID1+="000";
@@ -239,7 +253,6 @@
 						tileID2+="0";
 					tileID2+=tile.id;
 				}
-				console.log("Current tile is at "+tile.x+","+tile.y);
 				tile.char=word.charAt(i);
 				tile.drawFaceDown();
 			}			
@@ -255,6 +268,12 @@
 		if (inputDirection =="vertical" && length+pos[1]<=(NUM_COLS) && !checkCollisionY(word,tileID)){
 			for ( i=0; i < length ; i++){
 				var tile=tiles[tileID+i*NUM_ROWS];
+				console.log("Current tile "+tile.char+" is at "+tile.x+","+tile.y);
+				console.log(tile.char.length);
+				if (tile.char.length > 0){
+					tile.intersected=true;
+					console.log("COLLISION DETECTED ON TILE "+tile.char);
+				}
 				if (i==0){
 					if (tile.id < 10)
 						tileID1+="000";
@@ -273,7 +292,6 @@
 						tileID1+="0";
 					tileID2+=tile.id;
 				}
-				console.log("Current tile is at "+tile.x+","+tile.y);
 				tile.char=word.charAt(i);
 				tile.drawFaceDown();
 			}						

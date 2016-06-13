@@ -1,4 +1,3 @@
-	
 // Declaration of all variables
     var pixelSize=10;
 	var pixelSizeX=0;
@@ -29,6 +28,9 @@
 	//var audio = new Audio('music.wav');
 	//audio.play();
 	var title="Accounting";
+	//sessionStorage.removeItem('answered');
+	//sessionStorage.removeItem('attempts');
+	
 
 
 // function to obtain session storage information
@@ -39,6 +41,12 @@
         if (attemptsData != null) {
             attempts = attemptsData.slice(0);
             answered = answeredData.slice(0);
+			for (i=0;i<answered.length;i++){
+				if (answered[i]==1){
+					wordToTiles(answerList[i]);
+					console.log("reloading....");
+				}
+			}
             /*
             ** NEED UPDATE HERE
             ** A code for converting the correctly answered tiles to word using wordToTiles();
@@ -111,11 +119,9 @@
 		        console.log("Array is of size " + size);
 
                 // Recalling storage for number of attempts / answered qns in case of refresh
-                recallStorage(size);
-
 		        for (i = 0; i < size; i++) {
 		            questionList.push(arr[3 + i * noOfFields]);
-		            answerList.push(arr[4 + i * noOfFields]);
+		            answerList.push(arr[4 + i * noOfFields].replace(/\s/g,''));
 		            tileCodeList.push(arr[5 + i * noOfFields]);
 		        }
 		        console.log("Questions: " + questionList);
@@ -128,7 +134,7 @@
 		            console.log("Now filling the " + i + "th answer");
 					noOfQuestions++;
 		            createTilesFromString(tileCodeList[i], answerList[i]);
-		        }
+		        }				recallStorage(answerList.size);
 		    });
 		});	
      }
@@ -212,6 +218,7 @@
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);
 		var tile=getTileFromId(tileSelected);
+		console.log(tile.char);
 		if (tile.intersected){
 			alertify.alert("Pick a non intersecting tile!");
 			return ;
@@ -230,6 +237,7 @@
             alertify.prompt(question, function (e, word) {
                 if (e) {
                     word = word.toUpperCase();
+					word=word.replace(/\s/g,'');
                     var correct = checkAnswer(word, tileSelected);
 
                     if (correct) {
@@ -295,6 +303,8 @@
 	  }
 	  
 	  function exitGame(){
+		 sessionStorage.removeItem('answered');
+		 sessionStorage.removeItem('attempts');
 		  alertify.alert("The Game Has ended!");
 		  var url="../phpretrieval/includes/getScore.php";
 		  jQuery.getJSON(url, function (data) {
@@ -329,9 +339,11 @@
 	
 	function wordToTiles(word){	//Insert a word entered by the user into the appropriate tiles
 		var qns_id=answerList.indexOf(word);
+		var tracker=0;
 		for (a=0;a<tiles.length;a++){
 			var tile=tiles[a];
 			if (tile.qns_id==qns_id){
+				tile.char=word[tracker++];
 				tile.drawAns();
 				console.log("Drawn on tile "+tile.char);
 			}
