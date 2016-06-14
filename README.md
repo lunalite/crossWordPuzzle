@@ -1,11 +1,11 @@
 # crossWordPuzzle
 
-Update 14/6/16
--Added re-formation of tiles from sessionStorage after refresh
--Displays score on each player's page
--Navigate users to Scores Page after game ends
--Navigates Super User to Live Scores Page after opening gate.(Max latency of 5s)
--Allows both suers and super users to return to index.php from Scores Page
+Update 14/6/16                                                                                                                        
+-Added re-formation of tiles from sessionStorage after refresh                                                                        
+-Displays score on each player's page                                                                                                 
+-Navigate users to Scores Page after game ends                                                                                        
+-Navigates Super User to Live Scores Page after opening gate.(Max latency of 5s)                                                      
+-Allows both suers and super users to return to index.php from Scores Page                                                            
 
 Update 12/06/16
 - Changed name of getIDFromTitle to getIdFromsSess
