@@ -14,11 +14,17 @@
             }
             .title { font-family: "Eileen Caps Black", sans-serif ;
             font-size:30px}
+			.score { font-family: "Eileen Caps Black", sans-serif ;
+            font-size:30px;position: absolute;right: 600px}
+			.title,.score{
+				float: left;
+			}
         </style>
     </head>
 
     <body>
 	    <div class="title"><p id="title" >HELLO</p></div>
+		<div class="score"><p id="score">Score: 0</p></div>
 	    <script src="lib/alertify.min.js"></script>
         <canvas id="myCanvas">
         Your browser does not support the HTML5 canvas tag.</canvas>

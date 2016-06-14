@@ -1,3 +1,7 @@
+<?php
+$id=$_GET["id"];
+?>
+
 <html>
 <head>
 <h1>Game Over</h1>
@@ -15,12 +19,25 @@
 	<div class="ulist"><ul id="userList" style="list-style-type:none"></ul></div>
 	<div class="slist"><ul id="scoreList" style="list-style-type:none"></ul></div>
 	<script>
+	var sessId = "<?php echo $id ?>";
 	var user_list = document.getElementById("userList");
 	var score_list = document.getElementById("scoreList");
 	var userList=[];
 	var scoreList=[];
-	var url = "../phpretrieval/includes/getAllScores.php";
-	jQuery.getJSON(url, function (data) {
+	function stateChange() {
+		setTimeout(function () {
+		retrieveScores();
+		}, 5000);
+	}
+	function retrieveScores(){
+		while (user_list.firstChild) {
+			user_list.removeChild(user_list.firstChild);
+		}
+		while (score_list.firstChild) {
+			score_list.removeChild(score_list.firstChild);
+		}
+			var url = "../phpretrieval/includes/getAllScoresFromId.php?id="+sessId;
+			jQuery.getJSON(url, function (data) {
 					console.log("Received object "+data);
 					for (x=0;x<data.length;x++){
 						var userId=data[x][1];
@@ -38,8 +55,13 @@
 							user_list.appendChild(entry);
 						});
 					}
-				});
+		});
+		stateChange();
+	}
+	
+	retrieveScores();
 	console.log("in script...");
+
 </script>
 <a href="../index.php">Click here to go back</a>
 </body>

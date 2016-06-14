@@ -23,7 +23,7 @@
 
             if ($mysqli->query($ins) === TRUE) {
                 echo "Gate is open.";
-//                header('Location: ../waitingPage.php');
+				header('Refresh: 3; url=../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
                 } 
             else {
                 echo "Error: " . $ins . "<br>" . $mysqli->error;

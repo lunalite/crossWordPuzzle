@@ -1,7 +1,7 @@
 // Declaration of all variables
     var pixelSize=10;
 	var pixelSizeX=0;
-	var pixelSizeY=60;
+	var pixelSizeY=85;
 	var c = document.getElementById("myCanvas");
 	c.addEventListener("click", getPosition,false);
 	var ctx = c.getContext("2d");
@@ -42,16 +42,12 @@
             attempts = attemptsData.slice(0);
             answered = answeredData.slice(0);
 			for (i=0;i<answered.length;i++){
+				noOfQuestions--;
 				if (answered[i]==1){
 					wordToTiles(answerList[i]);
 					console.log("reloading....");
 				}
 			}
-            /*
-            ** NEED UPDATE HERE
-            ** A code for converting the correctly answered tiles to word using wordToTiles();
-            ** I've no idea how it works so i'll leave it to you.
-            */
         }
         else {
             // for case where no data is present
@@ -60,6 +56,11 @@
                 answered.push(0);
             }
         }
+		var url2="../phpretrieval/includes/getScore.php";
+				jQuery.getJSON(url2, function (data) {
+					console.log("Received "+data);
+					document.getElementById("score").innerHTML = "Score: "+data;
+				});
     }
 
 
@@ -275,7 +276,11 @@
 
             // Checking mechanism
 			if (correctAnswer==word) {
-                
+                var url2="../phpretrieval/includes/getScore.php";
+				jQuery.getJSON(url2, function (data) {
+					console.log("Received "+data);
+					document.getElementById("score").innerHTML = "Score: "+data;
+				});
                 // Change answered array for that qn to 1 and store it
 			    answered[tile.qns_id] = 1;
 			    storeData();
@@ -306,13 +311,6 @@
 		 sessionStorage.removeItem('answered');
 		 sessionStorage.removeItem('attempts');
 		  alertify.alert("The Game Has ended!");
-		  var url="../phpretrieval/includes/getScore.php";
-		  jQuery.getJSON(url, function (data) {
-				var str = JSON.stringify(data);
-				str=str.substring(2,str.length-1);
-				var score=parseInt(str);
-				console.log("Got score"+score);	
-			});
 		  stateChange();
 	  }
   
@@ -410,6 +408,7 @@ function scoreAdded(qid) {
             return 2;
             break;
         case 2: 
+			console.log("too bad");
             return 0;
             break;
         default:
