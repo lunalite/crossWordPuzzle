@@ -4,19 +4,20 @@
 
     sec_session_start();
     
-    // check for user id, then add him to db
-    $sessId = $_POST['sessId'];
+    $arr = json_decode($_POST['sessionJoin'], true);
+    $sessId = $arr['sessId'];
+    
     $_SESSION['sess_id'] = $sessId;
     $user = $_SESSION['user_id'];
 
     $query = 'INSERT INTO sessionJoin (userId, sessId) VALUES (' . $user . ', ' . $sessId . ')';
-
+    echo $query;
     if ($mysqli->query($query) === TRUE) {
         echo "New record created successfully";
-        header('Location: ../waitingPage.php');
+        header('Location: ../user.php');
     } 
     else {
         echo "Error: " . $sql . "<br>" . $mysqli->error;
     }
-
+    
 ?>

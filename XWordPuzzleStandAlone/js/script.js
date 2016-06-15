@@ -165,8 +165,9 @@
 		var url="../phpretrieval/includes/updateTiles.php";
 		for (i=0;i<answerList.length;i++){
 			console.log("Saving tilecode "+answerMap[answerList[i]]);
-			var jqxhr = jQuery.get( url,{id:crosswordId,answer:answerList[i],tileCode:answerMap[answerList[i]],title:title}, function() {
-					console.log("Save successfully");
+			var jqxhr = jQuery.get(url, { id: crosswordId, answer: answerList[i], tileCode: answerMap[answerList[i]], title: title }, function () {
+			    console.log("Save successfully");
+			    alert('You have successfully saved the puzzle as ' + title);
 			});
 		// Insert code here to save tiles into database
 	}}

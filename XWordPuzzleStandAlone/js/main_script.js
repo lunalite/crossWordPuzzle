@@ -28,8 +28,8 @@
 	//var audio = new Audio('music.wav');
 	//audio.play();
 	var title="Accounting";
-	//sessionStorage.removeItem('answered');
-	//sessionStorage.removeItem('attempts');
+	sessionStorage.removeItem('answered');
+	sessionStorage.removeItem('attempts');
 	
 
 
@@ -38,7 +38,9 @@
     function recallStorage(size) {
         attemptsData = JSON.parse(sessionStorage.getItem('attempts'));
         answeredData = JSON.parse(sessionStorage.getItem('answered'));
+        
         if (attemptsData != null) {
+            
             attempts = attemptsData.slice(0);
             answered = answeredData.slice(0);
 			for (i=0;i<answered.length;i++){
@@ -51,16 +53,16 @@
         }
         else {
             // for case where no data is present
-            for (i = 0; i < size; i++) {
+            for (i = 0; i < size; i++) {    
                 attempts.push(0);
-                answered.push(0);
+                answered.push(0);   
             }
         }
-		var url2="../phpretrieval/includes/getScore.php";
+		/*var url2="../phpretrieval/includes/getScore.php";
 				jQuery.getJSON(url2, function (data) {
 					console.log("Received "+data);
 					document.getElementById("score").innerHTML = "Score: "+data;
-				});
+				});*/
     }
 
 
@@ -129,13 +131,16 @@
 		        console.log("Answers: " + answerList);
 		        console.log("Codes: " + tileCodeList);
 		        console.log(answerList.length);
-                console.log('Saved attempts are: ' + attempts);
-                console.log('Saved answered are: ' + answered);
+                
 		        for (i = 0; i < answerList.length; i++) {
 		            console.log("Now filling the " + i + "th answer");
 					noOfQuestions++;
 		            createTilesFromString(tileCodeList[i], answerList[i]);
-		        }				recallStorage(answerList.size);
+		        }				
+
+                recallStorage(size);
+                console.log('Saved attempts are: ' + attempts);
+                console.log('Saved answered are: ' + answered);
 		    });
 		});	
      }
@@ -276,11 +281,11 @@
 
             // Checking mechanism
 			if (correctAnswer==word) {
-                var url2="../phpretrieval/includes/getScore.php";
-				jQuery.getJSON(url2, function (data) {
-					console.log("Received "+data);
-					document.getElementById("score").innerHTML = "Score: "+data;
-				});
+            //    var url2="../phpretrieval/includes/getScore.php";
+				//jQuery.getJSON(url2, function (data) {
+				//	console.log("Received "+data);
+			//		document.getElementById("score").innerHTML = "Score: "+data;
+			//	});
                 // Change answered array for that qn to 1 and store it
 			    answered[tile.qns_id] = 1;
 			    storeData();
@@ -436,3 +441,4 @@ function handleServerResponse() {
         }
     }
 }
+

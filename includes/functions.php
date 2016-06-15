@@ -179,14 +179,17 @@ function role_check() {
 
 // For checking of available sessions into table
 function sessionCheck($mysqli) {
-    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online = 1");
+    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online != 0");
     if (mysqli_num_rows($result) == 0) {
         echo '<tr><td>No sessions online.</td></tr>';
     }
     else {
         while ($row=mysqli_fetch_row($result)) {
-            $tbp = '<tr><td>' . $row[0] . '</td><td>' . $row[1] . '</td><td>Yes</td>';
-
+            if ($row[2] == 1) 
+                $online = 'Yes';
+            elseif ($row[2] == 2) 
+                $online = 'Started';
+            $tbp = '<tr><td>' . $row[0] . '</td><td>' . $row[1]  . '</td><td>'.$online.'</td>';
             $innerQuery = "SELECT username FROM members WHERE id in 
             (SELECT userId FROM sessionJoin WHERE sessId = " . $row[0] . ")";
 
@@ -210,13 +213,18 @@ function sessionCheck($mysqli) {
 
 // For available sessions into select box
 function sessionCheckD($mysqli) {
-    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online = 1");
+    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online != 0");
     if (mysqli_num_rows($result) == 0) {
         echo '<option value=\"NoSessOn\">No sessions online</option>';
     }
     else {
         while ($row=mysqli_fetch_row($result)) {
-            $tbp = '<option value="' . $row[0] . '">'. $row[0] .'</option>';
+            if ($row[2] == 1)
+                $online = 'online';
+            elseif ($row[2] == 2)
+                $online = 'started';
+            $tbp = '<option value=\'{"sessId" : "'.$row[0].'", 
+                    "online" : "'.$row[2].'"}\'>'. $row[0].' ('. $online .')</option>';           
             echo $tbp;
         }
     }
@@ -227,8 +235,11 @@ function userInSession($mysqli){
     $result = $mysqli->query($query);
     if (mysqli_num_rows($result) == 0) 
         return FALSE;
-    else
+    else {
+        $row=mysqli_fetch_row($result);
+        $_SESSION['sess_id'] = $row[1]; 
         return TRUE;
+        }
 }
 
 function sessionUserCheck($mysqli) {
