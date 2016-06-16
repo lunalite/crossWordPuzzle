@@ -221,8 +221,9 @@
 	}
 	
 	function getPosition(e) {
-		var scrollTop = $(window).scrollTop();		//Function called when a tile is clicked
-		mouseX = e.clientX-pixelSizeX;
+		var scrollTop = $(window).scrollTop();	
+		var scrollRight = $(window).scrollLeft();//Function called when a tile is clicked
+		mouseX = e.clientX+scrollRight-pixelSizeX;
 		mouseY = e.clientY+scrollTop;
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
