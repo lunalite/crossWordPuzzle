@@ -7,7 +7,7 @@
 
     //Check for all users who joined the Xword
     //Opens the gate for users to enter        
-    $arr = json_decode($_POST['sJSession'], true);
+    $arr = json_decode($_POST['sessId'], true);
     $sessId = $arr['sessId'];
     $online = $arr['online'];
     //echo $arr['sessId'];

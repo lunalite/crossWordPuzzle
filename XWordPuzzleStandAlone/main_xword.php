@@ -36,7 +36,7 @@
             
                 var channelT = pusher.subscribe('channel_1');
                 channelT.bind('correctAnswer', function (data) {
-            
+					console.log("Updating....");
                     updatedScore = data.updatedScore;
                     userName = data.userName;
                     //document.getElementById("score").innerHTML = "Score: " + updatedScore;

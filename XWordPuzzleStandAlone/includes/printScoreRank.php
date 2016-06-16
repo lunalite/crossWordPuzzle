@@ -1,9 +1,9 @@
 <?php
-    include_once '../../includes/db_connect.php';
-    include_once '../../includes/functions.php';
+    include_once '../includes/db_connect.php';
+    include_once '../includes/functions.php';
                 
     sec_session_start();  
-    
+    error_log("printing...",3,"error.txt");
     $sessId = $_SESSION['sess_id'];
            
 	$sql = "SELECT userid, username, scores FROM sessionstart INNER JOIN members ON userid = id

@@ -9,7 +9,7 @@
 	var NUM_COLS = 40;
 	var NUM_ROWS = 40;
 	var tileCellWidth=(screenWidth*0.75)/NUM_COLS;
-	var Tilepadding=5;
+	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
 	var mouseY=0;
@@ -167,9 +167,8 @@
 			console.log("Saving tilecode "+answerMap[answerList[i]]);
 			var jqxhr = jQuery.get(url, { id: crosswordId, answer: answerList[i], tileCode: answerMap[answerList[i]], title: title }, function () {
 			    console.log("Save successfully");
-			    alert('You have successfully saved the puzzle as ' + title);
 			});
-		// Insert code here to save tiles into database
+		 alert('You have successfully saved the puzzle as ' + title);
 	}}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
@@ -317,6 +316,7 @@
 		ctx.fillStyle = "white";
 		ctx.fill();
 		ctx.fillStyle = "black";
+		ctx.font = "bold 10pt Courier";
 		ctx.fillText(this.char,this.x+(tileWidth/2),(this.y+(tileWidth/2)),tileWidth);
 	};
 	

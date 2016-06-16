@@ -11,6 +11,6 @@
     $result = $mysqli->query($sql);
     $array=mysqli_fetch_all($result,MYSQLI_NUM);
     echo json_encode($array[0][0]);
-	//echo json_encode(121);
+	//echo json_encode(0);
     
 ?>

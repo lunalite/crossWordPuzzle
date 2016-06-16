@@ -109,7 +109,7 @@
                         </script>
 
                         <?php if(gateCheck($mysqli)) {
-                                header('Location: /xwordpuzzlestandalone/main_xword.php');
+                                header('Location: xwordpuzzlestandalone/main_xword.php');
                             }
                         endif; ?>
                     </div>
