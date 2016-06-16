@@ -1,14 +1,16 @@
 // Declaration of all variables
     var pixelSize=10;
-	var pixelSizeX=0;
 	var pixelSizeY=15;
 	var c = document.getElementById("myCanvas");
 	c.addEventListener("click", getPosition,false);
 	var ctx = c.getContext("2d");
 	var screenWidth=window.innerWidth;
 	var screenHeight=window.innerHeight;
+	var pixelSizeX=screenWidth/153;
+	console.log("dx is "+pixelSizeX);
 	c.width = screenWidth;
     c.height = screenHeight;
+	console.log("Screen size is "+screenWidth+" x "+screenHeight);
 	var NUM_COLS = 40;
 	var NUM_ROWS = 40;
 	var tileCellWidth=screenWidth/NUM_ROWS;
@@ -205,7 +207,7 @@
 		}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
-		var ID = (parseInt((y-pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
+		var ID = (parseInt((y)/tileCellWidth) * NUM_ROWS) + parseInt((x)/tileCellWidth);
 		return ID;
 	}
 	
@@ -220,8 +222,8 @@
 	
 	function getPosition(e) {
 		var scrollTop = $(window).scrollTop();		//Function called when a tile is clicked
-		mouseX = e.clientX+pixelSizeX;
-		mouseY = e.clientY+scrollTop+pixelSizeY;
+		mouseX = e.clientX-pixelSizeX;
+		mouseY = e.clientY+scrollTop;
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);

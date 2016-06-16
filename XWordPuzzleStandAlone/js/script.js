@@ -6,8 +6,8 @@
 	var screenHeight=window.innerHeight;
 	c.width = screenWidth*0.75;
     c.height = c.width;
-	var NUM_COLS = 40;
-	var NUM_ROWS = 40;
+	var NUM_COLS = 30;
+	var NUM_ROWS = 30;
 	var tileCellWidth=(screenWidth*0.75)/NUM_COLS;
 	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
