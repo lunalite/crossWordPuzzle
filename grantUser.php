@@ -1,8 +1,11 @@
 <?php
-    include_once '../includes/db_connect.php';
-    include_once '../includes/functions.php';
+    include_once 'includes/db_connect.php';
+    include_once 'includes/functions.php';
     
     sec_session_start();
+
+    $userID = $_GET['userId'];
+     
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,22 +14,22 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>REP Xword user page</title>
-        <link href="../css/bootstrap.css" rel="stylesheet">
-        <link href="../css/jumbotron.css" rel="stylesheet">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-        <script src="../css/js/bootstrap.min.js"></script>
+        <script src="css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
+        <script src="css/js/ie10-viewport-bug-workaround.js"></script>
     </head>
     <body>
         <?php if ((login_check($mysqli) == true) && role_check() == 2) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Master Page</a>
+                    <a class="navbar-brand" href="./index.php" style="color:white;">REP Crossword Grant User Page</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
@@ -61,32 +64,25 @@
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>
-
+        
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-6">
-
-                        <h3>Please input the questions and answers:</h3>
-                        Format it as follows: <br>
-                            Q)%XXX_XXX.%(N%WORDS)%ANSWER <br>
-                        X : represents words/letters<br>
-                            % : represents a space <br><br>
-                            Example: <br>
-                            1) Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement[Press enter]<br>
-                            2) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
-                            <br>
-                            Do note that the <b>bracket placements</b> and <b>spaces</b> are important. <br>
-                            Also, after every questions, do take note to press enter before the next question is typed.<br>
-                            
-
-                        <form id="qBank" action="includes/qnInput.php" method="post">
-                            <div class="form-group">
-                                <label for="questions">Input</label>
-                                <textarea name="questions" form="qBank" class="form-control" rows="3" id="questions" autofocus></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
+                        <?php echo 'UserID: ' . $userID; ?>
+                        <br>
+                        //Click here to change password.
+                        <br>
+                        <h3>Change permissions:</h3>
+                        <form action="includes/changePermissions.php" id="changePermissions" method="GET">
+                            <select name="permId" form="changePermissions">
+                                <option value='{"id":<?php echo $userID?>,"permissions":0}'>Normal user</option>
+                                <option value='{"id":<?php echo $userID?>,"permissions":1}'>Super user</option>
+                                <option value='{"id":<?php echo $userID?>,"permissions":2}'>Admin</option>
+                            </select>
+                            <input type="submit" class="btn btn-primary btn-sm" name="changePermissions" value="Change Permission">
                         </form>
+                            
                     </div>
                 </div>
             </div>
@@ -98,10 +94,14 @@
 
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
-        <?php elseif ((login_check($mysqli) == true) && role_check() == 1)  :
-            header('location: ../user.php');
-        else :
-            header('location: ../index.php');
-        endif; ?>
+        <?php
+        elseif ((login_check($mysqli) == true) && role_check() == 0)  :
+            header('location: ./user.php');
+        elseif ((login_check($mysqli) == true) && role_check() == 1)  :
+            header('location: ./master.php');
+        else : 
+            header('location: ./index.php');
+        endif;
+        ?>
     </body>
 </html>

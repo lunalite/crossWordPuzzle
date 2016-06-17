@@ -1,0 +1,9 @@
+change password
+master must be able to see the xword during gameplay
+does not allow for refresh during gameplay
+have a new table to track which questions are answered
+see score ater gameplay
+
+- Change music format to .mp4 according to below link. Can't get audio to work with .wav 
+http://www.w3schools.com/tags/tag_video.asp 
+- Possibly move the Crossword such that the leftmost tile and topmost tile would be calculated so that the resulting Crossword will not be so awkward.

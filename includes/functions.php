@@ -3,7 +3,7 @@
 include_once 'psl-config.php';
 
 function sec_session_start() {
-    $session_name = 'sec_session_id';   // Set a custom session name 
+    $session_name = 'sec_session_id';   // up a custom session name 
     $secure = SECURE;
 
     // This stops JavaScript being able to access the session id.
@@ -174,6 +174,7 @@ function role_check() {
 
     //$permissions = 0 for normal users
     //$permissions = 1 for super users
+    //$permissions = 2 for admin
     return $permissions;
 }
 
@@ -224,7 +225,7 @@ function sessionCheckD($mysqli) {
             elseif ($row[2] == 2)
                 $online = 'started';
             $tbp = '<option value=\'{"sessId" : "'.$row[0].'", 
-                    "online" : "'.$row[2].'"}\'>'. $row[0].' ('. $online .')</option>';           
+                    "online" : "'.$row[2].'"}\'>sessionID '. $row[0].' ('. $online .')</option>';           
             echo $tbp;
         }
     }
@@ -275,6 +276,26 @@ function gateCheck($mysqli) {
             else
                 return FALSE;
         }
+    }
+}
+
+function userCheck($mysqli) {
+    $query = 'SELECT * FROM members';
+    $result = $mysqli->query($query);
+    while ($row = mysqli_fetch_row($result)) {
+        $usertype = '';
+        if ($row[5] == 0) 
+            $usertype = 'Normal user';
+        elseif ($row[5] == 1) 
+            $usertype = 'Super user';
+        elseif ($row[5] == 2) 
+            $usertype = 'Admin';
+        echo '<tr id="'. $row[0] .'">
+                <td>'.$row[0].'</td>
+                <td>'.$row[1].'</td>
+                <td>'.$row[2].'</td>
+                <td>'.$usertype.'</td>
+                </tr>';
     }
 }
 

@@ -74,12 +74,12 @@
 			inputDirection=this.value;
 		};
 	}
-	overall_list.addEventListener("click",function(e) {
-        if(e.target && e.target.nodeName == "LI") {
-            answerSelected=e.target.textContent ;
-			header.innerHTML = 'Selected "'+answerSelected+'"! Now select a tile where you want to place your answer at';
-        }
-    });
+	overall_list.addEventListener("click", function (e) {
+	    if (e.target && e.target.nodeName == "LI") {
+	        answerSelected = e.target.textContent;
+	        header.innerHTML = 'Selected "' + answerSelected + '"! <br> Now select a tile where you want to place your answer at';
+	    }
+	});
 
     function getAnswers(){
 		console.log("Getting data");
@@ -168,8 +168,8 @@
 			var jqxhr = jQuery.get(url, { id: crosswordId, answer: answerList[i], tileCode: answerMap[answerList[i]], title: title }, function () {
 			    console.log("Save successfully");
 			});
-		 alert('You have successfully saved the puzzle as ' + title);
-	}}
+		 
+	}alert('You have successfully saved the puzzle as ' + title);}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
 		var ID = (parseInt((y-2*pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);

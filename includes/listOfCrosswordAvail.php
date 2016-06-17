@@ -19,7 +19,7 @@ if ($_POST) {
         }
 
     if (mysqli_num_rows($result) == 0) {
-            $test = 'no such id';
+            $test = 'No such id OR wrong command';
             echo json_encode($test);
         }
     else {

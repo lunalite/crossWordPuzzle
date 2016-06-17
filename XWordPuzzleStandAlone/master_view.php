@@ -75,8 +75,18 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
 
-                        <?php if ((login_check($mysqli) == true) && role_check() == 1) : ?>
-            Logged in as <?php echo htmlentities($_SESSION['username'])?> &emsp;
+                        <?php if ((login_check($mysqli) == true)) : ?>
+                        Logged in as 
+                        <?php
+                            if (role_check() == 0)
+                                echo htmlentities('normal user');
+                            elseif (role_check() == 1)
+                                echo htmlentities('super user');
+                            elseif (role_check() == 2)
+                                echo htmlentities('admin');
+
+                            echo htmlentities($_SESSION['username'])?> 
+                        &emsp;
                         <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                     </div>
 
