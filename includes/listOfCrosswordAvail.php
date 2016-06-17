@@ -23,8 +23,11 @@ if ($_POST) {
             echo json_encode($test);
         }
     else {
-        $array=mysqli_fetch_all($result,MYSQLI_NUM);
-        echo json_encode($array);
+        $data = [];
+		while ($row = $result->fetch_assoc()) {
+			$data[] = $row;
+		}
+        echo json_encode($data);
     }
     
 }

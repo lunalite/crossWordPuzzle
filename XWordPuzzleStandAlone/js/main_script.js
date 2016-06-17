@@ -98,8 +98,7 @@
 		console.log("getting title");
 		jQuery.getJSON(url2, function (data) {
 		    console.log("RECEIVED");
-		    str = JSON.stringify(data);
-		    str = str.substring(3, str.length - 3);
+		    str = data[0]['PuzzleName'];
 		    document.getElementById("title").innerHTML = str;
 		});
 	}
@@ -113,23 +112,22 @@
 		    //console.log(str);
 		    //var crosswordID=getIDfromStr(str);
 
-		    console.log(data);
-		    var crosswordID = data;
+		    var crosswordID = data[0]['crosswordId'];
 
 		    console.log("ID is " + crosswordID);
 		    var url = "../phpretrieval/includes/qnOutput.php";
-		    jQuery.getJSON(url, { crosswordId: crosswordID }, function (data) {
-		        str = JSON.stringify(data);
-		        console.log(str);
+		    jQuery.getJSON(url, { crosswordId: crosswordID }, function (data) {		        
 		        var arr = jQuery.map(data, function (e1) { return e1; });
-		        var size = arr.length / noOfFields;
+		        var size = arr.length;
 		        console.log("Array is of size " + size);
 
                 // Recalling storage for number of attempts / answered qns in case of refresh
 		        for (i = 0; i < size; i++) {
-		            questionList.push(arr[3 + i * noOfFields]);
-		            answerList.push(arr[4 + i * noOfFields].replace(/\s/g,''));
-		            tileCodeList.push(arr[5 + i * noOfFields]);
+		            questionList.push(data[i]['Question']);
+                    word = data[i]['Answer'];
+                    word=word.replace(/\s/g,'');
+		            answerList.push(word);
+		            tileCodeList.push(data[i]['TileCode']);
 		        }
 		        console.log("Questions: " + questionList);
 		        console.log("Answers: " + answerList);
@@ -249,6 +247,7 @@
                 if (e) {
                     word = word.toUpperCase();
 					word=word.replace(/\s/g,'');
+                    
                     var correct = checkAnswer(word, tileSelected);
 
                     if (correct) {
@@ -290,7 +289,7 @@
 			var correctAnswer=answerList[tile.qns_id];
             console.log('qns id ' + tile.qns_id);
 			console.log("Answer is "+correctAnswer);
-
+            console.log(word);
             // Checking mechanism
 			if (correctAnswer==word) {
             //    var url2="../phpretrieval/includes/getScore.php";

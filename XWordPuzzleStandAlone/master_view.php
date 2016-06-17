@@ -60,7 +60,7 @@
     </head>
     <body>
 
-        <?php if ((login_check($mysqli) == true) && role_check() == 1) : ?>
+        <?php if ((login_check($mysqli) == true) && role_check() != 1) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">

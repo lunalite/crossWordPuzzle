@@ -171,10 +171,14 @@
 
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
-        <?php elseif ((login_check($mysqli) == true) && role_check() == 1)  :
-            header('location: ./user.php');
-        else :
-            header('location: ./index.php');
+        <?php elseif ((login_check($mysqli) == true) && (role_check() == 1 || role_check() == 0)) :
+            echo '<script>';
+            echo 'window.location.href="./user.php";';
+            echo '</script>'; 
+        else : 
+            echo '<script>';
+            echo 'window.location.href="./index.php";';
+            echo '</script>';
         endif; ?>
     </body>
 </html>

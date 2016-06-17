@@ -9,8 +9,7 @@ include_once '../../includes/functions.php';
 	$id=substr($id,3);
 	$num=(int)$id;
 	echo $num;
-	error_log($array[0],3,'error.txt');
-	$sql = "truncate sessionjoin" ;
+		$sql = "truncate sessionjoin" ;
     $result = $mysqli->query($sql);
 	
 	header("Location: ../everyone_view.php?id=".$num);

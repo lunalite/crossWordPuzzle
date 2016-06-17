@@ -11,10 +11,9 @@
     $user = $_SESSION['user_id'];
 
     $query = 'INSERT INTO sessionJoin (userId, sessId) VALUES (' . $user . ', ' . $sessId . ')';
-    echo $query;
     if ($mysqli->query($query) === TRUE) {
-        echo "New record created successfully";
         header('Location: ../user.php');
+        echo "New record created successfully";
     } 
     else {
         echo "Error: " . $sql . "<br>" . $mysqli->error;

@@ -23,14 +23,14 @@
             $sessId = $_SESSION['sess_id'];
             $score = $_GET['score'];
             
-            $sql = 'UPDATE sessionstart SET scores = scores + '.$score.' WHERE userId = '.$user.' AND sessId = '.$sessId;
+            $sql = 'UPDATE sessionStart SET scores = scores + '.$score.' WHERE userId = '.$user.' AND sessId = '.$sessId;
 
             if (!$mysqli->query($sql)){
                 echo 'error1';
             }
             else {
 
-                $sql2 = "INSERT INTO questionanswered (sessid, userid, qnsid, status) 
+                $sql2 = "INSERT INTO questionAnswered (sessid, userid, qnsid, status) 
                 VALUES ($sessId, $user, $qnsid, 1)";
                 if ($mysqli->query($sql2)) {
 
@@ -38,7 +38,7 @@
                     
                     //***** Send push to live score *****
 
-                    $sql3 = "SELECT scores FROM sessionstart WHERE sessId = $sessId AND userId = $user" ;
+                    $sql3 = "SELECT scores FROM sessionStart WHERE sessId = $sessId AND userId = $user" ;
                     $result3 = $mysqli->query($sql3);
                     $updatedScore = $result3->fetch_assoc()['scores'];
 

@@ -13,8 +13,8 @@
     $sql = "UPDATE members SET permissions = '" . $perm . "' WHERE id = " . $id;
 
         if ($mysqli->query($sql) === TRUE) {
-            echo "Permission set successfully" . "<br>";
-            header ('Location: ../grant.php');
+            header ('location: ../grant.php');
+            echo "Permission set successfully." . "<br>";
         }
         else {
             echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";

@@ -115,13 +115,21 @@
                         </script>
 
                         <?php if(gateCheck($mysqli)) {
-                                header('Location: xwordpuzzlestandalone/main_xword.php');
+                                echo '<script>';
+                                echo 'window.location.href="XWordPuzzleStandAlone/main_xword.php"';
+                                echo '</script>';
                             }
                         endif; ?>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="container">
+        <div class="row">
+        <hr><p>&copy; 2016 Product of REP</p>
+        </div></div>
+
+
 
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->

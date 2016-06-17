@@ -83,17 +83,18 @@
 
     function getAnswers(){
 		console.log("Getting data");
-		var url="../phpretrieval/includes/qnOutput.php";
-		jQuery.getJSON(url, {crosswordId:crosswordId}, function(data) {
-        // ... handle response as above
-		var arr=jQuery.map(data,function(e1){return e1;});
-		var size=arr.length/noOfFields;
-		console.log("Array is of size "+size);
-		for (i=0;i<size;i++)
-			questionList.push(arr[4+i*noOfFields]);
-		answerList=questionList.slice();
-		console.log("Answer list formed: "+questionList);
-		populate(questionList);
+		var url="../../phpretrieval/includes/qnOutput.php";
+		jQuery.getJSON(url, { crosswordId: crosswordId }, function (data) {
+		    // ... handle response as above
+
+		    var arr = jQuery.map(data, function (e1) { return e1; });
+		    var size = arr.length;
+		    console.log("Array is of size " + size);
+		    for (i = 0; i < size; i++)
+		        questionList.push(arr[i]['Answer']);
+		    answerList = questionList.slice();
+		    console.log("Answer list formed: " + questionList);
+		    populate(questionList);
 		});	
        }
 	

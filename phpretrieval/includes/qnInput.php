@@ -36,9 +36,9 @@
     // Inserting into master database id of the new crossword to be added.
     $sql = "INSERT INTO " . $tableName . " (crosswordId) VALUES (" . $latestCrossWordId . ")";
     if ($mysqli->query($sql) === TRUE) {
-        echo "New record created successfully" . "<br>";
+        //echo "New record created successfully" . "<br>";
     } else {
-        echo "Error: " . $sql . "<br>" . $mysqli->error;
+        echo "Error1: " . $sql . "<br>" . $mysqli->error;
     }
 
     $sql = "SELECT crosswordId FROM " . $tableName;
@@ -64,25 +64,29 @@
     foreach ($questions as $qn2BAdded) {
         $answer = preg_split("/^.+\(\d\s*\w+\)\s+/", $qn2BAdded);
         array_shift($answer);
-        echo $qn2BAdded . "<br>";
-        echo $answer[0] . "<br>";
+        //echo $qn2BAdded . "<br>";
+        //echo $answer[0] . "<br>";
 
         $qn2BAddedAgain = preg_split("/".$answer[0]."/", $qn2BAdded);
-        echo $qn2BAddedAgain[0] . "<br>";
+        //echo $qn2BAddedAgain[0] . "<br>";
 
         $answer[0]=trim($answer[0]);
 	$answer[0]=strtoupper($answer[0]);
 
-        $sql = "INSERT INTO " . $crosswordBankName . " VALUES (0," . $latestCrossWordId . ", "
+        $sql = "INSERT INTO " . $crosswordBankName . " (CrosswordID, QnsID, Question, Answer, TileCode) VALUES (" . $latestCrossWordId . ", "
         . $counter . ",\"" . $qn2BAddedAgain[0] . "\", \"" . $answer[0] . "\",\"" . $defaultTileCode . "\")";
         if ($mysqli->query($sql) === TRUE) {
-            echo "New record created successfully" . "<br>";
+            //echo "New record created successfully" . "<br>";
         } else {
-            echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";
+            echo "Error2: " . $sql . "<br>" . $mysqli->error . "<br><br>";
         }
         
         $counter ++;
     }
     unset($qn2BAdded); // break the reference with the last element
-        header("location:../../XWordPuzzleStandAlone/master_template.php?id=".urlencode($latestCrossWordId));   
+        $url = 'window.location.href="../../XWordPuzzleStandAlone/master_template.php?id='.urlencode($latestCrossWordId).'"';
+        echo '<script>';
+        echo $url;
+        echo '</script>';
+
 ?>		

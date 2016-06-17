@@ -9,7 +9,9 @@ include_once '../../includes/functions.php';
     (SELECT crosswordID from availablesessions WHERE sessId = $sessId)" ;
     
     $result = $mysqli->query($sql);	
-    $array=mysqli_fetch_all($result,MYSQLI_NUM);
-
-    echo json_encode($array);
+    $data = [];
+		while ($row = $result->fetch_assoc()) {
+			$data[] = $row;
+		}
+    echo json_encode($data);
 ?>

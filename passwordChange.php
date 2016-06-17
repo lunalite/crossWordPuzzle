@@ -14,7 +14,7 @@ sec_session_start();
         <script type="text/JavaScript" src="js/forms.js"></script>
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check() == 1) : ?>
+        <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
 
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
         <p>You are currently logged in as <?php echo htmlentities($_SESSION['username'])?>.</p>

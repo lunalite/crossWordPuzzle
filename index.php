@@ -32,12 +32,16 @@ sec_session_start();
 
         // role_check() == 1 for the case of super users OR 2 for the case of admin
         elseif ((login_check($mysqli) == true) && (role_check() == 1 || role_check() == 2) ) {
-            header('Location: master.php');
+            echo '<script>';
+            echo 'window.location.href="./master.php";';
+            echo '</script>'; 
         }
 
         // role_check() == 0 for the case of normal users
         elseif ((login_check($mysqli) == true) && role_check() == 0) {
-            header('Location: user.php');
+            echo '<script>';
+            echo 'window.location.href="./user.php";';
+            echo '</script>'; 
         }
         ?> 
 

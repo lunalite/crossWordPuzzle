@@ -27,8 +27,8 @@
                 (' . $sessId . ', '. $userId . ')';
 
                 if ($mysqli->query($ins) === TRUE) {
-                    echo "Gate is open.";
-				    header('Refresh: 0; url=../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
+                    header('Refresh: 3; url=../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
+                    echo "Gate is open. Redirecting in 3...";
                     } 
                 else {
                     echo "Error: " . $ins . "<br>" . $mysqli->error;

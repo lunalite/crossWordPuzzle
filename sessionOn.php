@@ -20,8 +20,8 @@ sec_session_start(); // Our custom secure way of starting a PHP session.
             $sql = "INSERT INTO availablesessions (description, online, crosswordID) VALUES ($des, 1, $q)";
 
             if ($mysqli->query($sql) === TRUE) {
-                echo "Session is created. Redirecting back to previous page in 3 seconds,";
                 header('Refresh: 3; url=master.php');
+                echo "Session is created. Redirecting back to previous page in 3 seconds,";
             } else {
                 echo "Error updating record: " . $mysqli->error;
             }
