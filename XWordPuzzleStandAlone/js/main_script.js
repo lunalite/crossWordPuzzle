@@ -11,9 +11,9 @@
 	c.width = screenWidth;
     c.height = screenHeight;
 	console.log("Screen size is "+screenWidth+" x "+screenHeight);
-	var NUM_COLS = 40;
-	var NUM_ROWS = 40;
-	var tileCellWidth=screenWidth/NUM_ROWS;
+	var NUM_COLS = 30;
+	var NUM_ROWS = 30;
+	var tileCellWidth=screenWidth/40;
 	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
