@@ -39,6 +39,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 	
 	<div class="submit">
 	<button onClick="save()">Save</button>
+	<button type="button" onClick="undo()" id="undo" >Undo</button>
 	</div>
 
 </div>
@@ -52,7 +53,6 @@ var crosswordId = "<?php echo $id ?>";
 <script language="javascript" type="text/javascript" src="js/script.js">
 </script> 
 
-<button type="button" onClick="undo()" id="undo" >Undo</button>
 
 </body>
 </html>

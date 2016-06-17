@@ -1,18 +1,20 @@
 // Declaration of all variables
     var pixelSize=10;
-	var pixelSizeX=0;
-	var pixelSizeY=85;
+	var pixelSizeY=15;
 	var c = document.getElementById("myCanvas");
 	c.addEventListener("click", getPosition,false);
 	var ctx = c.getContext("2d");
 	var screenWidth=window.innerWidth;
 	var screenHeight=window.innerHeight;
+	var pixelSizeX=screenWidth/153;
+	console.log("dx is "+pixelSizeX);
 	c.width = screenWidth;
     c.height = screenHeight;
-	var NUM_COLS = 40;
-	var NUM_ROWS = 40;
-	var tileCellWidth=screenWidth/NUM_ROWS;
-	var Tilepadding=6;
+	console.log("Screen size is "+screenWidth+" x "+screenHeight);
+	var NUM_COLS = 30;
+	var NUM_ROWS = 30;
+	var tileCellWidth=screenWidth/40;
+	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
 	var mouseY=0;
@@ -25,24 +27,27 @@
 	var attempts = [];    
     var answered = []; // 0 - not answered / answered wrongly 1 - answered correctly
 	var noOfQuestions=0;
+	var d = new Date();
+	var startTime=d.getTime();
 	//var audio = new Audio('music.wav');
 	//audio.play();
 	var title="Accounting";
 	//sessionStorage.removeItem('answered');
 	//sessionStorage.removeItem('attempts');
-	
-
+	var bonus=0;
 
 // function to obtain session storage information
 // Note that it is one-off storage of data. Closing of session will cause data to be gone
     function recallStorage(size) {
         attemptsData = JSON.parse(sessionStorage.getItem('attempts'));
         answeredData = JSON.parse(sessionStorage.getItem('answered'));
+		
         if (attemptsData != null) {
+            noOfQuestions= JSON.parse(sessionStorage.getItem('noOfQuestions'));
+			console.log("Number of questions left: "+noOfQuestions);
             attempts = attemptsData.slice(0);
             answered = answeredData.slice(0);
 			for (i=0;i<answered.length;i++){
-				noOfQuestions--;
 				if (answered[i]==1){
 					wordToTiles(answerList[i]);
 					console.log("reloading....");
@@ -51,16 +56,16 @@
         }
         else {
             // for case where no data is present
-            for (i = 0; i < size; i++) {
+            for (i = 0; i < size; i++) {    
                 attempts.push(0);
-                answered.push(0);
+                answered.push(0);   
             }
         }
-		var url2="../phpretrieval/includes/getScore.php";
+		/*var url2="../phpretrieval/includes/getScore.php";
 				jQuery.getJSON(url2, function (data) {
 					console.log("Received "+data);
 					document.getElementById("score").innerHTML = "Score: "+data;
-				});
+				});*/
     }
 
 
@@ -68,6 +73,7 @@
     function storeData() {
         sessionStorage.setItem('attempts', JSON.stringify(attempts));
         sessionStorage.setItem('answered', JSON.stringify(answered));
+		sessionStorage.setItem('noOfQuestions', JSON.stringify(noOfQuestions));
     }
 
 	c.onmouseover = function(e) {
@@ -129,13 +135,16 @@
 		        console.log("Answers: " + answerList);
 		        console.log("Codes: " + tileCodeList);
 		        console.log(answerList.length);
-                console.log('Saved attempts are: ' + attempts);
-                console.log('Saved answered are: ' + answered);
+                
 		        for (i = 0; i < answerList.length; i++) {
 		            console.log("Now filling the " + i + "th answer");
 					noOfQuestions++;
 		            createTilesFromString(tileCodeList[i], answerList[i]);
-		        }				recallStorage(answerList.size);
+		        }				
+
+                recallStorage(size);
+                console.log('Saved attempts are: ' + attempts);
+                console.log('Saved answered are: ' + answered);
 		    });
 		});	
      }
@@ -198,7 +207,7 @@
 		}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
-		var ID = (parseInt((y-pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
+		var ID = (parseInt((y)/tileCellWidth) * NUM_ROWS) + parseInt((x)/tileCellWidth);
 		return ID;
 	}
 	
@@ -212,9 +221,10 @@
 	}
 	
 	function getPosition(e) {
-		var scrollTop = $(window).scrollTop();		//Function called when a tile is clicked
-		mouseX = e.clientX+pixelSizeX;
-		mouseY = e.clientY+scrollTop-pixelSizeY;
+		var scrollTop = $(window).scrollTop();	
+		var scrollRight = $(window).scrollLeft();//Function called when a tile is clicked
+		mouseX = e.clientX+scrollRight-pixelSizeX;
+		mouseY = e.clientY+scrollTop;
 		console.log("X "+mouseX);
 		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);
@@ -267,6 +277,13 @@
 		window.location.replace("includes/deleteSessions.php");
 		}, 5000);
 	}
+	function stateChange2() {
+		setTimeout(function () {
+		alertify.alert("You have earned extra "+bonus+" points for time bonus!");
+		console.log("endiinggg");
+		stateChange();
+		}, 2000);
+	}
   
 	  function checkAnswer(word,tileID){
 			var tile=getTileFromId(tileID);
@@ -276,21 +293,21 @@
 
             // Checking mechanism
 			if (correctAnswer==word) {
-                var url2="../phpretrieval/includes/getScore.php";
-				jQuery.getJSON(url2, function (data) {
-					console.log("Received "+data);
-					document.getElementById("score").innerHTML = "Score: "+data;
-				});
+            //    var url2="../phpretrieval/includes/getScore.php";
+				//jQuery.getJSON(url2, function (data) {
+				//	console.log("Received "+data);
+			//		document.getElementById("score").innerHTML = "Score: "+data;
+			//	});
                 // Change answered array for that qn to 1 and store it
 			    answered[tile.qns_id] = 1;
+				noOfQuestions--;
 			    storeData();
 
                 // Scores are only added to the first person who answered correctly
 			    addScore(tile.qns_id);
 			    console.log('score added: ' + scoreAdded(tile.qns_id));
-
                 // Once all answers are answered correctly, call for exitGame()
-				noOfQuestions--;
+
 				if (noOfQuestions==0)
 					exitGame();
 				return true;
@@ -298,6 +315,10 @@
 
 			else {
 			    attempts[tile.qns_id]++;
+				if (attempts[tile.qns_id] == 2)
+					noOfQuestions--;
+				if (noOfQuestions==0)
+					exitGame();
 			    console.log(attempts);
 
                 // Store attempts into session in case user refreshes browser
@@ -308,9 +329,17 @@
 	  }
 	  
 	  function exitGame(){
+		  var timeTaken=d.getTime()-startTime;
 		 sessionStorage.removeItem('answered');
 		 sessionStorage.removeItem('attempts');
-		  alertify.alert("The Game Has ended!");
+		 if (timeTaken <60000)
+			 bonus=10;
+		 else if (timeTaken < 120000)
+			 bonus=5;
+		 else
+			 bonus=0;
+		  alertify.alert("The Game Has ended!You have earned "+bonus+" bonus for extra time!");
+		  addFinalScore();
 		  stateChange();
 	  }
   
@@ -424,6 +453,13 @@ function addScore(qid) {
     } 
 }
 
+function addFinalScore() {
+	var url="./includes/addFinalScore.php?score="+bonus;
+			jQuery.getJSON(url, function (data) {
+				console.log("Bonus added!");
+		});
+}
+
 function handleServerResponse() {
     if (xmlHTTP.readyState == 4) {
         if (xmlHTTP.status == 200 ) {
@@ -436,3 +472,4 @@ function handleServerResponse() {
         }
     }
 }
+

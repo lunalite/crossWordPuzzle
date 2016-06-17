@@ -6,10 +6,10 @@
 	var screenHeight=window.innerHeight;
 	c.width = screenWidth*0.75;
     c.height = c.width;
-	var NUM_COLS = 40;
-	var NUM_ROWS = 40;
+	var NUM_COLS = 30;
+	var NUM_ROWS = 30;
 	var tileCellWidth=(screenWidth*0.75)/NUM_COLS;
-	var Tilepadding=5;
+	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
 	var mouseY=0;
@@ -165,10 +165,10 @@
 		var url="../phpretrieval/includes/updateTiles.php";
 		for (i=0;i<answerList.length;i++){
 			console.log("Saving tilecode "+answerMap[answerList[i]]);
-			var jqxhr = jQuery.get( url,{id:crosswordId,answer:answerList[i],tileCode:answerMap[answerList[i]],title:title}, function() {
-					console.log("Save successfully");
+			var jqxhr = jQuery.get(url, { id: crosswordId, answer: answerList[i], tileCode: answerMap[answerList[i]], title: title }, function () {
+			    console.log("Save successfully");
 			});
-		// Insert code here to save tiles into database
+		 alert('You have successfully saved the puzzle as ' + title);
 	}}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
@@ -187,6 +187,7 @@
 	
 	function getPosition(e) {	
 		var scrollTop = $(window).scrollTop();
+		var scrollRight = $(window).scrollLeft();
 		console.log("Scrolled "+scrollTop);//Function called when a tile is clicked
 		mouseX = e.clientX;
 		mouseY = e.clientY+scrollTop;
@@ -316,6 +317,7 @@
 		ctx.fillStyle = "white";
 		ctx.fill();
 		ctx.fillStyle = "black";
+		ctx.font = "bold 10pt Courier";
 		ctx.fillText(this.char,this.x+(tileWidth/2),(this.y+(tileWidth/2)),tileWidth);
 	};
 	
