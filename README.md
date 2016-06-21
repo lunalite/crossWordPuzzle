@@ -1,5 +1,12 @@
 # crossWordPuzzle
 
+Update 21/6/16
+- Added some changes like allowing users to leave session
+- Added session destroyer after game is finished
+- Added time as scores
+- All scores are being pushed real time using pusher app
+- Changed the layout using bootstrap
+
 Update 14/6/16                                                                                                                        
 -Added re-formation of tiles from sessionStorage after refresh                                                                        
 -Displays score on each player's page                                                                                                 
