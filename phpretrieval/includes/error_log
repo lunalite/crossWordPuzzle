@@ -1,0 +1,28 @@
+[17-Jun-2016 14:12:00 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 14:12:09 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 14:13:31 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 14:32:39 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 11
+[17-Jun-2016 14:33:33 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 11
+[17-Jun-2016 14:33:55 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 11
+[17-Jun-2016 14:34:20 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 11
+[17-Jun-2016 14:44:14 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 12
+[17-Jun-2016 14:45:12 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 12
+[17-Jun-2016 15:39:10 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:40:34 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:50:05 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:50:16 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:50:49 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:52:06 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:53:35 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:57:51 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 15:58:01 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:02:06 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:04:56 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:05:39 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:08:01 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:08:51 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:09:19 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:09:52 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:10:57 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:11:26 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/phpretrieval/includes/getIdFromsSess.php on line 12
+[17-Jun-2016 16:13:38 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 12
