@@ -105,7 +105,7 @@
                             % : represents a space <br><br>
                             Example: <br>
                             1) Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement<br>
-                            2) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
+			    2) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
                             <br>
                             Do note that the <b>bracket placements</b> and <b>spaces</b> are important. <br>
                             Also, after every questions, do take note to press enter before the next question is typed.<br>

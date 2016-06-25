@@ -74,7 +74,11 @@
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
+
                     <li><a href="../crosswords.php" style="color:white;">Crosswords</a></li>
+
+
+
                     <!--
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>

@@ -9,6 +9,7 @@ include_once '../../includes/functions.php';
 	if ($mysqli->query($sql0) === true) {
         header("Location: ../../index.php");
 	}
+
     else
         echo 'Error in deleting availablesessions.<br>';
         echo 'Click <a href="../../index.php">here</a> to go back.';

@@ -33,6 +33,7 @@ define("USER", "REPMaster"); 			// The database username.
 define("PASSWORD", "4bAtbTpk4Cxh"); 	// The database password. 
 define("DATABASE", "repXword");             // The database name.
 
+
 /**
  * Who can register and what the default role will be
  * Values for who can register under a standard setup can be:
