@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+[23-Jun-2016 10:08:21 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 13
+=======
+[17-Jun-2016 14:12:00 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 14:12:10 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 14:13:31 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 15:39:10 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 15:40:34 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 15:50:05 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 15:50:16 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 15:50:49 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 15:52:06 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 12
+[17-Jun-2016 16:50:25 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/addScore.php on line 43
+[17-Jun-2016 16:51:14 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/addScore.php on line 43
+[17-Jun-2016 16:52:56 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/addScore.php on line 43
+[17-Jun-2016 16:59:54 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/addScore.php on line 43
+[17-Jun-2016 17:02:10 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/deleteSessions.php on line 7
+[18-Jun-2016 04:20:33 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/deleteSessions.php on line 7
+[18-Jun-2016 09:36:24 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/getTitle.php on line 13
+[18-Jun-2016 10:10:23 UTC] PHP Fatal error:  Call to undefined function mysqli_fetch_all() in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/deleteSessions.php on line 7
+[18-Jun-2016 10:12:44 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/deleteSessions.php on line 7
+>>>>>>> added some changes
