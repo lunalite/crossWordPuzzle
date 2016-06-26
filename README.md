@@ -1,4 +1,10 @@
 # crossWordPuzzle
+Update 26/6/16
+- Moved crosswords.php to ./crosswords from main folder. This folder will be for all crosswords-related stuff.
+- added crosswordView for checking current crosswords
+- Moved phpVariables to ./includes/ folder from ./phpretrieval/includes & trying to migrate all the tablenames to phpVariables.php for easy reference and changes
+- Added crosswordCheck function in ./includes/functions.php
+- Added crosswordQEdit for editing of questions
 
 Update 21/6/16
 - Added some changes like allowing users to leave session
