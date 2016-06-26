@@ -1,5 +1,5 @@
 <?php
-    
+
     // Table names
     $members = "members";
     $loginAttempts = "login_attempts";
@@ -15,5 +15,3 @@
     ** $_SESSION['permissions']
     ** $_SESSION['sess_id']
     */
-    
-
