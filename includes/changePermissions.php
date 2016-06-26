@@ -5,8 +5,8 @@
 
     sec_session_start(); // Our custom secure way of starting a PHP session.
 
-    $permId = json_decode($_GET['permId'], true);
-    
+    $permId = json_decode($_POST['permId'], true);
+
     $id = $permId["id"];
     $perm = $permId["permissions"];
 

@@ -80,11 +80,11 @@
                         //Click here to change password.
                         <br>
                         <h3>Change permissions:</h3>
-                        <form action="includes/changePermissions.php" id="changePermissions" method="GET">
+                        <form action="includes/changePermissions.php" id="changePermissions" method="POST">
                             <select name="permId" form="changePermissions">
-                                <option value="{" id" <?php echo $userID?> ,"permissions":0}">Normal user</option>
-                                <option value="{" id" <?php echo $userID?> ,"permissions":1}">Super user</option>
-                                <option value="{" id" <?php echo $userID?> ,"permissions":2}">Admin</option>
+                                <option value='{"id": <?php echo $userID?> ,"permissions":0}'>Normal user</option>
+                                <option value='{"id": <?php echo $userID?> ,"permissions":1}'>Super user</option>
+                                <option value='{"id": <?php echo $userID?> ,"permissions":2}'>Admin</option>
                             </select>
                             <input type="submit" class="btn btn-primary btn-sm" name="changePermissions" value="Change Permission">
                         </form>

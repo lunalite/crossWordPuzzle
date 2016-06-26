@@ -16,5 +16,4 @@
     ** $_SESSION['sess_id']
     */
     
-?>
 
