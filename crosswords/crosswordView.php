@@ -21,40 +21,31 @@
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
-
-
             $(function () {
-                var xWordInputList = $('#question2BI').find('tbody');
-                var xWordInput = $('#questions');
+                $('#crosswordList').find("tr").click(function () {
+                    sessionStorage.setItem("crosswordViewId", this.id);
+                    var url = "crosswordView.php?crosswordId=" + this.id;
+                    window.location.href = url;
+                });
 
-                xWordInput.keyup(function () {
-                    xWordInputList.empty();
-                    var qnaInput = $(this).val();
-                    var split1 = qnaInput.split(/\d[).]\s*/);
-                    var answers = [];
-                    var questions = [];
-
-
-                    for (i = 1; i < split1.length; i++) {
-                        answers.push(split1[i].split(/^.+\(\d\s*\w+\)\s+/));
-                        answers[i - 1].shift();
-                        var test = (split1[i]).replace(' ' + answers[i - 1], "");
-                        questions.push(test);
+                $('#crosswordIList').find("tr").click(function (event) {
+                    var qid = this.getAttribute('qid');
+                    if (qid == 'form') {
+                        return;
                     }
-                    console.log(answers);
-                    console.log(questions);
-                    for (i = 0; i < questions.length; i++) {
-                        xWordInputList.append('<tr><td>' + questions[i] + '</td><td>' + answers[i] + '</td></tr>');
+                    else {
+                        var cvid = sessionStorage.getItem("crosswordViewId");
+                        var url = "crosswordView.php?crosswordId=" + cvid + "&questionId=" + qid;
+                        window.location.href = url;
                     }
                 });
             });
 
         </script>
-
     </head>
     <body>
-        <!-- This page can only be viewed by admins-->
-        <?php if ((login_check($mysqli) == true) && role_check() == 2) : ?>
+        <!-- This page can be viewed by both super users and admin -->
+        <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -69,7 +60,7 @@
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href="./crosswords.php" style="color:white;">Crosswords</a></li>
                             <!--
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -109,42 +100,56 @@
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-6">
-
-                        <h3>Please input the questions and answers:</h3>
-                        Format it as follows: <br>
-                            Q)%XXX_XXX.%(N%WORDS)%ANSWER <br>
-                        X : represents words/letters<br>
-                            % : represents a space <br><br>
-                            Example: <br>
-                            1) Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement<br>
-			    2) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
-                            <br>
-                            Do note that the <b>bracket placements</b> and <b>spaces</b> are important. <br>
-                            Also, after every questions, do take note to press enter before the next question is typed.<br>
-                            The questions and answers to be stored will be shown on this page, so do check before pressing submit. <br>
-
-                        <form id="qBank" action="includes/qnInput.php" method="post">
-                            <div class="form-group">
-                                <label for="questions">Input</label>
-                                <textarea name="questions" form="qBank" class="form-control" rows="3" id="questions" autofocus></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
-                        </form>
-                    </div>
-                    <div class="col-xs-6">
-                        <table class="table table-striped" id="question2BI">
+                    <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <!-- Show crossword -->
+                        <?php 
+                            if (!isset($_GET['crosswordId'])){
+                                echo "Please click the respective crossword to view details of it below.";
+                            }
+                            else {
+                                $crosswordId = $_GET['crosswordId'];
+                                echo "<h3>Crossword ".$_GET['crosswordId']."</h3>";
+                                echo "
+                                <table id='crosswordIList' class = 'table table-hover'>
+                                    <thead> 
+                                        <tr>
+                                            <td>Question ID</td>
+                                            <td width='60%'>Question</td>
+                                            <td>Answer</td>
+                                            <td>Tile Code</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody style='cursor: pointer;'>";
+                                        crosswordList($mysqli, $crosswordId, $_GET['questionId']);
+                                    echo "
+                                    </tbody>
+                                </table>
+                                ";
+                                if (role_check() == 2) {
+                                    echo "
+                                        <form id='crosswordQAssign' action='../XWordPuzzleStandAlone/master_template.php' method='get'>
+                                        <input type='hidden' name='id' form ='crosswordQAssign' id='id' value='".$_GET['crosswordId']."'/>
+                                        <input type='submit' class='btn btn-danger btn-sm' value='Assign Crossword'>
+                                        </form>
+                                        <br>";
+                                }
+                            }
+                        ?>
+                        <hr>
+                        <h3>All created crosswords</h3>
+                        <table id="crosswordList" class="table table-striped table-hover">    
                             <thead>
-                                <tr>
-                                    <td class="col-xs-5">Question</td>
-                                    <td class="col-xs-1">Answer</td>
-                                </tr>
+                            <tr>
+                                <td>Crossword ID</td>
+                                <td>Puzzle Name</td>
+                                <td>Crossword Description</td>
+                                <td>Time Added</td>
+                            </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Sample question _. (2 words)</td>
-                                    <td>sample answer</td>
-                                </tr>
+                            <tbody style="cursor: pointer;">
+                                <?php
+                                    crosswordCheck($mysqli);
+                                ?>
                             </tbody>
                         </table>
                     </div>

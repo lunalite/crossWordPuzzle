@@ -57,20 +57,10 @@
                             echo htmlentities($_SESSION['username'])
                         ?>
                         &emsp;
-                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
+                        <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                     </div>
 
-                    <?php elseif ((login_check($mysqli) == FALSE)) : ?>
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <input type="text" placeholder="Email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-success">Sign in</button>
-                    </form>
-                    <?php endif; ?>
+                    <?php elseif ((login_check($mysqli) == FALSE)) : endif; ?>
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>

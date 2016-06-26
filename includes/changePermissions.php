@@ -10,7 +10,7 @@
     $id = $permId["id"];
     $perm = $permId["permissions"];
 
-    $sql = "UPDATE members SET permissions = '" . $perm . "' WHERE id = " . $id;
+    $sql = "UPDATE ".$GLOBALS['members']." SET permissions = '" . $perm . "' WHERE id = " . $id;
 
         if ($mysqli->query($sql) === TRUE) {
             header ('location: ../grant.php');

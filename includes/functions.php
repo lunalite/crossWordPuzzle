@@ -1,6 +1,7 @@
 <?php
 
 include_once 'psl-config.php';
+include_once 'phpVariables.php';
 
 function sec_session_start() {
     $session_name = 'sec_session_id';   // up a custom session name 
@@ -29,7 +30,7 @@ function sec_session_start() {
 function login($email, $password, $mysqli) {
     // Using prepared statements means that SQL injection is not possible. 
     if ($stmt = $mysqli->prepare("SELECT id, username, password, salt, permissions 
-				  FROM members 
+				  FROM members
                                   WHERE email = ? LIMIT 1")) {
         $stmt->bind_param('s', $email);  // Bind "$email" to parameter.
         $stmt->execute();    // Execute the prepared query.
@@ -297,6 +298,53 @@ function userCheck($mysqli) {
                 <td>'.$row[2].'</td>
                 <td>'.$usertype.'</td>
                 </tr>';
+    }
+}
+
+function crosswordCheck($mysqli) {
+    $query = 'SELECT * FROM crosswordmasterdb';
+    $result = $mysqli->query($query);
+    while ($row = mysqli_fetch_row($result)) {
+
+        echo '<tr id="'. $row[0] .'">
+                <td>'.$row[0].'</td>
+                <td>'.$row[1].'</td>
+                <td>'.$row[2].'</td>
+                <td>'.$row[3].'</td>
+                </tr>';
+    }
+}
+
+function crosswordList($mysqli, $crosswordId, $questionId) {
+    $questionToEdit = "";
+
+    $query = "SELECT * FROM ".$GLOBALS['crosswordPuzzles']." where CrosswordID = ".$crosswordId;
+    $result = $mysqli->query($query);
+    while ($row = mysqli_fetch_row($result)) {
+        echo '<tr qid="'. $row[0] .'">
+                <td>'.$row[2].'</td>
+                <td>'.$row[3].'</td>
+                <td>'.$row[4].'</td>
+                <td>'.$row[5].'</td>
+                <td></td>
+                </tr>';
+        if ($row[0] == $questionId) {
+            echo "
+                <tr qid='form'>
+                    <form id='crosswordQEdit' action='includes/crosswordQEdit.php' method='post'>
+                        <div class='form-group'>
+                        <input type='hidden' name='crosswordId' form ='crosswordQEdit' id='crosswordId' value='".$_GET['crosswordId']."'/>
+                        <input type='hidden' name='qid' form ='crosswordQEdit' id='qid' value='".$row[2]."'/>
+                        <td></td>
+                        <td><textarea name='question' form='crosswordQEdit' class='form-control' id='question' autofocus>".$row[3]."</textarea></td>
+                        <td><textarea name='answer' form='crosswordQEdit' class='form-control' id='answer' autofocus>".$row[4]."</textarea></td>
+                        <td><button type='submit' class='btn btn-default'>Submit</button></td>
+
+                        </div>
+                    </form>
+                </tr>  
+            ";
+        }
     }
 }
 

@@ -75,7 +75,7 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
 
-                    <li><a href="../crosswords.php" style="color:white;">Crosswords</a></li>
+                    <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
 
 
 
