@@ -8,7 +8,7 @@
     
     $sessId = $_SESSION['sess_id'];
     
-    $sql = "SELECT * FROM sessionStart INNER JOIN members ON userid = id
+    $sql = "SELECT * FROM ".$GLOBALS['sessionStart']." INNER JOIN members ON userid = id
             WHERE sessId = $sessId" ;
     
     $result = $mysqli->query($sql);

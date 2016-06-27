@@ -10,7 +10,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Crossword Master Page</title>
+        <title>REP Xword user page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
@@ -22,37 +22,39 @@
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
 
-            
-            
+
             $(function () {
-                var xWordListRes = $('#crosswordList');
-                var xWordSearch = $('#crosswordSearch');
-            
-                xWordSearch.keyup(function () {
-                    var searchid = $(this).val();
-                    // console.log(searchid);
-            
-                    $.ajax({
-                        type: "POST",
-                        datatype: 'json',
-                        url: "../includes/listOfCrosswordAvail.php",
-                        data: { searchQ: searchid },
-                        cache: false,
-                        success: function (data) {
-                             //console.log(data);
-                            $("#result").html(data).show();
-                        }
-                    });
+                var xWordInputList = $('#question2BI').find('tbody');
+                var xWordInput = $('#questions');
+
+                xWordInput.keyup(function () {
+                    xWordInputList.empty();
+                    var qnaInput = $(this).val();
+                    var split1 = qnaInput.split(/\d[).]\s*/);
+                    var answers = [];
+                    var questions = [];
+
+
+                    for (i = 1; i < split1.length; i++) {
+                        answers.push(split1[i].split(/^.+\(\d\s*\w+\)\s+/));
+                        answers[i - 1].shift();
+                        var test = (split1[i]).replace(' ' + answers[i - 1], "");
+                        questions.push(test);
+                    }
+                    console.log(answers);
+                    console.log(questions);
+                    for (i = 0; i < questions.length; i++) {
+                        xWordInputList.append('<tr><td>' + questions[i] + '</td><td>' + answers[i] + '</td></tr>');
+                    }
                 });
             });
-            
+
         </script>
 
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
-
-
+        <!-- This page can only be viewed by admins-->
+        <?php if ((login_check($mysqli) == true) && role_check() == 2) : ?>
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -67,7 +69,7 @@
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="./crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                             <!--
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -104,43 +106,68 @@
             </div>
         </nav>
 
-
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-md-6">
-                        <form action="./crosswordView.php">
-                            <input type="submit" class="btn btn-primary btn-sm" value="View Crossword">
-                        </form>
-                        <!-- Only admins can create puzzle-->
-                        <?php if (role_check() == 2) : ?>
+                    <div class="col-md-6">
+
+                        <h3>Please input the questions and answers:</h3>
+                        Format it as follows: <br>
+                            Q)%XXX_XXX.%(N%WORDS)%ANSWER <br>
+                        X : represents words/letters<br>
+                            % : represents a space <br><br>
+                            Example: <br>
+                            1) Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement<br>
+			    2) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
+                            <br>
+                            Do note that the <b>bracket placements</b> and <b>spaces</b> are important. <br>
+                            Also, after every questions, do take note to press enter before the next question is typed.<br>
+                            The questions and answers to be stored will be shown on this page, so do check before pressing submit. <br>
                         <br>
-                        <form action="./crosswordAddition.php">
-                            <input type="submit" class="btn btn-danger btn-sm" value="New Crossword">
+                        <form id="qBank" action="includes/qnInput.php" method="post">
+                            <div class="form-group">
+                                <label for="questions">Input</label>
+                                <textarea name="questions" form="qBank" class="form-control" rows="3" id="questions" autofocus></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
                         </form>
-                        <br>
-                        <?php endif; ?>
-                        
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-striped" id="question2BI">
+                            <thead>
+                                <tr>
+                                    <td class="col-md-5">Question</td>
+                                    <td class="col-md-1">Answer</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sample question _. (2 words)</td>
+                                    <td>sample answer</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
-            <hr><p>&copy; 2016 Product of REP</p>
-        </div>
+            <div class="row">
+        <hr><p>&copy; 2016 Product of REP</p>
+        </div></div>
 
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
-        <?php
-            elseif ((login_check($mysqli) == true) && (role_check() == 1 || role_check() == 0)) :
-                       echo '<script>';
-                       echo 'window.location.href="../user.php";';
-                       echo '</script>'; 
-                   else : 
-                       echo '<script>';
-                       echo 'window.location.href="../index.php";';
-                       echo '</script>';
-                   endif;
-        ?>
+        <?php elseif ((login_check($mysqli) == true) && role_check() == 1)  :
+            echo '<script>';
+            echo 'window.location.href="../user.php"';
+            echo '</script>';
+            
+        else :
+            echo '<script>';
+            echo 'window.location.href="../index.php"';
+            echo '</script>';
+
+        endif; ?>
     </body>
 </html>

@@ -1,11 +1,12 @@
 <?php
     include_once '../../includes/db_connect.php';
-    include_once '../../includes/psl-config.php';
-    include_once 'phpVariables.php';
+    include_once '../../includes/functions.php';
     
+    sec_session_start();
+
     $crosswordId = $_GET["crosswordId"];
 
-    $sql = "SELECT * FROM " . $crosswordBankName . " WHERE crosswordId = " . $crosswordId ;
+    $sql = "SELECT * FROM " . $GLOBALS['crosswordPuzzles'] . " WHERE crosswordId = " . $crosswordId ;
 
     $result = $mysqli->query($sql);
     $data = [];

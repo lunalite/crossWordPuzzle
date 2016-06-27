@@ -5,8 +5,8 @@ include_once '../../includes/functions.php';
 	sec_session_start();    
 
     $sessId = $_SESSION['sess_id'];
-	$sql = "SELECT PuzzleName FROM crosswordmasterdb WHERE crosswordID =
-    (SELECT crosswordID from availablesessions WHERE sessId = $sessId)" ;
+	$sql = "SELECT PuzzleName FROM ".$GLOBALS['crosswordMaster']." WHERE crosswordID =
+    (SELECT crosswordID from ".$GLOBALS['availableSessions']." WHERE sessId = $sessId)" ;
     
     $result = $mysqli->query($sql);	
 	$data = [];

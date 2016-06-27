@@ -135,7 +135,7 @@
 
                                     // Delete Crossword button echo
                                     echo "
-                                        <form style='display: inline;' id='crosswordQDelete' action='./includes/crosswordQDelete.php' method='POST'>
+                                        <form onsubmit=\"return confirm('Are you sure you want to delete this crossword?');\" style='display: inline;' id='crosswordQDelete' action='./includes/crosswordQDelete.php' method='POST'>
                                         <input type='hidden' name='crosswordId' form ='crosswordQDelete' id='crosswordId' value='".$_GET['crosswordId']."'/>
                                         <input type='submit' class='btn btn-danger btn-sm' value='Delete Crossword'>
                                         </form>

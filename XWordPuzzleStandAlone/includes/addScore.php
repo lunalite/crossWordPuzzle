@@ -23,14 +23,14 @@
             $sessId = $_SESSION['sess_id'];
             $score = $_GET['score'];
             
-            $sql = 'UPDATE sessionStart SET scores = scores + '.$score.' WHERE userId = '.$user.' AND sessId = '.$sessId;
+            $sql = 'UPDATE '.$GLOBALS['sessionStart'].' SET scores = scores + '.$score.' WHERE userId = '.$user.' AND sessId = '.$sessId;
 
             if (!$mysqli->query($sql)){
                 echo 'error1';
             }
             else {
 
-                $sql2 = "INSERT INTO questionAnswered (sessid, userid, qnsid, status) 
+                $sql2 = "INSERT INTO ".$GLOBALS['questionAnswered']." (sessid, userid, qnsid, status) 
                 VALUES ($sessId, $user, $qnsid, 1)";
                 if ($mysqli->query($sql2)) {
 
@@ -38,11 +38,11 @@
                     
                     //***** Send push to live score *****
 
-                    $sql3 = "SELECT scores FROM sessionStart WHERE sessId = $sessId AND userId = $user" ;
+                    $sql3 = "SELECT scores FROM ".$GLOBALS['sessionStart']." WHERE sessId = $sessId AND userId = $user" ;
                     $result3 = $mysqli->query($sql3);
                     $updatedScore = $result3->fetch_assoc()['scores'];
 
-                    $sql4 = "SELECT username FROM members WHERE Id = $user";                    
+                    $sql4 = "SELECT username FROM ".$GLOBALS['members']." WHERE Id = $user";                    
                     $result4 = $mysqli->query($sql4);
                     $username = $result4->fetch_assoc()['username'];
 

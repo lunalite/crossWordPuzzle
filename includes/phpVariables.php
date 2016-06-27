@@ -7,6 +7,8 @@
     $crosswordPuzzles = "crosswordpuzzles";
     $availableSessions = "availablesessions";
     $sessionJoin = "sessionJoin";
+    $sessionStart = "sessionStart";
+    $questionAnswered = "questionAnswered";
 
     /* Session names
     ** $_SESSION['user_id']

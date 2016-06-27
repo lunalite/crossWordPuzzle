@@ -23,7 +23,6 @@
         <script>
             $(function () {
             
-                console.log('test');
                 //********* HERE IS THE LIVE SCORE UPDATE SYSTEM ********
             
                 var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
@@ -76,8 +75,6 @@
                 <ul class="nav navbar-nav">
 
                     <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-
-
 
                     <!--
                     <li class="dropdown">

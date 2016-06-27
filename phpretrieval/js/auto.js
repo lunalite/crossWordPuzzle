@@ -1,3 +1,4 @@
+// For future implementation of autoGeneration of Crossword
 
     // Declaration of variables
     var qnaPairs = [];

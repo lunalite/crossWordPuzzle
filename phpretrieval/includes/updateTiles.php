@@ -1,7 +1,8 @@
 <?php
     include_once '../../includes/db_connect.php';
-    include_once '../../includes/psl-config.php';
-    include_once 'phpVariables.php';
+    include_once '../../includes/functions.php';
+    
+    sec_session_start();
     
     $tileCode = $_POST["tileCode"];
 	$crosswordId = $_POST["id"];
@@ -9,10 +10,10 @@
 	$title=$_POST["title"];
     $desc=$_POST["description"];
 
-    $sql = "UPDATE " .$crosswordBankName. " SET TileCode ='" .$tileCode. "' WHERE Answer = '" 
+    $sql = "UPDATE " .$GLOBALS['crosswordPuzzles']. " SET TileCode ='" .$tileCode. "' WHERE Answer = '" 
     .$answer. "' AND CrosswordID =".$crosswordId;
 
-	$sql2 = "UPDATE " .$tableName. " SET PuzzleName='" .$title. "', crosswordDescription = '" 
+	$sql2 = "UPDATE " .$GLOBALS['crosswordMaster']. " SET PuzzleName='" .$title. "', crosswordDescription = '" 
     . $desc . "' WHERE crosswordId = '" .$crosswordId. "'"; 
 	echo $sql;
     $result = $mysqli->query($sql);
