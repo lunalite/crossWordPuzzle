@@ -1,4 +1,8 @@
 # crossWordPuzzle
+Update 27/6/16
+- Made more table names into global variables stored in psl-config.php
+- Added a delete Crossword function	
+
 Update 26/6/16
 - Moved crosswords.php to ./crosswords from main folder. This folder will be for all crosswords-related stuff.
 - added crosswordView for checking current crosswords
