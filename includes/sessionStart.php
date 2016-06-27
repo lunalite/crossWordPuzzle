@@ -14,7 +14,7 @@
     $_SESSION['sess_id'] = $sessId;
     
     if ($online == 1) {
-        $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']."WHERE sessId = ".$sessId;
+        $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = ".$sessId;
 
         $result = $mysqli->query($sql);
         if (mysqli_num_rows($result) == 0) {
