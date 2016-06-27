@@ -19,6 +19,7 @@
 
 include_once 'db_connect.php';
 include_once 'psl-config.php';
+include_once 'phpVariables.php';
 
 $error_msg = "";
 
@@ -44,7 +45,7 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     // breaking these rules.
     //
     
-    $prep_stmt = "SELECT id FROM members WHERE email = ? LIMIT 1";
+    $prep_stmt = "SELECT id FROM ".$GLOBALS['members']." WHERE email = ? LIMIT 1";
     $stmt = $mysqli->prepare($prep_stmt);
     
     if ($stmt) {
@@ -73,7 +74,7 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         $password = hash('sha512', $password . $random_salt);
 
         // Insert the new user into the database 
-        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
+        if ($insert_stmt = $mysqli->prepare("INSERT INTO ".$GLOBALS['members']." (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
             $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
             // Execute the prepared query.
             if (! $insert_stmt->execute()) {

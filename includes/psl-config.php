@@ -28,11 +28,22 @@
 /**
  * These are the database login details
  */
+
+// For godaddy
+/*
 define("HOST", "localhost"); 			// The host you want to connect to. 
 define("USER", "REPMaster"); 			// The database username. 
 define("PASSWORD", "4bAtbTpk4Cxh"); 	// The database password. 
 define("DATABASE", "repXword");             // The database name.
+*/
 
+// For local database
+///*
+define("HOST", "localhost"); 			// The host you want to connect to. 
+define("USER", "root"); 			// The database username. 
+define("PASSWORD", ""); 	// The database password. 
+define("DATABASE", "database");             // The database name.
+//*/
 
 /**
  * Who can register and what the default role will be

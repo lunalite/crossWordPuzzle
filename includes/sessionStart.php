@@ -14,7 +14,7 @@
     $_SESSION['sess_id'] = $sessId;
     
     if ($online == 1) {
-        $sql = 'SELECT userId FROM sessionJoin WHERE sessId = ' . $sessId;
+        $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']."WHERE sessId = ".$sessId;
 
         $result = $mysqli->query($sql);
         if (mysqli_num_rows($result) == 0) {
@@ -23,7 +23,7 @@
         else {
             while ($row=mysqli_fetch_row($result)) {
                 $userId = $row[0];
-                $ins = 'INSERT INTO sessionStart (sessId,userId) VALUES 
+                $ins = 'INSERT INTO '.$GLOBALS['sessionStart'].' (sessId,userId) VALUES 
                 (' . $sessId . ', '. $userId . ')';
 
                 if ($mysqli->query($ins) === TRUE) {
@@ -35,7 +35,7 @@
                 }
             }
         // Open gate for users after finishing the update of database
-        $sql2 = 'UPDATE availablesessions SET online = 2 WHERE sessId = ' . $sessId;
+        $sql2 = 'UPDATE '.$GLOBALS['availableSessions'].' SET online = 2 WHERE sessId = ' . $sessId;
         $mysqli->query($sql2);
 
         $options = array(

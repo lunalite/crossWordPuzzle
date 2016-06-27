@@ -30,7 +30,7 @@ function sec_session_start() {
 function login($email, $password, $mysqli) {
     // Using prepared statements means that SQL injection is not possible. 
     if ($stmt = $mysqli->prepare("SELECT id, username, password, salt, permissions 
-				  FROM members
+				  FROM ".$GLOBALS['members']."
                                   WHERE email = ? LIMIT 1")) {
         $stmt->bind_param('s', $email);  // Bind "$email" to parameter.
         $stmt->execute();    // Execute the prepared query.
@@ -74,7 +74,7 @@ function login($email, $password, $mysqli) {
                     // Password is not correct 
                     // We record this attempt in the database 
                     $now = time();
-                    if (!$mysqli->query("INSERT INTO login_attempts(user_id, time) 
+                    if (!$mysqli->query("INSERT INTO ".$GLOBALS['loginAttempts']."(user_id, time) 
                                     VALUES ('$user_id', '$now')")) {
                         header("Location: ../error.php?err=Database error: login_attempts");
                         exit();
@@ -102,7 +102,7 @@ function checkbrute($user_id, $mysqli) {
     $valid_attempts = $now - (2 * 60 * 60);
 
     if ($stmt = $mysqli->prepare("SELECT time 
-                                  FROM login_attempts 
+                                  FROM ".$GLOBALS['loginAttempts']." 
                                   WHERE user_id = ? AND time > '$valid_attempts'")) {
         $stmt->bind_param('i', $user_id);
 
@@ -134,7 +134,7 @@ function login_check($mysqli) {
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
 
         if ($stmt = $mysqli->prepare("SELECT password 
-				      FROM members 
+				      FROM ".$GLOBALS['members']." 
 				      WHERE id = ? LIMIT 1")) {
             // Bind "$user_id" to parameter. 
             $stmt->bind_param('i', $user_id);
@@ -181,7 +181,7 @@ function role_check() {
 
 // For checking of available sessions into table
 function sessionCheck($mysqli) {
-    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online != 0");
+    $result = $mysqli->query("SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0");
     if (mysqli_num_rows($result) == 0) {
         echo '<tr><td>No sessions online.</td></tr>';
     }
@@ -192,8 +192,8 @@ function sessionCheck($mysqli) {
             elseif ($row[2] == 2) 
                 $online = 'Started';
             $tbp = '<tr><td>' . $row[0] . '</td><td>' . $row[1]  . '</td><td>'.$online.'</td>';
-            $innerQuery = "SELECT username FROM members WHERE id in 
-            (SELECT userId FROM sessionJoin WHERE sessId = " . $row[0] . ")";
+            $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in 
+            (SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = " . $row[0] . ")";
 
             $innerResult = $mysqli->query($innerQuery);
             if (mysqli_num_rows($innerResult) == 0) {
@@ -215,7 +215,7 @@ function sessionCheck($mysqli) {
 
 // For available sessions into select box
 function sessionCheckD($mysqli) {
-    $result = $mysqli->query("SELECT * FROM availablesessions WHERE online != 0");
+    $result = $mysqli->query("SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0");
     if (mysqli_num_rows($result) == 0) {
         echo '<option value=\"NoSessOn\">No sessions online</option>';
     }
@@ -233,28 +233,27 @@ function sessionCheckD($mysqli) {
 }
 
 function userInSession($mysqli){
-    $query = 'SELECT * FROM sessionJoin WHERE userId = ' . $_SESSION['user_id'];
+    $query = "SELECT * FROM ".$GLOBALS['sessionJoin']." WHERE userId = ".$_SESSION['user_id'];
     $result = $mysqli->query($query);
     if (mysqli_num_rows($result) == 0) 
         return FALSE;
     else {
         $row=mysqli_fetch_row($result);
         $_SESSION['sess_id'] = $row[1]; 
-        //echo 'session is '.$_SESSION['sess_id'];
         return TRUE;
         }
 }
 
 function sessionUserCheck($mysqli) {
-    $query = "SELECT * FROM sessionJoin WHERE sessid = 
-    (SELECT sessId FROM sessionJoin WHERE userId = " . $_SESSION['user_id'] . ")";
+    $query = "SELECT * FROM ".$GLOBALS['sessionJoin']." WHERE sessid = 
+    (SELECT sessId FROM ".$GLOBALS['sessionJoin']." WHERE userId = " . $_SESSION['user_id'] . ")";
     $result = $mysqli->query($query);
     if (mysqli_num_rows($result) == 0) {
         echo '<tr><td>Some error happened.</td></tr>';
     }
     else {
         while ($row=mysqli_fetch_row($result)) {
-            $innerQuery = "SELECT username FROM members WHERE id = " . $row[1];
+            $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id = " . $row[1];
             $innerResult = $mysqli->query($innerQuery);
             $innerRow=mysqli_fetch_row($innerResult);
             $tbp = '<tr><td>' . $innerRow[0] . '</td></tr>';
@@ -264,7 +263,7 @@ function sessionUserCheck($mysqli) {
 }
 
 function gateCheck($mysqli) {
-    $query = 'SELECT * FROM availablesessions WHERE sessid = ' . $_SESSION['sess_id'];
+    $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessid = " . $_SESSION['sess_id'];
     $result = $mysqli->query($query);
     if (mysqli_num_rows($result) == 0) {
         echo 'Error';
@@ -282,7 +281,7 @@ function gateCheck($mysqli) {
 }
 
 function userCheck($mysqli) {
-    $query = 'SELECT * FROM members';
+    $query = "SELECT * FROM ".$GLOBALS['members'];
     $result = $mysqli->query($query);
     while ($row = mysqli_fetch_row($result)) {
         $usertype = '';
@@ -302,7 +301,7 @@ function userCheck($mysqli) {
 }
 
 function crosswordCheck($mysqli) {
-    $query = 'SELECT * FROM crosswordmasterdb';
+    $query = "SELECT * FROM ".$GLOBALS['crosswordMaster'];
     $result = $mysqli->query($query);
     while ($row = mysqli_fetch_row($result)) {
 
@@ -339,7 +338,6 @@ function crosswordList($mysqli, $crosswordId, $questionId) {
                         <td><textarea name='question' form='crosswordQEdit' class='form-control' id='question' autofocus>".$row[3]."</textarea></td>
                         <td><textarea name='answer' form='crosswordQEdit' class='form-control' id='answer' autofocus>".$row[4]."</textarea></td>
                         <td><button type='submit' class='btn btn-default'>Submit</button></td>
-
                         </div>
                     </form>
                 </tr>  

@@ -126,10 +126,18 @@
                                 </table>
                                 ";
                                 if (role_check() == 2) {
+                                    // Assign Crossword button echo
                                     echo "
-                                        <form id='crosswordQAssign' action='../XWordPuzzleStandAlone/master_template.php' method='get'>
+                                        <form style='display: inline;' id='crosswordQAssign' action='../XWordPuzzleStandAlone/master_template.php' method='get'>
                                         <input type='hidden' name='id' form ='crosswordQAssign' id='id' value='".$_GET['crosswordId']."'/>
                                         <input type='submit' class='btn btn-danger btn-sm' value='Assign Crossword'>
+                                        </form> &nbsp;&nbsp;";
+
+                                    // Delete Crossword button echo
+                                    echo "
+                                        <form style='display: inline;' id='crosswordQDelete' action='./includes/crosswordQDelete.php' method='POST'>
+                                        <input type='hidden' name='crosswordId' form ='crosswordQDelete' id='crosswordId' value='".$_GET['crosswordId']."'/>
+                                        <input type='submit' class='btn btn-danger btn-sm' value='Delete Crossword'>
                                         </form>
                                         <br>";
                                 }

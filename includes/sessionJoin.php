@@ -12,7 +12,7 @@
 
     $user = $_SESSION['user_id'];
     if ($online == 2) {
-        $sql = 'SELECT userId FROM sessionstart WHERE sessId = '.$sessId;
+        $sql = "SELECT userId FROM ".$GLOBALS['sessionStart']."WHERE sessId = ".$sessId;
         $result = $mysqli->query($sql);
         if (mysqli_num_rows($result) == 0) {
             header('refresh: 3; url=../user.php');
