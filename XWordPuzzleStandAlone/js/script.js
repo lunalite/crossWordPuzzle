@@ -9,12 +9,16 @@
     	c.height = c.width;
 	var NUM_COLS = 30;
 	var NUM_ROWS = 30;
-	var tileCellWidth=(c.width)/NUM_COLS;
+	if (c.width < c.height)
+		var tileCellWidth=c.width/NUM_COLS;
+	else
+		var tileCellWidth=c.height/NUM_COLS;
 	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
 	var mouseY=0;
 	var answerSelected="";
+	var currentEncodedID="";
 	var answerMap = {};
 	var inputDirection="horizontal";
 	var header=document.getElementById('instructions');
@@ -27,16 +31,36 @@
 	var answerList=[];
 	var ansStack=[];
 	var tileCodeStack=[];
+	var actionStack=[];
 	
 	function undo(){
-		if (ansStack.length <= 0 || tileCodeStack.length <= 0)
+		console.log("Stack before undo is now "+actionStack+"\n"+ansStack+"\n"+tileCodeStack);
+		if (actionStack.length <= 0)
 			return ;
+		var action=actionStack.pop();
 		var lastAns=ansStack.pop();
 		var lastID=tileCodeStack.pop();
-		console.log("Removing answer "+lastAns);
-		questionList.push(lastAns);
-		populate(questionList);
-		removeTiles(lastID,lastAns.length);
+		if (action == 0){	
+			console.log("Removing answer "+lastAns);
+			questionList.push(lastAns);
+			populate(questionList);
+			removeTiles(lastID,lastAns.length);
+		}else if (action == 1){
+			var tileID1=parseInt(lastID.substring(0,4));
+			var tileID2=parseInt(lastID.substring(4,8));
+			var temp=inputDirection;
+			var diff=tileID2-tileID1;
+			if (diff>=NUM_ROWS) //Go Down
+				inputDirection="vertical";
+			else
+				inputDirection="horizontal";
+			wordToTiles(lastAns.replace(/\s/g,''),tileID1);
+			inputDirection=temp;
+			var index=questionList.indexOf(lastAns);
+			questionList.splice(index, 1);
+			populate(questionList);
+		}
+		
 	}
 	
 	function removeTiles(tileCodeID,length){
@@ -112,14 +136,15 @@
 		   console.log("Canvas is "+rect.left+" from the left and "+rect.top+" from the top");		
 	}
 
-    getAnswers();
+    	getAnswers();
 	
 	var Tile = function(x, y,id) { //Class Declaration for Tile Object
 		this.x = x;
 		this.y = y;
 		this.width = tileWidth;
 		this.char='';
-		this.id=id;	
+		this.id=id;
+		this.qns=-1;	
 		this.intersected=false;//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
 	};
 	
@@ -132,7 +157,6 @@
 		//console.log("Index is at"+index);
 		if (index != -1){
 			questionList.splice(index, 1);
-			answerSelected="";
 			populate(questionList);
 			if (questionList.length == 0)
 				header.innerHTML = 'You have allocated all the answers. Click Save to submit the Puzzle';
@@ -146,7 +170,7 @@
 		}
 		//console.log("MAP SAVED: "+answerMap["Why"]);
 		var title=prompt("Please enter the title of the puzzle.");
-        var desc=prompt("Please enter the description of the puzzle.");
+        	var desc=prompt("Please enter the description of the puzzle.");
 		var tiles_string="";
 		var savedTiles=new Array();
 		for (i=0;i<tiles.length;i++){
@@ -200,7 +224,18 @@
 		var tileSelected=posToTileID(mouseX,mouseY);
 		//console.log("Selected Tile: "+tileSelected);
 		//console.log("Inserting word "+answerSelected);
-		wordToTiles(answerSelected.replace(/\s/g,''),tileSelected);
+		if(answerSelected == "")
+			deleteWord(tileSelected);
+		else{
+			if(wordToTiles(answerSelected.replace(/\s/g,''),tileSelected)){
+				console.log(answerSelected+"::"+currentEncodedID);
+				ansStack.push(answerSelected);
+				tileCodeStack.push(currentEncodedID);
+				actionStack.push(0);
+				console.log("Stack is now "+actionStack+"\n"+ansStack+"\n"+tileCodeStack);
+				answerSelected="";	
+			}
+		}
   }
   
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
@@ -223,6 +258,24 @@
 		return false;
 	}
 	
+	function deleteWord(tileID){
+		var tile=tiles[tileID];
+		var ansToDelete=answerList[tile.qns];
+		if (tile.char != ''){
+			var r = confirm("Are you sure you want to delete "+ansToDelete+"?");
+			if (r == true) {
+				var tileCodeId=answerMap[ansToDelete];
+				console.log("The map is "+tileCodeId);
+				questionList.push(ansToDelete);
+				populate(questionList);
+				removeTiles(tileCodeId,ansToDelete.length);
+				actionStack.push(1);
+				ansStack.push(ansToDelete);
+				tileCodeStack.push(tileCodeId);
+			}
+		}
+	}
+	
 	function wordToTiles(word,tileID){		//Insert a word entered by the user into the appropriate tiles
 		var tileID1="";var tileID2="";
 		var pos=new Array();
@@ -233,6 +286,7 @@
 		if ( inputDirection == "horizontal" && length+pos[0]<=(NUM_ROWS) && !checkCollisionX(word,tileID)){
 			for ( i=0; i < length ; i++){
 				var tile=tiles[tileID+i];
+				tile.qns=answerList.indexOf(answerSelected);
 				//console.log("Current tile "+tile.char+" is at "+tile.x+","+tile.y);
 				var len=tile.char.length;
 				//console.log(len);
@@ -262,17 +316,17 @@
 				tile.drawFaceDown();
 			}			
 			var encodedID=tileID1+tileID2;
+			currentEncodedID=encodedID;
 			//console.log("Encoded ID:"+encodedID);
 			answerMap[answerSelected]=encodedID;
-			ansStack.push(answerSelected);
 			updateList();
-			tileCodeStack.push(encodedID);
 			//console.log("Stack now contains "+ansStack);
-			return ;
+			return true;
 		}
 		if (inputDirection =="vertical" && length+pos[1]<=(NUM_COLS) && !checkCollisionY(word,tileID)){
 			for ( i=0; i < length ; i++){
 				var tile=tiles[tileID+i*NUM_ROWS];
+				tile.qns=answerList.indexOf(answerSelected);
 				//console.log("Current tile "+tile.char+" is at "+tile.x+","+tile.y);
 				//console.log(tile.char.length);
 				if (tile.char.length > 0){
@@ -302,17 +356,20 @@
 			}						
 			var encodedID=tileID1+tileID2;
 			//console.log("Encoded ID:"+encodedID);
+			currentEncodedID=encodedID;
 			answerMap[answerSelected]=encodedID;
-			ansStack.push(answerSelected);
 			updateList();
-			tileCodeStack.push(encodedID);
 			//console.log("Stack now contains "+ansStack);
-			return ;
+			return true;
 		}
-		if((length+pos[0]>(NUM_COLS) && inputDirection == "horizontal" )|| (length+pos[1]>(NUM_ROWS) && inputDirection == "vertical"))
+		if((length+pos[0]>(NUM_COLS) && inputDirection == "horizontal" )|| (length+pos[1]>(NUM_ROWS) && inputDirection == "vertical")){
 			window.alert("Word is too long in the current direction! Select another tile!");
-		else
+			return false;
+			}
+		else{
 			window.alert("Collision detected!Select another tile!");
+			return false;	
+		}
 	}
 
 	Tile.prototype.drawFaceDown = function() { //Function to draw the tile

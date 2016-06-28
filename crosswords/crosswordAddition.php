@@ -124,7 +124,7 @@
                             Also, after every questions, do take note to press enter before the next question is typed.<br>
                             The questions and answers to be stored will be shown on this page, so do check before pressing submit. <br>
                         <br>
-                        <form id="qBank" action="includes/qnInput.php" method="post">
+                        <form id="qBank" action="./includes/qnInput.php" method="post">
                             <div class="form-group">
                                 <label for="questions">Input</label>
                                 <textarea name="questions" form="qBank" class="form-control" rows="3" id="questions" autofocus></textarea>

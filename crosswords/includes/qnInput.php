@@ -8,6 +8,7 @@
     $string = $_POST["questions"];
     $questions = preg_split("/\d\)\s+/",$string);
     array_shift($questions);
+echo $questions[0];
 
     // Checks for the first id from crosswordmasterdb.
     $sql = "SELECT crosswordId FROM ".$GLOBALS['crosswordMaster'];
@@ -32,7 +33,7 @@
     // Inserting into master database id of the new crossword to be added.
     $sql = "INSERT INTO ".$GLOBALS['crosswordMaster']. " (crosswordId) VALUES (" . $latestCrossWordId . ")";
     if ($mysqli->query($sql) === TRUE) {
-        //echo "New record created successfully" . "<br>";
+        echo "New record created successfully" . "<br>";
     } else {
         echo "Error: " . $sql . "<br>" . $mysqli->error;
     }
@@ -50,10 +51,10 @@
         }
     } 
     else {
-        //echo "0 results";
+        echo "0 results";
         $latestCrossWordId --;
     }
-    //echo $latestCrossWordId . "<br>";
+    echo $latestCrossWordId . "<br>";
     
     // Inserting all the questions and answers into the crossword bank
 
@@ -63,17 +64,19 @@
         array_shift($answer);
 
         $qn2BAddedAgain = preg_split("/".$answer[0]."/", $qn2BAdded);
-        $qn2BAddedAgain=filter_var($qn2BAddedAgain, FILTER_SANITIZE_STRING);
+
+        $qn2BAddedAgain=filter_var($qn2BAddedAgain[0], FILTER_SANITIZE_STRING);
+
 
         $answer[0]=trim($answer[0]);
 	    $answer[0]=strtoupper($answer[0]);
         $answer[0]=filter_var($answer[0], FILTER_SANITIZE_STRING);
 
-        
+
         $sql = "INSERT INTO ".$GLOBALS['crosswordPuzzles'] . " VALUES (0," . $latestCrossWordId . ", "
-        . $counter . ",\"" . $qn2BAddedAgain[0] . "\", \"" . $answer[0] . "\",\"" . $defaultTileCode . "\")";
+        . $counter . ",\"" . $qn2BAddedAgain . "\", \"" . $answer[0] . "\",\"" . $defaultTileCode . "\")";
         if ($mysqli->query($sql) === TRUE) {
-            //echo "New record created successfully" . "<br>";
+            echo "New record created successfully12" . "<br>";
         } else {
             echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";
         }
