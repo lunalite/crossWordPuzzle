@@ -6,9 +6,9 @@
 	$defaultTileCode='Not Assigned yet';
     //echo $_POST["questions"]."<br>";
     $string = $_POST["questions"];
-    $questions = preg_split("/\d\)\s+/",$string);
+    $questions = preg_split("/@/",$string);
     array_shift($questions);
-echo $questions[0];
+    echo $questions[0];
 
     // Checks for the first id from crosswordmasterdb.
     $sql = "SELECT crosswordId FROM ".$GLOBALS['crosswordMaster'];
@@ -88,5 +88,5 @@ echo $questions[0];
         echo '<script>';
         echo $url;
         echo '</script>';
-
+        
 ?>		

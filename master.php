@@ -170,6 +170,7 @@
                             ?>
                         </select>
                         <input type="submit" class="btn btn-primary btn-sm" name="startSession" value="Start Session">
+                        <input type="submit" class="btn btn-primary btn-sm" name="deleteSession" value="Delete Session">
                     </form>
 
                     <hr><p>&copy; 2016 Product of REP</p>

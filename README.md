@@ -1,4 +1,10 @@
 # crossWordPuzzle
+Update 28/6/16
+- Added undo function for crossword addition
+- Added delete button fof created sessions
+- Changed regex for question number to @ instead.
+- Allowed for enter submission in index.php
+
 Update 27/6/16
 - Made more table names into global variables stored in psl-config.php
 - Added a delete Crossword function	

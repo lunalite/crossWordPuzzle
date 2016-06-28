@@ -26,15 +26,17 @@
         <script type="text/JavaScript" src="js/sha512.js"></script>
         <script type="text/JavaScript" src="js/forms.js"></script>
         <script>
-		 $('input').keypress(function (e) {
-		 var key = e.which;
-		 if(key == 13)  // the enter key code
-		  {
-		    $('#submission').click();
-		    return false;  
-		  }
-		});   
-		
+            $(function () {
+                $('input').keypress(function (e) {
+                    console.log(e.which);
+                    var key = e.which;
+                    if (key == 13)  // the enter key code
+                    {
+                        $('#submission').click();
+                        return false;
+                    }
+                });
+            });
         </script>
     </head>
 
@@ -98,7 +100,6 @@
                                 <input type="checkbox" value="remember-me"> Remember me
                             </label>
                         </div>
-
                         <input id="submission" class="btn btn-lg btn-primary btn-block" type="button" value="Login" onclick="formhash(this.form, this.form.password);" />
                     </form><br>
                     <?php

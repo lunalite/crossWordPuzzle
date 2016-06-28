@@ -30,7 +30,7 @@
                 xWordInput.keyup(function () {
                     xWordInputList.empty();
                     var qnaInput = $(this).val();
-                    var split1 = qnaInput.split(/\d[).]\s*/);
+                    var split1 = qnaInput.split(/@/);
                     var answers = [];
                     var questions = [];
 
@@ -113,15 +113,15 @@
 
                         <h3>Please input the questions and answers:</h3>
                         Format it as follows: <br>
-                            Q)%XXX_XXX.%(N%WORDS)%ANSWER <br>
+                            @%XXX_XXX.%(N%WORDS)%ANSWER <br>
                         X : represents words/letters<br>
                             % : represents a space <br><br>
                             Example: <br>
-                            1) Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement<br>
-			    2) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
+                            @ Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement<br>
+			                @ _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings<br>
                             <br>
-                            Do note that the <b>bracket placements</b> and <b>spaces</b> are important. <br>
-                            Also, after every questions, do take note to press enter before the next question is typed.<br>
+                            Do note that the <b>@ placement</b> marks the start of question. <br>
+                            And <b> (X words) </b> with brackets marks the end of question and start of answer. <br>
                             The questions and answers to be stored will be shown on this page, so do check before pressing submit. <br>
                         <br>
                         <form id="qBank" action="./includes/qnInput.php" method="post">
