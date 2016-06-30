@@ -1,1 +1,0 @@
-[30-Jun-2016 03:13:58 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/phpretrieval/includes/qnOutput.php on line 13
