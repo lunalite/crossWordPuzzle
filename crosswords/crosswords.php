@@ -22,8 +22,6 @@
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
 
-            
-            
             $(function () {
                 var xWordListRes = $('#crosswordList');
                 var xWordSearch = $('#crosswordSearch');
@@ -67,7 +65,8 @@
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="./crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href="#" style="color:white;">Crosswords</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
                             <!--
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>

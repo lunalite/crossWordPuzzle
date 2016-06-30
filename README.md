@@ -1,4 +1,14 @@
 # crossWordPuzzle
+Update 30/6/16
+- View crosswords in crosswords/crosswordView.php opens up in new page for easy reference
+- Added a new warning line when questions/answers are updated in crosswordView.php
+- Added a reviews section for reviewing the past scores.
+- Change a bit of button colours for ensuring blue = superuser and red = admin
+- Added crosswordID under availableSessions for easy viewing
+- Added review by sessions function
+- Added a view for obtaining time which session started
+- Reduced some bugs
+
 Update 28/6/16
 - Added undo function for crossword addition
 - Added delete button fof created sessions

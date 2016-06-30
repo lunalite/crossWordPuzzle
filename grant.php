@@ -3,7 +3,8 @@
     include_once 'includes/functions.php';
     
     sec_session_start();
-    
+     
+    if ((login_check($mysqli) == true) && role_check() == 2) : 
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,7 +32,6 @@
         </script>
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check() == 2) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -40,6 +40,7 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="./crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
                                                     <!--
                                                             <li class="dropdown">
                                                                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -80,6 +81,8 @@
             </div>
         </nav>
 
+<!-- Only for admins -->
+
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
@@ -114,7 +117,7 @@
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
         <?php
-            elseif ((login_check($mysqli) == true) && role_check() != 2)  :
+            elseif ((login_check($mysqli) == true) && role_check() == 0)  :
                        echo '<script>';
                        echo 'window.location.href="../user.php"';
                        echo '</script>';

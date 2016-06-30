@@ -115,10 +115,33 @@
 		    var arr = jQuery.map(data, function (e1) { return e1; });
 		    var size = arr.length;
 		    console.log("Array is of size " + size);
-		    for (i = 0; i < size; i++)
-		        questionList.push(arr[i]['Answer']);
-		    answerList = questionList.slice();
+		    for (f = 0; f < size; f++){
+		    	var tileCode=arr[f]['TileCode'];
+		    	console.log("code is "+tileCode);
+		    	var ans=arr[f]['Answer'];
+		    	ans=ans.replace(/\s/g,'');
+		        questionList.push(ans);
+		        answerList.push(ans);
+		        answerMap[ans]=tileCode;
+		        if (tileCode!="Not Assigned yet"){
+		        	console.log("RESUMING");
+			        var tileID1=parseInt(tileCode.substring(0,4));
+				var tileID2=parseInt(tileCode.substring(4,8));
+				var temp=inputDirection;
+				var diff=tileID2-tileID1;
+				if (diff>=NUM_ROWS) //Go Down
+					inputDirection="vertical";
+				else
+					inputDirection="horizontal";
+				answerSelected=ans;
+				wordToTiles(ans.replace(/\s/g,''),tileID1);
+				inputDirection=temp;
+				var index=questionList.indexOf(ans);
+				questionList.splice(index, 1);
+		        }
+		    }
 		    console.log("Answer list formed: " + questionList);
+		    answerSelected="";
 		    populate(questionList);
 		});	
        }

@@ -27,21 +27,29 @@
                     var url = "crosswordView.php?crosswordId=" + this.id;
                     window.location.href = url;
                 });
-
+	    });
+	</script>
+	<?php if (role_check() == 2) : ?>
+	<script>
+	    $(function() {
                 $('#crosswordIList').find("tr").click(function (event) {
                     var qid = this.getAttribute('qid');
                     if (qid == 'form') {
                         return;
-                    }
-                    else {
+                    } else {
                         var cvid = sessionStorage.getItem("crosswordViewId");
                         var url = "crosswordView.php?crosswordId=" + cvid + "&questionId=" + qid;
                         window.location.href = url;
                     }
                 });
             });
-
         </script>
+	<?php elseif ((role_check() == 1) && (isset($_GET['questionId'])) ):  ?>
+	<script>
+	    window.location = "crosswordView.php?";
+	</script>
+
+	<?php  endif; ?>
     </head>
     <body>
         <!-- This page can be viewed by both super users and admin -->
@@ -55,12 +63,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Master Page</a>
+                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword View Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="./crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
                             <!--
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -101,14 +110,20 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-10 col-md-offset-1">
+
                         <!-- Show crossword -->
                         <?php 
                             if (!isset($_GET['crosswordId'])){
-                                echo "Please click the respective crossword to view details of it below.";
-                            }
-                            else {
+                                echo "Please click the respective crosswords to view details of it below.";
+                            } else {
+                                echo "Please click on the respective questions to edit the questions and answers.";
                                 $crosswordId = $_GET['crosswordId'];
                                 echo "<h3>Crossword ".$_GET['crosswordId']."</h3>";
+                                if ($_GET['success']) {
+                                echo '<p class="text-danger">
+                                Warning: Changing the answers might cause instability in crossword. Please re-assign it ASAP.</p>';
+                                }
+
                                 echo "
                                 <table id='crosswordIList' class = 'table table-hover'>
                                     <thead> 
@@ -125,7 +140,9 @@
                                     </tbody>
                                 </table>
                                 ";
+
                                 if (role_check() == 2) {
+
                                     // Assign Crossword button echo
                                     echo "
                                         <form style='display: inline;' id='crosswordQAssign' action='../XWordPuzzleStandAlone/master_template.php' method='get'>
@@ -138,9 +155,16 @@
                                         <form onsubmit=\"return confirm('Are you sure you want to delete this crossword?');\" style='display: inline;' id='crosswordQDelete' action='./includes/crosswordQDelete.php' method='POST'>
                                         <input type='hidden' name='crosswordId' form ='crosswordQDelete' id='crosswordId' value='".$_GET['crosswordId']."'/>
                                         <input type='submit' class='btn btn-danger btn-sm' value='Delete Crossword'>
+                                        </form> &nbsp;&nbsp;";   
+                                }
+
+                                     // View Crossword button echo
+                                    echo "
+                                        <form style='display: inline;' id='crosswordQView' action='viewCrosswordAllocation.php' method='get' target='_blank'>
+                                        <input type='hidden' name='id' form ='crosswordQView' id='id' value='".$_GET['crosswordId']."'/>
+                                        <input type='submit' class='btn btn-primary btn-sm' value='View Crossword'>
                                         </form>
                                         <br>";
-                                }
                             }
                         ?>
                         <hr>

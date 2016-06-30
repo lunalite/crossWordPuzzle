@@ -60,13 +60,14 @@
                         <h3>Available sessions</h3>
                         <table id="sessionsOnline" class="table table-striped">
                             <tr>
-                                <td>Session ID</td>
-                                <td>Crossword Description</td>
-                                <td>Online</td>
-                                <td>Teams</td>
+                                <th>Session ID</th>
+                                <th>Crossword ID</th>
+                                <th>Crossword Description</th>
+                                <th>Online</th>
+                                <th>Teams</th>
                             </tr>
                             <?php
-                                sessionCheck($mysqli);
+                                availSessionCheck($mysqli);
                             ?>
                         </table>
 

@@ -88,7 +88,7 @@
 
                             echo htmlentities($_SESSION['username'])?> 
                         &emsp;
-                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
+                        <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                     </div>
 
                     <?php elseif ((login_check($mysqli) == FALSE)) : ?>

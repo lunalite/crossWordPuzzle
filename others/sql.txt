@@ -62,3 +62,8 @@ CREATE TABLE IF NOT EXISTS `questionAnswered` (
 `timeAnswered` timestamp,
 PRIMARY KEY (sessId, QnsId)
 )
+
+CREATE VIEW sessionTimeStart AS
+SELECT sessId, MAX(TIME_ADDED) AS TIME_STARTED
+FROM sessionStart
+GROUP BY sessId

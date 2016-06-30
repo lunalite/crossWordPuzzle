@@ -1,4 +1,4 @@
-var pixelSize=10;
+	var pixelSize=10;
 	var pixelSizeY=20;
 	var c = document.getElementById("myCanvas");
 	var rect = c.getBoundingClientRect();
@@ -8,12 +8,15 @@ var pixelSize=10;
 	var screenHeight=window.innerHeight;
 	var pixelSizeX=screenWidth/153;
 	console.log("dx is "+pixelSizeX);
-	c.width = screenWidth;
-    c.height = screenHeight;
+	c.width = screenWidth*0.75;
+   	c.height = screenHeight;
 	console.log("Screen size is "+screenWidth+" x "+screenHeight);
 	var NUM_COLS = 30;
 	var NUM_ROWS = 30;
-	var tileCellWidth=screenWidth/40;
+	var tileCellWidth=c.width/NUM_ROWS;
+	if (c.height < c.width)
+		c.height=tileCellWidth*NUM_ROWS;
+	console.log("WIDTH IS "+tileCellWidth);
 	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
@@ -227,6 +230,8 @@ var pixelSize=10;
 		if (this.master == true ){
 			ctx.beginPath();
 			ctx.fillStyle = "black";
+			var size=tileCellWidth/4;
+			ctx.font=size+"pt Arial";
 			ctx.fillText(this.qns_id,this.x,(this.y+(tileWidth)),tileWidth);
 			ctx.fill();
 		}
@@ -235,7 +240,8 @@ var pixelSize=10;
 	Tile.prototype.drawAns = function() { //Function to draw the tile
 		ctx.beginPath();
 		ctx.fillStyle = "black";
-		ctx.font="30px Arial";
+		var scale =tileCellWidth/2;
+		ctx.font=scale+"pt Arial";
 		ctx.fillText(this.char,this.x+(tileWidth/4),(this.y+(tileWidth/1.5)),tileWidth);
 		ctx.fill();
 

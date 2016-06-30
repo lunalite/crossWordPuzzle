@@ -3,7 +3,7 @@
     include_once '../../includes/db_connect.php';
     include_once '../../includes/functions.php';
 
-    sec_session_start(); // Our custom secure way of starting a PHP session.
+    sec_session_start();
 
     $qid = $_POST['qid'];
     $question = $_POST['question'];
@@ -14,10 +14,9 @@
             WHERE CrosswordID = ".$crosswordId." AND QnsID = ".$qid;
 
         if ($mysqli->query($sql) === TRUE) {
-            header ('location: ../crosswordView.php');
+            header ('location: ../crosswordView.php?crosswordId='.$crosswordId.'&success=true');
             echo "Crossword questions updated successfully." . "<br>";
-        }
-        else {
+        } else {
             echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";
         }
 ?>

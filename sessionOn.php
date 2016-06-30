@@ -3,8 +3,8 @@
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
 
-sec_session_start(); // Our custom secure way of starting a PHP session.
-
+sec_session_start();
+if ((login_check($mysqli) == true) && role_check() != 0) {
     $q = $_POST['crosswordSearch'];
     $result = $mysqli->query("SELECT crosswordDescription FROM crosswordmasterdb WHERE crosswordId = $q ");
 	// $result2 = $mysqli->query("SELECT PuzzleName FROM crosswordmasterdb WHERE crosswordId = $q ");
@@ -26,6 +26,7 @@ sec_session_start(); // Our custom secure way of starting a PHP session.
                 echo "Error updating record: " . $mysqli->error;
             }
         }
+}
 ?>
 <html>
     <head>

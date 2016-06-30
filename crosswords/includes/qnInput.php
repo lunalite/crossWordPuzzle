@@ -69,6 +69,7 @@
 
 
         $answer[0]=trim($answer[0]);
+        $answer[0] = preg_replace('/\s+/', '', $answer[0]);
 	    $answer[0]=strtoupper($answer[0]);
         $answer[0]=filter_var($answer[0], FILTER_SANITIZE_STRING);
 

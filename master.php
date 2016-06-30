@@ -4,6 +4,7 @@
     
     sec_session_start();
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,10 +24,10 @@
             $(function () {
                 var xWordListRes = $('#crosswordList');
                 var xWordSearch = $('#crosswordSearch');
-            
+                var xWordResult = $("#result");
+
                 xWordSearch.keyup(function () {
                     var searchid = $(this).val();
-                    // console.log(searchid);
             
                     $.ajax({
                         type: "POST",
@@ -35,20 +36,33 @@
                         data: { searchQ: searchid },
                         cache: false,
                         success: function (data) {
-                             //console.log(data);
-                            $("#result").html(data).show();
+                            var parsedData = JSON.parse(data);
+                            xWordResult.find('tr').remove();
+
+                            if (parsedData === 'Wrong') {
+                                xWordResult.append("<tr><td>No such ID OR Wrong Command</td></tr>");
+                            } else {
+			        for (var i = 0; i < parsedData.length; i ++) { 
+				    xWordResult.append("<tr><td>"+parsedData[i].crosswordId+
+						"<td>"+parsedData[i].crosswordDescription+"</td>"+
+						"<td>"+parsedData[i].PuzzleName+"</td>"+
+						"</tr>");
+			        }
+			    } 
                         }
                     });
                 });
+                
+                xWordSearch.trigger("keyup");
             });
+            
             
         </script>
 
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
-
-
+    <!-- Only for admins and super users -->
+    <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
             <div class="navbar-header">
@@ -64,6 +78,7 @@
             <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="./crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
+                    <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
                     <!--
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -104,7 +119,7 @@
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-md-6">
+                <div class="col-xs-6 col-md-8 col-md-offset-2">
                         <form action="passwordChange.php">
                             <input type="submit" class="btn btn-primary btn-sm" value="Change Password">
                         </form>
@@ -122,21 +137,28 @@
                         <ol>
                             <li>Input 'list' into commands below - returns the available crosswords with their descriptions.</li>
                             <li>Input the crossword ID you have chosen - creates a session.</li>
+                            <li>Hint: To view crosswords, click on crossword on the navigation bar on top.</li>
                         </ol>
-                        <ul class="list-unstyled">
-                            <li>Format of results shown - [[a,b,c]]</li>
-                            <li>a = Crossword ID</li>
-                            <li>b = Crossword Description</li>
-                            <li>c = puzzle name</li>
-                        </ul>
                         <div class="row">
-                        Results will be shown here after inputting a command: <div id="result">[['a','b','c']]</div><br>
+                        Results: 
+			<table class="table table-hover">
+			<thead>
+			<tr>
+			<th>Crossword ID</th>
+			<th>Description</th>
+			<th>Puzzle name</th>
+			</tr>
+			</thead>
+			<tbody id="result">
+			</tbody>
+			</table>
+			<br>
                         </div>
                         <form id="createSession" action="sessionOn.php" method="post">
                             <fieldset class="form-group">
                                 <div class="col-xs-12 col-md-6">
-                                    <label for="crosswordSearch">Commands for creation session:</label>
-                                    <input type="text" name="crosswordSearch" class="form-control" id="crosswordSearch" placeholder="Input crossword ID">
+                                    <label for="crosswordSearch">Commands for creating session:</label>
+                                    <input type="text" name="crosswordSearch" class="form-control" id="crosswordSearch" placeholder="Input crossword ID" value="list">
                                 </div>
                             </fieldset>
                             <input type="submit" class="btn btn-primary btn-sm" value="Create Session">
@@ -149,18 +171,20 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-6 col-md-8 col-md-offset-2">
+
                     <!-- The available sessions section -->
                     <h3>Available sessions</h3>
                     <table id="sessionsOnline" class="table table-striped">
-                        <tr>
-                            <td>Session ID</td>
-                            <td>Crossword Description</td>
-                            <td>Online</td>
-                            <td>Teams</td>
+                            <tr>
+                                <th>Session ID</th>
+                                <th>Crossword ID</th>
+                                <th>Crossword Description</th>
+                                <th>Online</th>
+                                <th>Teams</th>
                         </tr>
                         <?php
-                            sessionCheck($mysqli);
+                            availSessionCheck($mysqli);
                         ?>
                     </table>
                     <form action="includes/sessionStart.php" id="startSession" method="post">

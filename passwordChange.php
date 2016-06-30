@@ -3,6 +3,8 @@ include_once 'includes/passwordSuccess.php';
 include_once 'includes/functions.php';
 
 sec_session_start();
+
+if ((login_check($mysqli) == true) && role_check() != 0) :
 ?>
 
 <!DOCTYPE html>
@@ -14,8 +16,6 @@ sec_session_start();
         <script type="text/JavaScript" src="js/forms.js"></script>
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
-
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
         <p>You are currently logged in as <?php echo htmlentities($_SESSION['username'])?>.</p>
 
@@ -33,14 +33,24 @@ sec_session_start();
                                    this.form.password,
                                    this.form.confirmpwd);" /> 
         </form>
-    </body>
+        <div class="container">
+            <div class="row">
+                <hr><p>&copy; 2016 Product of REP</p>
+            </div>
+        </div>
 
-    <!--*********************************************-->
-        <!-- For the case of not being a super user -->
-        <?php else : ?>
-            <p>
-                <span class="error">You are not authorized to access this page.</span> 
-                Please <a href="index.php">login</a> to a superuser.
-            </p>
-        <?php endif; ?>
+        <!--**********************************************************************-->
+        <!-- For the case of wrong login -->
+        <?php elseif ((login_check($mysqli) == true) && role_check() == 0)  :
+            echo '<script>';
+            echo 'window.location.href="../user.php"';
+            echo '</script>';
+            
+        else :
+            echo '<script>';
+            echo 'window.location.href="../index.php"';
+            echo '</script>';
+
+        endif; ?>
+    </body>
 </html>

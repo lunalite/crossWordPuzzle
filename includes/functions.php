@@ -1,7 +1,8 @@
 <?php
 
-include_once 'psl-config.php';
-include_once 'phpVariables.php';
+require_once 'psl-config.php';
+require_once 'phpVariables.php';
+
 
 function sec_session_start() {
     $session_name = 'sec_session_id';   // up a custom session name 
@@ -180,7 +181,7 @@ function role_check() {
 }
 
 // For checking of available sessions into table
-function sessionCheck($mysqli) {
+function availSessionCheck($mysqli) {
     $result = $mysqli->query("SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0");
     if (mysqli_num_rows($result) == 0) {
         echo '<tr><td>No sessions online.</td></tr>';
@@ -191,7 +192,11 @@ function sessionCheck($mysqli) {
                 $online = 'Yes';
             elseif ($row[2] == 2) 
                 $online = 'Started';
-            $tbp = '<tr><td>' . $row[0] . '</td><td>' . $row[1]  . '</td><td>'.$online.'</td>';
+            $tbp = '<tr>
+                    <td>'.$row[0].'</td>
+                    <td>'.$row[3].'</td>
+                    <td>'.$row[1].'</td>
+                    <td>'.$online.'</td>';
             $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in 
             (SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = " . $row[0] . ")";
 
@@ -243,7 +248,7 @@ function userInSession($mysqli){
         return TRUE;
         }
 }
-
+/*
 function sessionUserCheck($mysqli) {
     $query = "SELECT * FROM ".$GLOBALS['sessionJoin']." WHERE sessid = 
     (SELECT sessId FROM ".$GLOBALS['sessionJoin']." WHERE userId = " . $_SESSION['user_id'] . ")";
@@ -261,7 +266,7 @@ function sessionUserCheck($mysqli) {
         }
     }
 }
-
+*/
 function gateCheck($mysqli) {
     $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessid = " . $_SESSION['sess_id'];
     $result = $mysqli->query($query);

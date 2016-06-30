@@ -13,6 +13,8 @@
     $sql = "UPDATE " .$GLOBALS['crosswordPuzzles']. " SET TileCode ='" .$tileCode. "' WHERE Answer = '" 
     .$answer. "' AND CrosswordID =".$crosswordId;
 
+	error_log($sql,3,"error.txt");
+
 	$sql2 = "UPDATE " .$GLOBALS['crosswordMaster']. " SET PuzzleName='" .$title. "', crosswordDescription = '" 
     . $desc . "' WHERE crosswordId = '" .$crosswordId. "'"; 
 	echo $sql;

@@ -388,7 +388,7 @@
 		if (this.master == true ){
 			ctx.beginPath();
 			ctx.fillStyle = "black";
-			var size=screenWidth/180;
+			var size=tileCellWidth/4;
 			ctx.font=size+"pt Arial";
 			ctx.fillText(this.qns_id,this.x,(this.y+(tileWidth)),tileWidth);
 			ctx.fill();
@@ -398,7 +398,7 @@
 	Tile.prototype.drawAns = function() { //Function to draw the tile
 		ctx.beginPath();
 		ctx.fillStyle = "black";
-		var size=screenWidth/72;
+		var size=tileCellWidth/2;
 		ctx.font=size+"pt Arial";
 		ctx.fillText(this.char,this.x+(tileWidth/4),(this.y+(tileWidth/1.5)),tileWidth);
 		ctx.fill();
