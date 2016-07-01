@@ -129,6 +129,7 @@ function passwordformhash(form, password, conf) {
     p.type = "hidden";
     p.value = hex_sha512(password.value);
 
+
     // Make sure the plaintext password doesn't get sent. 
     password.value = "";
     conf.value = "";

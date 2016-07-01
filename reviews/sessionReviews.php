@@ -31,7 +31,7 @@ $('#sessionRevs').find("tr").click(function () {
     </head>
     <body>
     <!-- Only for admins and super users -->
-    <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
+    <?php if ((login_check($mysqli) == true) && role_check($mysqli) != 0) : ?>
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
             <div class="navbar-header">
@@ -47,7 +47,8 @@ $('#sessionRevs').find("tr").click(function () {
             <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                    <li><a href="#" style="color:white;">Reviews</a></li>
+                    <li><a href="./reviews.php" style="color:white;">Reviews</a></li>
+                    <li><a href="../users/users.php" style="color:white;">Users</a></li>
                     <!--
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -63,20 +64,8 @@ $('#sessionRevs').find("tr").click(function () {
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
 
-                        <?php if ((login_check($mysqli) == true)) : ?>
-                        Logged in as
-                        <?php
-                            if (role_check() == 0)
-                                echo htmlentities('normal_user ');
-                            elseif (role_check() == 1)
-                                echo htmlentities('super_user ');
-                            elseif (role_check() == 2)
-                                echo htmlentities('admin ');
-                            
-                            echo htmlentities($_SESSION['username']);
-                            endif;
-                        ?>
-                        &emsp;
+                        <?php loginNavBarAction($mysqli); ?>
+
                         <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                     </div>
                 </div>
@@ -159,7 +148,7 @@ reviews by users<br>
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
         <?php
-            elseif ((login_check($mysqli) == true) && (role_check() == 1 || role_check() == 0)) :
+            elseif ((login_check($mysqli) == true) && (role_check($mysqli) == 0)) :
                        echo '<script>';
                        echo 'window.location.href="../user.php";';
                        echo '</script>'; 

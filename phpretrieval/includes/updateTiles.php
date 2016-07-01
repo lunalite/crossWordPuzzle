@@ -17,6 +17,7 @@
 
 	$sql2 = "UPDATE " .$GLOBALS['crosswordMaster']. " SET PuzzleName='" .$title. "', crosswordDescription = '" 
     . $desc . "' WHERE crosswordId = '" .$crosswordId. "'"; 
+    error_log($sql2,3,"error2.txt");
 	echo $sql;
     $result = $mysqli->query($sql);
 	$result2 = $mysqli->query($sql2);

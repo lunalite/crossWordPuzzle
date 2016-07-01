@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS `members` (
   `password` char(128) NOT NULL,
   `salt` char(128) NOT NULL,
   `permissions` int(3) DEFAULT 0,
+  `classGroup` varchar(30) NOT NULL,
+  `debugPermissions` BOOLEAN NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 

@@ -9,14 +9,14 @@
     	c.height = c.width;
 	var NUM_COLS = 30;
 	var NUM_ROWS = 30;
-	if (c.width < c.height)
-		var tileCellWidth=c.width/NUM_COLS;
-	else
-		var tileCellWidth=c.height/NUM_COLS;
+	var tileCellWidth=c.width/NUM_COLS;
+	if (c.height < c.width)
+		c.height=NUM_ROWS*tileCellWidth;
 	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
 	var mouseY=0;
+	var xAdj=0.04*rect.left;
 	var answerSelected="";
 	var currentEncodedID="";
 	var answerMap = {};
@@ -32,6 +32,14 @@
 	var ansStack=[];
 	var tileCodeStack=[];
 	var actionStack=[];
+	var tiles = [];
+	var Questions=[];
+	var regexInput="";
+	var title="";
+	var desc="";
+	var botMode=false;
+	
+	console.log("TileCellWidth is "+tileCellWidth);
 	
 	function undo(){
 		console.log("Stack before undo is now "+actionStack+"\n"+ansStack+"\n"+tileCodeStack);
@@ -106,14 +114,52 @@
 	    }
 	});
 	
-	function autobomb(){
+	function shuffle(array) {
+		  var currentIndex = array.length, temporaryValue, randomIndex;
+		
+		  // While there remain elements to shuffle...
+		  while (0 !== currentIndex) {
+		
+		    // Pick a remaining element...
+		    randomIndex = Math.floor(Math.random() * currentIndex);
+		    currentIndex -= 1;
+		
+		    // And swap it with the current element.
+		    temporaryValue = array[currentIndex];
+		    array[currentIndex] = array[randomIndex];
+		    array[randomIndex] = temporaryValue;
+		  }
+		
+		  return array;
+	}
+	
+	function autobomb(tileid){
+		reset();
 		var allocatedAnswers=[];
 		var allocatedTiles=[];
 		var a=0;
-		var tileid=0;
+		var tileid=50;
 		inputDirection="vertical";
-		while (answerList.length>0){
-			var toBeInserted=String(answerList.splice(0,1));
+		botMode=true;
+		var counter=0;
+		var tempList= [];
+		tempList=answerList.slice();
+		tempList=shuffle(tempList);
+		while (tempList.length>0){
+			if (counter == 100){
+				var r = confirm("Failed to allocate all answers! Retry with a different configuration?");
+				if (r == true) {
+					var newID=Math.floor((Math.random() * area));
+					autobomb(newID);
+					return ;
+				} else {
+				    return ;
+				}				
+			}
+			console.log(tempList.length+" remaining");
+			var toBeInserted=String(tempList.splice(0,1));
+			//window.alert("Array is now "+tempList+" after removing "+toBeInserted);
+			answerSelected=toBeInserted;
 			console.log("Now trying to insert "+toBeInserted);
 			if (allocatedAnswers.length>0){
 					for (j=0;j<allocatedAnswers.length;j++){
@@ -126,34 +172,50 @@
 						tileid=allocatedTiles[j];
 						for (l=0;l<toBeInserted.length;l++){
 							var temp=tileid;
+							var found=false;
 							for (k=0;k<toInsertAgainst.length;k++){
 								console.log("trying to insert "+toBeInserted.charAt(l)+" of "+toBeInserted+" against " +toInsertAgainst+" at tile "+tileid);
 								if (wordToTiles(toBeInserted,tileid)){
+									counter=0;
+									//window.alert(toBeInserted+" inserted!");
 									j=100;
 									l=100;
 									allocatedAnswers.push(toBeInserted);
 									allocatedTiles.push(tileid);
 									toggleDirection();
+									found=true;
 									break;
 								}
 								else{
+									if ( (k == (toInsertAgainst.length-1)) && (l == (toBeInserted.length-1))) {
+										//window.alert("RECYCLING "+toBeInserted);
+										tempList.push(toBeInserted);
+										found=true;
+										j=100;
+										break;
+									}
 									if (inputDirection == "horizontal")
 										tileid+=NUM_COLS;
 									else
 										tileid++;
 								}
 							}
+							if (found)
+								break;
 							if (inputDirection == "horizontal")
 								tileid = --temp;
 							else
 								tileid = temp - NUM_COLS ;
 							if (tileid <0 || tileid > (area-1)){
-								k=100;
+								j=100;
 								l=100;
+								//window.alert("RECYCLING "+toBeInserted+" because tileID is "+tileid);
+								tempList.push(toBeInserted);
 							}
 								
 						}
-					}answerList.push(toBeInserted);
+					}
+					console.log("RECYCLING");
 				}
 			else{
 				console.log("INITIATING "+tileid+","+toBeInserted)
@@ -162,7 +224,10 @@
 				allocatedTiles.push(tileid);
 				toggleDirection();
 			}
+			counter++;
 		}
+		botMode=false;
+		alert("Found a possible configuration!");
 	}
 	
     function toggleDirection(){
@@ -171,12 +236,13 @@
     	else
     		inputDirection="horizontal";
     }
-	
+    
     function getAnswers(){
 		console.log("Getting data");
 		var url="../../phpretrieval/includes/qnOutput.php";
-		jQuery.getJSON(url, { crosswordId: 3 }, function (data) {
+		jQuery.getJSON(url, { crosswordId: crosswordId }, function (data) {
 		    // ... handle response as above
+
 		    var arr = jQuery.map(data, function (e1) { return e1; });
 		    var size = arr.length;
 		    console.log("Array is of size " + size);
@@ -184,17 +250,50 @@
 		    	var tileCode=arr[f]['TileCode'];
 		    	console.log("code is "+tileCode);
 		    	var ans=arr[f]['Answer'];
+		   	var qns=arr[f]['Question'];
 		    	ans=ans.replace(/\s/g,'');
+		    	regexInput += "@"+qns+ans+"\n";
+		    	console.log("Reconstructed string"+regexInput);
+		    	Questions.push(qns);
 		        questionList.push(ans);
 		        answerList.push(ans);
 		        answerMap[ans]=tileCode;
+		        if (tileCode!="Not Assigned yet"){
+		        	console.log("RESUMING");
+			        var tileID1=parseInt(tileCode.substring(0,4));
+				var tileID2=parseInt(tileCode.substring(4,8));
+				var temp=inputDirection;
+				var diff=tileID2-tileID1;
+				if (diff>=NUM_ROWS) //Go Down
+					inputDirection="vertical";
+				else
+					inputDirection="horizontal";
+				answerSelected=ans;
+				wordToTiles(ans.replace(/\s/g,''),tileID1);
+				inputDirection=temp;
+				var index=questionList.indexOf(ans);
+				questionList.splice(index, 1);
+		        }
 		    }
 		    console.log("Answer list formed: " + questionList);
 		    answerSelected="";
 		    populate(questionList);
-		    autobomb();
 		});	
        }
+	
+	function reset(){
+		answerSelected="";
+		ctx.clearRect(0, 0, c.width, c.height);
+		questionList=[];
+		questionList =answerList.concat();
+		console.log("Questions are now "+questionList);
+		populate(questionList);
+		tiles=[];
+		ansStack=[];
+		tileCodeStack=[];
+		actionStack=[];
+		initTiles();
+	}
 	
 	function populate(list){
 		while (overall_list.firstChild) {
@@ -209,7 +308,7 @@
 		   console.log("Canvas is "+rect.left+" from the left and "+rect.top+" from the top");		
 	}
 
-    	getAnswers();
+
 	
 	var Tile = function(x, y,id) { //Class Declaration for Tile Object
 		this.x = x;
@@ -236,14 +335,23 @@
 		}
 	}
 	
-	function save(){	//Save the Master template
+	function getTitle(){
+		var url2="includes/getTitleFromId.php?id="+crosswordId;
+		console.log("getting title");
+		jQuery.getJSON(url2, function (data) {
+		    console.log("RECEIVED");
+		    title = data[0]['PuzzleName'];
+		    desc = data[0]['crosswordDescription'];
+		    console.log("Title: "+title+","+"Description: "+desc);
+		});
+	}
+	
+	function save(){
 		if (questionList.length!=0){
 			window.alert("Not all answers have been allocated yet!");
 			return ;
 		}
 		//console.log("MAP SAVED: "+answerMap["Why"]);
-		var title=prompt("Please enter the title of the puzzle.");
-        	var desc=prompt("Please enter the description of the puzzle.");
 		var tiles_string="";
 		var savedTiles=new Array();
 		for (i=0;i<tiles.length;i++){
@@ -270,10 +378,54 @@
 			    console.log("Save successfully");
 			});
 		 
-	}alert('You have successfully saved the puzzle as ' + title);}
+		}alert('You have successfully saved the puzzle as ' + title);
+	}
+	
+	function saveAs(){	//Save the Master template
+		if (questionList.length!=0){
+			window.alert("Not all answers have been allocated yet!");
+			return ;
+		}
+		//console.log("MAP SAVED: "+answerMap["Why"]);
+		title=prompt("Please enter the title of the puzzle.");
+        	desc=prompt("Please enter the description of the puzzle.");
+		var tiles_string="";
+		var savedTiles=new Array();
+		for (i=0;i<tiles.length;i++){
+			if(tiles[i].char != '')
+				savedTiles.push(tiles[i]);
+		}
+		for (i=0;i<savedTiles.length;i++){
+			console.log("Saved IDS: ")
+			console.log(savedTiles[i].id);
+			if (savedTiles[i].id < 10)
+				tiles_string+="00";
+			else if (savedTiles[i].id < 100)
+				tiles_string+="0";
+			tiles_string+=savedTiles[i].id;
+			tiles_string+=savedTiles[i].char;
+			tiles_string+=',';
+		}
+		tiles_string=tiles_string.slice(0,-1);
+		//console.log("Tiles String: "+tiles_string);
+		var url2="../../crosswords/includes/duplicate.php";	
+		var jqxhr = $.post(url2, { id: crosswordId, questions: regexInput }, function (data) {
+			    var newID2=String(data);
+			    newID2=newID2.substring(1,4);
+			    newID2=parseInt(newID2);
+			    var url="../phpretrieval/includes/updateTiles.php";
+				for (i=0;i<answerList.length;i++){
+					console.log("Saving tilecode "+answerMap[answerList[i]]);
+					console.log("SAVING GAIA "+title+","+desc);
+					var jqxhr = $.post(url, { id: newID2, answer: answerList[i], tileCode: answerMap[answerList[i]], title: title, description: desc }, function() 	{console.log("Save successfully");});
+				}
+		});
+		 
+		alert('You have successfully saved the puzzle as ' + title);
+	}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
-		var ID = (parseInt((y-2*pixelSize)/tileCellWidth) * NUM_ROWS) + parseInt((x-pixelSize)/tileCellWidth);
+		var ID = (parseInt(y/tileCellWidth) * NUM_ROWS) + parseInt(x/tileCellWidth);
 		return ID;
 	}
 	
@@ -286,17 +438,16 @@
 		return pos;
 	}
 	
-	function getPosition(e) {	
+	function getPosition(e) {	 //Function called when a tile is clicked
 		var scrollTop = $(window).scrollTop();
 		var scrollRight = $(window).scrollLeft();
-		//console.log("Scrolled "+scrollTop);//Function called when a tile is clicked
-		mouseX = e.clientX-rect.left+tileCellWidth/2;;
-		mouseY = e.clientY+scrollTop-rect.top+tileCellWidth/2;
-		//console.log("X "+mouseX);
-		//console.log("Y"+mouseY);
+		//console.log("Scrolled "+scrollTop);
+		mouseX = e.clientX+scrollRight-rect.left*0.96;
+		mouseY = e.clientY+scrollTop-rect.top;
+		console.log("X "+mouseX);
+		console.log("Y"+mouseY);
 		var tileSelected=posToTileID(mouseX,mouseY);
-		//console.log("Selected Tile: "+tileSelected);
-		//console.log("Inserting word "+answerSelected);
+		console.log("Selected Tile: "+tileSelected);
 		if(answerSelected == "")
 			deleteWord(tileSelected);
 		else{
@@ -334,6 +485,7 @@
 	function deleteWord(tileID){
 		var tile=tiles[tileID];
 		var ansToDelete=answerList[tile.qns];
+		console.log("trying to delete "+tile.char);
 		if (tile.char != ''){
 			var r = confirm("Are you sure you want to delete "+ansToDelete+"?");
 			if (r == true) {
@@ -438,11 +590,13 @@
 			return true;
 		}
 		if((length+pos[0]>(NUM_COLS) && inputDirection == "horizontal" )|| (length+pos[1]>(NUM_ROWS) && inputDirection == "vertical")){
-			window.alert("Word is too long in the current direction! Select another tile!");
+			if (botMode == false)
+				window.alert("Word is too long in the current direction! Select another tile!");
 			return false;
 			}
 		else{
-			window.alert("Collision detected!Select another tile!");
+			if (botMode == false)
+				window.alert("Collision detected!Select another tile!");
 			return false;	
 		}
 	}
@@ -457,23 +611,44 @@
 		ctx.fillText(this.char,this.x+(tileWidth/2),(this.y+(tileWidth/2)),tileWidth);
 	};
 	
-	var tiles = [];
-	var counter=0;
-	for (var i = 0; i < NUM_COLS; i++) {	//Initialise all the tiles
-		for (var j = 0; j < NUM_ROWS; j++) {
-			var tile =new Tile(j * tileCellWidth, i * tileCellWidth,counter);
-			tile.drawFaceDown();
-			tiles.push(tile);
-			counter++;
+	function initTiles(){
+		var counter=0;
+		for (var i = 0; i < NUM_COLS; i++) {	//Initialise all the tiles
+			for (var j = 0; j < NUM_ROWS; j++) {
+				var tile =new Tile(j * tileCellWidth, i * tileCellWidth,counter);
+				tile.drawFaceDown();
+				tiles.push(tile);
+				counter++;
+			}
 		}
 	}
 	
-	counter=0;
-	for (var i = 0; i < NUM_COLS; i++) {	//Debugging purposes
-		for (var j = 0; j < NUM_ROWS; j++) {
-			//console.log("Tile "+i+","+j+" : "+tiles[counter].x+","+tiles[counter].y);
-			counter++;
-		}
-	}	
+	function post(path, params, method) {
+	    method = method || "post"; // Set method to post by default if not specified.
+	
+	    // The rest of this code assumes you are not using a library.
+	    // It can be made less wordy if you use one.
+	    var form = document.createElement("form");
+	    form.setAttribute("method", method);
+	    form.setAttribute("action", path);
+	
+	    for(var key in params) {
+	        if(params.hasOwnProperty(key)) {
+	            var hiddenField = document.createElement("input");
+	            hiddenField.setAttribute("type", "hidden");
+	            hiddenField.setAttribute("name", key);
+	            hiddenField.setAttribute("value", params[key]);
+	
+	            form.appendChild(hiddenField);
+	         }
+	    }
+	
+	    document.body.appendChild(form);
+	    form.submit();
+	}
+	
+	getTitle();
+	initTiles();
+	getAnswers();
 
-					
+	

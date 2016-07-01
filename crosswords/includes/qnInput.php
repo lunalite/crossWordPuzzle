@@ -85,7 +85,7 @@
         $counter ++;
     }
     unset($qn2BAdded); // break the reference with the last element
-        $url = 'window.location.href="../../XWordPuzzleStandAlone/master_template.php?id='.urlencode($latestCrossWordId).'"';
+        $url = 'window.location.href="../../XWordPuzzleStandAlone/auto_master_template.php?id='.urlencode($latestCrossWordId).'"';
         echo '<script>';
         echo $url;
         echo '</script>';

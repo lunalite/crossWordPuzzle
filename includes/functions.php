@@ -3,7 +3,6 @@
 require_once 'psl-config.php';
 require_once 'phpVariables.php';
 
-
 function sec_session_start() {
     $session_name = 'sec_session_id';   // up a custom session name 
     $secure = SECURE;
@@ -170,14 +169,30 @@ function login_check($mysqli) {
     }
 }
 
-function role_check() {
+function role_check($mysqli) {
     //Set variable permissions for the different roles
-    $permissions = $_SESSION['permissions'];
-
+if (!$mysqli) {
+    $permissions= $_SESSION['permissions'];
+} else {
+    $query = "SELECT permissions FROM ".$GLOBALS['members']." WHERE id = ".$_SESSION['user_id'];
+    $result = $mysqli->query($query);
+    while ($row=mysqli_fetch_row($result)) {
+        $permissions = $row[0];
+    }
+}
     //$permissions = 0 for normal users
     //$permissions = 1 for super users
     //$permissions = 2 for admin
     return $permissions;
+
+}
+
+function debugPermissionCheck($mysqli) {
+    $query = "SELECT debugPermissions FROM ".$GLOBALS['members']." WHERE id = ".$_SESSION['user_id'];
+    $result = $mysqli->query($query);
+    while ($row=mysqli_fetch_row($result)) {
+       return $row[0];
+    }
 }
 
 // For checking of available sessions into table
@@ -285,8 +300,12 @@ function gateCheck($mysqli) {
     }
 }
 
-function userCheck($mysqli) {
+function userCheck($mysqli, $showAll) {
+if ($showAll) {
     $query = "SELECT * FROM ".$GLOBALS['members'];
+} else {
+    $query = "SELECT * FROM ".$GLOBALS['members']." WHERE id = ".$_GET['userId'];
+}
     $result = $mysqli->query($query);
     while ($row = mysqli_fetch_row($result)) {
         $usertype = '';
@@ -301,20 +320,7 @@ function userCheck($mysqli) {
                 <td>'.$row[1].'</td>
                 <td>'.$row[2].'</td>
                 <td>'.$usertype.'</td>
-                </tr>';
-    }
-}
-
-function crosswordCheck($mysqli) {
-    $query = "SELECT * FROM ".$GLOBALS['crosswordMaster'];
-    $result = $mysqli->query($query);
-    while ($row = mysqli_fetch_row($result)) {
-
-        echo '<tr id="'. $row[0] .'">
-                <td>'.$row[0].'</td>
-                <td>'.$row[1].'</td>
-                <td>'.$row[2].'</td>
-                <td>'.$row[3].'</td>
+                <td>'.$row[6].'</td>
                 </tr>';
     }
 }
@@ -351,6 +357,15 @@ function crosswordList($mysqli, $crosswordId, $questionId) {
     }
 }
 
+function groupReply($mysqli, $id) {
+    $query = "SELECT classGroup FROM ".$GLOBALS['members']." WHERE id = ".$id;
+    $result = $mysqli->query($query);
+    while ($row=mysqli_fetch_row($result)) {
+       echo $row[0];
+    }
+
+}
+
 function esc_url($url) {
 
     if ('' == $url) {
@@ -380,4 +395,41 @@ function esc_url($url) {
     } else {
         return $url;
     }
+}
+
+function loginNavBarAction($mysqli) {
+    if ((login_check($mysqli) == true)) {
+      $userType = "";
+      echo 'Logged in as ';
+
+switch(role_check($mysqli)) {
+  case 0:
+    $userType = "normalUser";
+    break;
+  case 1:
+    $userType = "superUser";
+    break;
+  case 2:
+    $userType = "admin";
+    break;
+}
+
+      if ((role_check($mysqli) == 0 || 1) && !debugPermissionCheck($mysqli)) {
+        echo $userType.' ';
+      } elseif (debugPermissionCheck($mysqli)) {
+        echo '
+          <span class="dropdown">
+          <span data-toggle="dropdown"><b>'.$userType.'</b><span class="caret"></span></span>
+            <ul class="dropdown-menu">
+              <li><a href="/includes/changePermissions.php?debug=2">admin</a></li>
+              <li><a href="/includes/changePermissions.php?debug=1">superUser</a></li>
+              <li><a href="/includes/changePermissions.php?debug=0">normalUser</a></li>
+            </ul>
+          </span>';
+      }
+    echo htmlentities($_SESSION['username']);
+    echo ' of Group ';
+    groupReply($mysqli, $_SESSION['user_id']); 
+    }
+    echo '&emsp;';
 }

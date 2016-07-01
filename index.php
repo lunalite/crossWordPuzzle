@@ -43,15 +43,15 @@
     <body>
         <!-- PHP code for checking if there's an error logging in by $_GET error -->
         <?php
-            // role_check() == 1 for the case of super users OR 2 for the case of admin
-            if ((login_check($mysqli) == true) && (role_check() == 1 || role_check() == 2) ) {
+            // role_check($mysqli) == 1 for the case of super users OR 2 for the case of admin
+            if ((login_check($mysqli) == true) && (role_check($mysqli) == 1 || role_check($mysqli) == 2) ) {
                 echo '<script>';
                 echo 'window.location.href="./master.php";';
                 echo '</script>'; 
             }
             
-            // role_check() == 0 for the case of normal users
-            elseif ((login_check($mysqli) == true) && role_check() == 0) {
+            // role_check($mysqli) == 0 for the case of normal users
+            elseif ((login_check($mysqli) == true) && role_check($mysqli) == 0) {
                 echo '<script>';
                 echo 'window.location.href="./user.php";';
                 echo '</script>'; 
@@ -66,23 +66,6 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
 
-                        <?php if ((login_check($mysqli) == true)) : ?>
-                        Logged in as
-                        <?php
-                            if (role_check() == 0)
-                                echo htmlentities('normal_user ');
-                            elseif (role_check() == 1)
-                                echo htmlentities('super_user ');
-                            elseif (role_check() == 2)
-                                echo htmlentities('admin ');
-                            
-                            echo htmlentities($_SESSION['username']);
-                        ?>
-                        &emsp;
-                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
-                    </div>
-
-                    <?php elseif ((login_check($mysqli) == FALSE)) : endif; ?>
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>

@@ -1,4 +1,12 @@
 # crossWordPuzzle
+Update 1/7/2016
+- Moved session creation page to crosswordView.php page
+- Allowed for hiding of the crosswordList
+- Added a group option for Users
+- Allow for admin to change to other user mode
+- Created a new section to manage users
+- Allowed for changing pw  for other users
+
 Update 30/6/16
 - View crosswords in crosswords/crosswordView.php opens up in new page for easy reference
 - Added a new warning line when questions/answers are updated in crosswordView.php

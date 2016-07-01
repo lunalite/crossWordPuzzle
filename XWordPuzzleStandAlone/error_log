@@ -1,1 +1,9 @@
 [18-Jun-2016 09:32:49 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/XWordPuzzleStandAlone/includes/printScoreRank.php on line 15
+[01-Jul-2016 05:55:40 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 06:09:11 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:11:51 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:11:52 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:11:52 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:11:52 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:11:52 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:11:53 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176

@@ -48,7 +48,7 @@
 
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check() != 0) : ?>
+        <?php if ((login_check($mysqli) == true) && role_check($mysqli) != 0) : ?>
 
 
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
@@ -67,6 +67,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#" style="color:white;">Crosswords</a></li>
                         <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
+                    <li><a href="../users/users.php" style="color:white;">Users</a></li>
                             <!--
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
@@ -82,21 +83,9 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
 
-                            <?php if ((login_check($mysqli) == true)) : ?>
-                        Logged in as
-                            <?php
-                                if (role_check() == 0)
-                                    echo htmlentities('normal_user ');
-                                elseif (role_check() == 1)
-                                    echo htmlentities('super_user ');
-                                elseif (role_check() == 2)
-                                    echo htmlentities('admin ');
-                                
-                                echo htmlentities($_SESSION['username']);
-                                endif;
-                            ?>
-                        &emsp;
-                            <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
+                       <?php loginNavBarAction($mysqli); ?>
+
+                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +101,7 @@
                             <input type="submit" class="btn btn-primary btn-sm" value="View Crossword">
                         </form>
                         <!-- Only admins can create puzzle-->
-                        <?php if (role_check() == 2) : ?>
+                        <?php if (role_check($mysqli) == 2) : ?>
                         <br>
                         <form action="./crosswordAddition.php">
                             <input type="submit" class="btn btn-danger btn-sm" value="New Crossword">
@@ -131,7 +120,7 @@
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
         <?php
-            elseif ((login_check($mysqli) == true) && (role_check() == 1 || role_check() == 0)) :
+            elseif ((login_check($mysqli) == true) && (role_check($mysqli) == 1 || 0)) :
                        echo '<script>';
                        echo 'window.location.href="../user.php";';
                        echo '</script>'; 

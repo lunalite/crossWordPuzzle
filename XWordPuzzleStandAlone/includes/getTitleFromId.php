@@ -5,7 +5,7 @@ include_once '../../includes/functions.php';
 	sec_session_start();    
 
         $ID = $_GET['id'];
-	$sql = "SELECT PuzzleName FROM ".$GLOBALS['crosswordMaster']." WHERE crosswordID = $ID" ;
+	$sql = "SELECT PuzzleName,crosswordDescription FROM ".$GLOBALS['crosswordMaster']." WHERE crosswordID = $ID" ;
     
     $result = $mysqli->query($sql);	
 	$data = [];

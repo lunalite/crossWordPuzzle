@@ -7,6 +7,12 @@
     sec_session_start(); // Our custom secure way of starting a PHP session.       
 
     if ($_POST['p']) {
+        $userId = $_SESSION['userPW2BC'];
+        if (isset($userId)) {
+          $userId = $_SESSION['user_id']
+        } else {
+          $userId = $_SESSION['userPW2BC'];
+        }
 
         $password = filter_input(INPUT_POST, 'p', FILTER_SANITIZE_STRING);
         if (strlen($password) != 128) {
@@ -23,7 +29,7 @@
         
         // Update the password for user
         $sql = "UPDATE members SET password = '" . $password . "', salt = '" . $random_salt .
-         "' WHERE id = " . $_SESSION['user_id'];
+         "' WHERE id = " . $userId;
 
         if ($mysqli->query($sql) === TRUE) {
             echo "Password changed successfully" . "<br>";

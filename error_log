@@ -1,7 +1,37 @@
-[30-Jun-2016 06:41:24 UTC] PHP Fatal error:  Class 'HTMLPurifier_Config' not found in /home/repprog90/public_html/includes/functions.php on line 7
-[30-Jun-2016 06:59:50 UTC] PHP Fatal error:  Call to undefined function sessionCheck() in /home/repprog90/public_html/master.php on line 187
-[30-Jun-2016 07:00:04 UTC] PHP Fatal error:  Call to undefined function sessionCheck() in /home/repprog90/public_html/master.php on line 187
-[30-Jun-2016 07:00:12 UTC] PHP Fatal error:  Call to undefined function sessionCheck() in /home/repprog90/public_html/master.php on line 187
-[30-Jun-2016 07:02:07 UTC] PHP Fatal error:  Call to undefined function sessionCheck() in /home/repprog90/public_html/master.php on line 187
-[30-Jun-2016 08:39:16 UTC] PHP Fatal error:  Call to undefined function sessionCheck() in /home/repprog90/public_html/user.php on line 69
-[30-Jun-2016 08:40:07 UTC] PHP Fatal error:  Call to undefined function AvailableSessionCheck() in /home/repprog90/public_html/user.php on line 69
+[01-Jul-2016 05:19:19 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 184
+[01-Jul-2016 05:19:26 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 184
+[01-Jul-2016 05:19:28 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 184
+[01-Jul-2016 05:19:48 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 184
+[01-Jul-2016 05:20:09 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 184
+[01-Jul-2016 05:55:39 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:56:02 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:56:22 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 175
+[01-Jul-2016 05:56:34 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:56:35 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:56:57 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:56:58 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:57:05 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 174
+[01-Jul-2016 05:57:14 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 175
+[01-Jul-2016 05:57:58 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 175
+[01-Jul-2016 05:58:48 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 175
+[01-Jul-2016 05:59:03 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 05:59:41 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:04 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:00:30 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:31 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:31 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:32 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:32 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:32 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:00:42 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:02:30 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:07:52 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:07:54 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:08:16 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:08:50 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:09:10 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:10:07 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:10:09 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:11:58 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 176
+[01-Jul-2016 06:12:09 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177
+[01-Jul-2016 06:12:11 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/repprog90/public_html/includes/functions.php on line 177

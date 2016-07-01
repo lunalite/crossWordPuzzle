@@ -92,6 +92,9 @@
                             <div class="submit">
                                 <button type="button" class="btn btn-default" onclick="save()">Save</button>
                                 <button type="button" class="btn btn-default" onclick="undo()" id="undo">Undo</button>
+                                <button type="button" class="btn btn-default" onclick="reset()">Reset</button>       
+                                <button type="button" class="btn btn-default" onclick="saveAs()">Save as</button>    
+                                <button type="button" class="btn btn-default" onclick="autobomb(50)">Auto</button>
                             </div>
                             <br>
                             <a href="../master.php">Click here to go back after addition.</a>
