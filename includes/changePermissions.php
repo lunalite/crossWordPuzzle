@@ -24,8 +24,16 @@ if (isset($_GET['debug']) && debugPermissionCheck($mysqli)) {
 
     $id = $permId["id"];
     $perm = $permId["permissions"];
+    $debugSettings = "";
 
-    $sql = "UPDATE ".$GLOBALS['members']." SET permissions = '" . $perm . "' WHERE id = " . $id;
+// Check if setting to admin and thus, change the debug permissions
+if ($perm === 2) {
+    $debugStmt = ", debugPermissions = 1";
+} else {
+    $debugStmt  = ", debugPermissions = 0";
+}
+
+    $sql = "UPDATE ".$GLOBALS['members']." SET permissions = '".$perm."'".$debugStmt." WHERE id = " . $id;
 
         if ($mysqli->query($sql) === TRUE) {
             header ('location: ../users/users.php');

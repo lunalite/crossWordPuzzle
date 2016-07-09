@@ -64,7 +64,7 @@
 
                         <form action="includes/sessionJoin.php" id="sessionJoin" method="post">
                             <div class="form-group">
-                            <div class="row"><div class="col-xs-6">
+                            <div class="row"><div class="col-xs-12 col-md-8 col-md-offset-2">
                             <select class="form-control" name="sessionJoin" form="sessionJoin">
                                 <?php
                                     sessionCheckD($mysqli);
@@ -74,9 +74,16 @@
                             <input type="submit" class="btn btn-primary btn-sm" name="joinSession" value="Join Session">
                         </form>
 
+                        <?php elseif(gateCheck($mysqli)) : ?>
+
+                        <form action="./XWordPuzzleStandAlone/main_xword.php">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Resume puzzle">
+                        </form>
+
                         <?php else : ?>
                         You have joined a session. Please wait for the gate to open...  <br>
                         Click <a href="./includes/leaveSession.php">here</a> to leave the session.
+                        <?php endif; ?>
 
                         <script>
                         //********* HERE IS THE LIVE GATE PUSH SYSTEM ********
@@ -91,17 +98,11 @@
                         channelT.bind('gateOpen', function (data) {
                             if (data.gateStatus == 'open') {
                                 alert('Gate is ' + data.gateStatus);
-                                location.reload();
+                                window.location.href="XWordPuzzleStandAlone/main_xword.php";
                             }
                         });
                         </script>
 
-                        <?php if(gateCheck($mysqli)) {
-                                echo '<script>';
-                                echo 'window.location.href="XWordPuzzleStandAlone/main_xword.php"';
-                                echo '</script>';
-                            }
-                        endif; ?>
                     </div>
                 </div>
             </div>

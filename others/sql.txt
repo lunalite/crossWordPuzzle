@@ -3,6 +3,12 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   `time` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `classGroup` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `classGroupName` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(30) NOT NULL,
@@ -10,8 +16,8 @@ CREATE TABLE IF NOT EXISTS `members` (
   `password` char(128) NOT NULL,
   `salt` char(128) NOT NULL,
   `permissions` int(3) DEFAULT 0,
-  `classGroup` varchar(30) NOT NULL,
   `debugPermissions` BOOLEAN NOT NULL DEFAULT FALSE,
+  `classGroup` int(11) REFERENCES classGroup(id),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -36,7 +42,8 @@ CREATE TABLE IF NOT EXISTS `availablesessions` (
   `sessId` int(11) AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   `online` int(11) DEFAULT '0',
-  `crosswordID` tinyint(4) REFERENCES crosswordpuzzles(crosswordID),
+  `crosswordID` int(11) REFERENCES crosswordpuzzles(crosswordID),
+  `classGroupOpen` int(11) REFERENCES classGroup(id),
   PRIMARY KEY (sessId)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

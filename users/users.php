@@ -34,7 +34,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                  <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword User Management Page</a>
+                  <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword User Management Page</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -73,6 +73,12 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
 
+                        <!-- Groups -->
+                        <form action="./groups.php">
+                            <input type="submit" class="btn btn-danger btn-sm" value="Manage groups">
+                        </form>
+
+                        <!-- Users -->
                         <h3>All users</h3>
                         <table id="userList" class="table table-striped table-hover">
                             <thead>

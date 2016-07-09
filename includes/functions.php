@@ -197,7 +197,15 @@ function debugPermissionCheck($mysqli) {
 
 // For checking of available sessions into table
 function availSessionCheck($mysqli) {
-    $result = $mysqli->query("SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0");
+
+    if (isset($_GET['sessId'])) {
+        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessId = ". $_GET[sessId];
+    } else {
+        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0";
+    }
+
+    $result = $mysqli->query($query);
+
     if (mysqli_num_rows($result) == 0) {
         echo '<tr><td>No sessions online.</td></tr>';
     }
@@ -207,11 +215,17 @@ function availSessionCheck($mysqli) {
                 $online = 'Yes';
             elseif ($row[2] == 2) 
                 $online = 'Started';
-            $tbp = '<tr>
+            $tbp = '<tr id = "'.$row[0].'">
                     <td>'.$row[0].'</td>
                     <td>'.$row[3].'</td>
                     <td>'.$row[1].'</td>
                     <td>'.$online.'</td>';
+
+            // For displaying classGroup the session is opened to
+            if ($_SESSION['permissions'] === 1|2) {
+                $tbp = $tbp . '<td>'.$row[4].'</td>';
+            }
+
             $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in 
             (SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = " . $row[0] . ")";
 
@@ -221,10 +235,18 @@ function availSessionCheck($mysqli) {
             }
             else {
                 $tbp = $tbp . '<td>';
+                $notEnd = false;
                 while ($innerRow=mysqli_fetch_row($innerResult)) {
-                     $tbp = $tbp . $innerRow[0] . ' ';
+
+                     // For beautifying the data shown
+                     if ($notEnd) {
+                         $tbp = $tbp . ', ';
+                     }
+                     $tbp = $tbp . $innerRow[0];
+                     $notEnd = true;
                 }
                 $tbp = $tbp . '</td></tr>';
+
             }
 
             echo $tbp;
@@ -235,7 +257,14 @@ function availSessionCheck($mysqli) {
 
 // For available sessions into select box
 function sessionCheckD($mysqli) {
-    $result = $mysqli->query("SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0");
+
+    if (isset($_GET['sessId'])) {
+        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessId = ". $_GET[sessId];
+    } else {
+        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0";
+    }
+
+    $result = $mysqli->query($query);
     if (mysqli_num_rows($result) == 0) {
         echo '<option value=\"NoSessOn\">No sessions online</option>';
     }
@@ -320,7 +349,18 @@ if ($showAll) {
                 <td>'.$row[1].'</td>
                 <td>'.$row[2].'</td>
                 <td>'.$usertype.'</td>
-                <td>'.$row[6].'</td>
+                <td>'.$row[7].'</td>
+                </tr>';
+    }
+}
+
+function groupCheck($mysqli) {
+    $query = "SELECT * FROM ".$GLOBALS['classGroup'];
+    $result = $mysqli->query($query);
+    while ($row = mysqli_fetch_row($result)) {
+        echo '<tr id="'. $row[0] .'">
+                <td>'.$row[0].'</td>
+                <td>'.$row[1].'</td>
                 </tr>';
     }
 }

@@ -3,7 +3,7 @@
     include_once '../../includes/psl-config.php';
     include_once '../../includes/phpVariables.php';
 
-	$defaultTileCode='Not Assigned yet';
+    $defaultTileCode='Not Assigned yet';
     //echo $_POST["questions"]."<br>";
     $string = $_POST["questions"];
     $questions = preg_split("/@/",$string);

@@ -1,15 +1,15 @@
 <?php
     
     include_once 'db_connect.php';
-    include_once 'psl-config.php';
     include_once 'functions.php';
 
     sec_session_start(); // Our custom secure way of starting a PHP session.       
 
     if ($_POST['p']) {
         $userId = $_SESSION['userPW2BC'];
-        if (isset($userId)) {
-          $userId = $_SESSION['user_id']
+
+        if (!isset($userId)) {
+          $userId = $_SESSION['user_id'];
         } else {
           $userId = $_SESSION['userPW2BC'];
         }
@@ -32,7 +32,8 @@
          "' WHERE id = " . $userId;
 
         if ($mysqli->query($sql) === TRUE) {
-            echo "Password changed successfully" . "<br>";
+            echo "Password changed successfully. Going back in 3 seconds..." . "<br>";
+            echo "<script>setTimeout(function(){location.href='./users.php'} , 3000);</script>";
         }
         else {
             echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";

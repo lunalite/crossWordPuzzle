@@ -5,6 +5,11 @@
     sec_session_start();
     
     $userID = $_GET['userId'];
+    if (!is_numeric($userID)) {
+        echo "Please enter a numeric ID.";
+        echo "<a href='javascript:history.go(-1)'>Click here to go back.</a>";
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,11 +28,13 @@
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
     </head>
     <body>
+
+<!-- Only for admins-->
 <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Grant User Page</a>
+                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Grant User Page</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">

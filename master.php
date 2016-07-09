@@ -19,6 +19,23 @@
         <script src="css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="css/js/ie10-viewport-bug-workaround.js"></script>
+<script>
+$(function() {
+                $("#availSessionList").on("click", "tr", function(e) {
+                    if (sessionStorage.getItem("sessId") === this.id) {
+                        var url = "master.php?";
+                        window.location.href = url;
+                        sessionStorage.removeItem("sessId");
+                    } else {
+                        sessionStorage.setItem("sessId", this.id);
+                        var url = "master.php?sessId=" + this.id;
+                        window.location.href = url;
+                    }
+                });
+
+});
+</script>
+
     </head>
     <body>
     <!-- Only for admins and super users -->
@@ -68,7 +85,7 @@
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
-                <div class="col-xs-6 col-md-8 col-md-offset-2">
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
                         <form action="passwordChange.php">
                             <input type="submit" class="btn btn-primary btn-sm" value="Change Password">
                         </form>
@@ -78,17 +95,25 @@
                         <!-- The available sessions section -->
                     <h3>Available sessions</h3>
                     <table id="sessionsOnline" class="table table-striped">
+                        <thead>
                             <tr>
                                 <th>Session ID</th>
                                 <th>Crossword ID</th>
                                 <th>Crossword Description</th>
                                 <th>Online</th>
-                                <th>Teams</th>
+                                <th>Open for classGroup</th>
+                                <th>Teams joined</th>
                         </tr>
-                        <?php
-                            availSessionCheck($mysqli);
-                        ?>
+                        </thead>
+                        <tbody id="availSessionList" style="cursor: pointer;">
+                            <?php
+                                availSessionCheck($mysqli);
+                            ?>
+                        </tbody>
                     </table>
+
+                // For showing of start and delete sessions
+                <?php if (!isset($_GET['sessId'])) : ?>
                     <form action="includes/sessionStart.php" id="startSession" method="post">
                         <select name="sessId" form="startSession">
                             <?php
@@ -99,13 +124,22 @@
                         <input type="submit" class="btn btn-primary btn-sm" name="deleteSession" value="Delete Session">
                     </form>
 
+                <?php else : ?>
+                    <form action="#" id="changeGroup" method="post">
+                        <select name="classGroup" form="changeGroup">
+                            <?php
+                                sessionCheckD($mysqli);
+                            ?>
+                        </select>
+                        <input type="submit" class="btn btn-primary btn-sm" name="changeGroup" value="Change Group">                
+                <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-xs-6 col-md-8 col-md-offset-2">
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
                     <hr><p>&copy; 2016 Product of REP</p>
                 </div>
             </div>

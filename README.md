@@ -1,4 +1,13 @@
 # crossWordPuzzle
+Update 8/7/2016
+- Added some checking of codes for grantUser.php page
+- Added password change for other users
+- Removed autoload to puzzle page for users
+- Changed to https server through cloudflare
+- Added classGroupOpen options for availablesessions table to check allow only related users for joining sessions
+- Added classGroup table for ease of reference
+- Added group creation page
+
 Update 1/7/2016
 - Moved session creation page to crosswordView.php page
 - Allowed for hiding of the crosswordList

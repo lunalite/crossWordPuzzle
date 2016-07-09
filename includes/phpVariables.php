@@ -9,6 +9,7 @@
     $sessionJoin = "sessionJoin";
     $sessionStart = "sessionStart";
     $questionAnswered = "questionAnswered";
+    $classGroup = "classGroup";
 
     /* Session names
     ** $_SESSION['user_id']
