@@ -41,7 +41,7 @@
 
     <body>
     <!-- This page can be viewed by both super users and admin -->
-    <?php if ((login_check($mysqli) == true) && role_check() == 2) : ?>
+    <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?>
     <div class="container">
 	    <a href="javascript:history.back()">Click Here to go back</a>
     </div>
@@ -56,7 +56,7 @@
 
         <!--**********************************************************************-->
         <!-- For the case of wrong login -->
-        <?php elseif ((login_check($mysqli) == true) && role_check() == 1)  :
+        <?php elseif ((login_check($mysqli) == true) && role_check($mysqli) == 1)  :
             echo '<script>';
             echo 'window.location.href="../user.php"';
             echo '</script>';

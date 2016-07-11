@@ -10,13 +10,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Xword Master Score page</title>
+        <title>REP Crossword Master Score page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
         <script src="../css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
@@ -59,7 +58,7 @@
     </head>
     <body>
 
-        <?php if ((login_check($mysqli) == true) && role_check() != 1) : ?>
+        <?php if ((login_check($mysqli) == true) && role_check($mysqli) != 1) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -69,23 +68,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Master Score Page</a>
+                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Master Score Page</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="./crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                     <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
-                    <!--
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="#">Inbox</a></li>
-                            <li><a href="#">Drafts</a></li>
-                            <li><a href="#">Sent Items</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Trash</a></li>
-                        </ul>
-                    </li> -->
                 </ul>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
@@ -149,14 +137,20 @@
             <div class="container">
                 <hr><p>&copy; 2016 Product of REP</p>
             </div>
-        </div> <!-- /container -->
-        <!--*********************************************-->
-        <!-- For the case of not being a super user -->
-        <?php else : ?>
-        <p>
-            <span class="error">You are not authorized to access this page.</span>
-               Please <a href="../index.php">login</a> to a superuser.
-        </p>
-        <?php endif; ?>
+        </div>
+
+        <!--**********************************************************************-->
+        <!-- For the case of wrong login -->
+        <?php
+            elseif ((login_check($mysqli) == true) && (role_check($mysqli) == 1 || role_check($mysqli) == 0)) :
+                       echo '<script>';
+                       echo 'window.location.href="./user.php";';
+                       echo '</script>'; 
+                   else : 
+                       echo '<script>';
+                       echo 'window.location.href="./index.php";';
+                       echo '</script>';
+                   endif;
+        ?>
     </body>
 </html>
