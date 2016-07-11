@@ -76,3 +76,7 @@ CREATE VIEW sessionTimeStart AS
 SELECT sessId, MAX(TIME_ADDED) AS TIME_STARTED
 FROM sessionStart
 GROUP BY sessId
+
+CREATE VIEW groupIDToName AS
+SELECT A.id AS gId, A.classGroupName, B.id as uId, B.username FROM classGroup A JOIN members B
+ON A.id = B.classGroup
