@@ -1,7 +1,7 @@
 # crossWordPuzzle
 Update 11/7/2016
 - Added .htaccess for redirection to https site and protection
-- 
+- Solved some minor bug  
 
 Update 8/7/2016
 - Added some checking of codes for grantUser.php page
