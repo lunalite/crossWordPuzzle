@@ -78,5 +78,5 @@ FROM sessionStart
 GROUP BY sessId
 
 CREATE VIEW groupIDToName AS
-SELECT * FROM classgroup JOIN members 
-ON classgroup.id = classGroup
+SELECT A.id AS gId, A.classGroupName, B.id as uId, B.username FROM classGroup A JOIN members B
+ON A.id = B.classGroup
