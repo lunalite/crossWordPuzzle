@@ -10,7 +10,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Xword user page</title>
+        <title>REP Crossword Addition page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
@@ -34,7 +34,6 @@
                     var answers = [];
                     var questions = [];
 
-
                     for (i = 1; i < split1.length; i++) {
                         answers.push(split1[i].split(/^.+\(\d\s*\w+\)\s+/));
                         answers[i - 1].shift();
@@ -48,7 +47,6 @@
                     }
                 });
             });
-
         </script>
 
     </head>
@@ -64,7 +62,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Master Page</a>
+                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Addition Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
@@ -72,17 +70,6 @@
                         <li><a href="./crosswords.php" style="color:white;">Crosswords</a></li>
                         <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
                     <li><a href="../users/users.php" style="color:white;">Users</a></li>
-                            <!--
-                        <li class="dropdown">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">Inbox</a></li>
-                                <li><a href="#">Drafts</a></li>
-                                <li><a href="#">Sent Items</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Trash</a></li>
-                            </ul>
-                        </li> -->
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">

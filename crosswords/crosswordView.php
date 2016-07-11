@@ -10,7 +10,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Xword user page</title>
+        <title>REP Crossword View page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>

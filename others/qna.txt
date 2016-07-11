@@ -1,8 +1,8 @@
-1) Barry and Best Biscuit Company bought 10,000 biscuits from a bakery for resale to supermarkets and confectionaries. These transactions can be classified as _. (2 words) Operating activities
-2) The bakery that sells biscuits to Barry Best Biscuit Company and the supermarkets and confectionaries that buy biscuits from the company are _ of the company. (1 word) stakeholders
-3) Based on the _ principle, a property acquired 10 years ago at $2 million should continue to be recorded in the books of the company at $2 million although the value of the property has appreciated to $10 million. (2 words) historical cost
-4) Barry Best Biscuit Company was engaging in _ activities when they sold off the old delivery truck and bought a new one. (1 word) investing
-5) Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement
-6) When a company sells goods on account, an asset called _ will increase. (2 words) accounts receivable
-7) _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings
-8) A company signs a contractual agreement with a bank for a loan to buy a property. This transaction will result in an increase in an asset and a corresponding increase in _. (2 words) note payable
+@ Barry and Best Biscuit Company bought 10,000 biscuits from a bakery for resale to supermarkets and confectionaries. These transactions can be classified as _. (2 words) Operating activities
+@ The bakery that sells biscuits to Barry Best Biscuit Company and the supermarkets and confectionaries that buy biscuits from the company are _ of the company. (1 word) stakeholders
+@ Based on the _ principle, a property acquired 10 years ago at $2 million should continue to be recorded in the books of the company at $2 million although the value of the property has appreciated to $10 million. (2 words) historical cost
+@ Barry Best Biscuit Company was engaging in _ activities when they sold off the old delivery truck and bought a new one. (1 word) investing
+@ Owners and other decision makers use this statement to evaluate how well a company has performed. _ (2 words) Income statement
+@ When a company sells goods on account, an asset called _ will increase. (2 words) accounts receivable
+@ _ are profits accumulated within a company since the date of its incorporation that are available for dividend distribution. (2 words) Retained earnings
+@ A company signs a contractual agreement with a bank for a loan to buy a property. This transaction will result in an increase in an asset and a corresponding increase in _. (2 words) note payable

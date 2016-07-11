@@ -199,15 +199,16 @@ function debugPermissionCheck($mysqli) {
 function availSessionCheck($mysqli) {
 
     if (isset($_GET['sessId'])) {
-        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessId = ". $_GET[sessId];
+        $catQ = "sessId = ". $_GET[sessId];
     } else {
-        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0";
+        $catQ = "online != 0";
     }
 
+    $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE ".$catQ;
     $result = $mysqli->query($query);
 
     if (mysqli_num_rows($result) == 0) {
-        echo '<tr><td>No sessions online.</td></tr>';
+        echo '<tr><td colspan="6" sessId="-1">No sessions online.</td></tr>';
     }
     else {
         while ($row=mysqli_fetch_row($result)) {
@@ -398,7 +399,7 @@ function crosswordList($mysqli, $crosswordId, $questionId) {
 }
 
 function groupReply($mysqli, $id) {
-    $query = "SELECT classGroup FROM ".$GLOBALS['members']." WHERE id = ".$id;
+    $query = "SELECT classGroupName FROM groupIDToName WHERE uId = ".$id;
     $result = $mysqli->query($query);
     while ($row=mysqli_fetch_row($result)) {
        echo $row[0];
