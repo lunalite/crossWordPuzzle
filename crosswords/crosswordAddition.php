@@ -39,8 +39,6 @@
                         var test = (split1[i]).replace(' ' + answers[i - 1], "");
                         questions.push(test);
                     }
-                    console.log(answers);
-                    console.log(questions);
                     for (i = 0; i < questions.length; i++) {
                         xWordInputList.append('<tr><td>' + questions[i] + '</td><td>' + answers[i] + '</td></tr>');
                     }

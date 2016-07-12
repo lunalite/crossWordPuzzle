@@ -19,7 +19,7 @@
         header('Refresh: 3; url=master.php');
         echo "Session is created. Redirecting back to previous page in 3 seconds,";
       } else {
-        echo "Error updating record: " . $mysqli->error;
+        echo "Error updating record: ";
       }
     }
   }

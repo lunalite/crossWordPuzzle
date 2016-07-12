@@ -13,8 +13,11 @@
         <title>REP Xword user page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="../css/js/bootstrap.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
@@ -24,6 +27,9 @@
                     var url = "./grantUser.php?userId=" + this.id;
                     window.location.href = url;
                 });
+$('#userList').DataTable( {
+    data: data
+} );
             });
             
         </script>
@@ -91,7 +97,7 @@
                             </thead>
                             <tbody style="cursor: pointer;">
                                 <?php
-                                    userCheck($mysqli, TRUE);
+                                    userCheck($mysqli, "all");
                                 ?>
                             </tbody>
                         </table>
@@ -104,7 +110,7 @@
             <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <hr><p>&copy; 2016 Product of REP</p>
-</div>
+                </div>
             </div>
         </div>
 

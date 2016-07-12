@@ -14,12 +14,12 @@
         echo 'Repeated group name. Please use another. Going back in 3...';
     } else {
         $sql = "INSERT INTO ".$GLOBALS['classGroup']. " (classGroupName) VALUES ('" . $groupName. "')";
-       /* if ($mysqli->query($sql) === TRUE) {
+        if ($mysqli->query($sql) === TRUE) {
             header("Refresh:3; url=../groups.php");
             echo "New group created successfully. Going back in 3..." . "<br>";
         } else {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
-    }*/
+    }
     
 }
 ?>

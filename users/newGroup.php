@@ -20,10 +20,45 @@
         <script>
             $(function () {
                 $('#userList').find("tr").click(function () {
-            
                     var url = "./grantUser.php?userId=" + this.id;
                     window.location.href = url;
                 });
+
+var groupNameJ = $('#groupName');
+var formControlFeedback = $('.form-control-feedback');
+var hasFeedback = $('.has-feedback');
+
+groupNameJ.keyup(function() {
+var groupNameV = groupNameJ.val();
+    $.ajax({
+      method: "POST",
+      url: "includes/groupNameVerification.php",
+      data: { groupNameData:groupNameV },
+      success: function( data ) {
+        console.log( "Data Saved: " + data );
+        setTimeout(formValidation(data), 30000);
+      }
+    });
+});
+
+function formValidation(data) {
+
+console.log($.type(data));
+    removeGlyphClass();
+
+  if (data.indexOf("true") >= 0 ) {
+    formControlFeedback.addClass('glyphicon-remove');
+    hasFeedback.addClass('has-error');
+  } else if (data.indexOf("false") >= 0) {
+    formControlFeedback.addClass('glyphicon-ok');
+    hasFeedback.addClass('has-success');
+  } 
+}
+
+function removeGlyphClass() {
+    formControlFeedback.removeClass('glyphicon-ok glyphicon-remove');
+    hasFeedback.removeClass('has-success has-error');
+}
             });
             
         </script>
@@ -71,18 +106,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
-
-/*
-** To add : real time check if group name is allowed or not
-*/
                         <form id="groupCreation" action="./includes/groupCreation.php" method="post">
-                            <div class="form-group">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group has-feedback">
                                 <label for="groupName">Group Name</label>
-                                <textarea name="groupName" form="groupCreation" class="form-control" id="groupName" autofocus></textarea>
+                                <input type="text" name="groupName" form="groupCreation" class="form-control" id="groupName" style="display: inline;" autofocus></input>
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             </div>
                             <button type="submit" class="btn btn-default">Submit</button>
+                        </div>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -91,7 +124,7 @@
             <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <hr><p>&copy; 2016 Product of REP</p>
-</div>
+                </div>
             </div>
         </div>
 

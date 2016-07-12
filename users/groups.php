@@ -10,7 +10,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Xword Group Management page</title>
+        <title>REP Crossword Group Management page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -19,9 +19,9 @@
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
             $(function () {
-                $('#userList').find("tr").click(function () {
+                $('#groupList tbody').find("tr").click(function () {
             
-                    var url = "./grantUser.php?userId=" + this.id;
+                    var url = "./groupMgmt.php?groupId=" + this.id;
                     window.location.href = url;
                 });
             });
@@ -40,17 +40,6 @@
                         <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                         <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
                         <li><a href="./users.php" style="color:white;">Users</a></li>
-                                                    <!--
-                                                            <li class="dropdown">
-                                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                                                                <ul role="menu" class="dropdown-menu">
-                                                                    <li><a href="#">Inbox</a></li>
-                                                                    <li><a href="#">Drafts</a></li>
-                                                                    <li><a href="#">Sent Items</a></li>
-                                                                    <li class="divider"></li>
-                                                                    <li><a href="#">Trash</a></li>
-                                                                </ul>
-                                                            </li> -->
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
@@ -77,7 +66,7 @@
                         </form>
 
                         <h3>All groups</h3>
-                        <table id="userList" class="table table-striped table-hover">
+                        <table id="groupList" class="table table-striped table-hover">
                             <thead>
                             <tr>
                                 <th>classGroup ID</th>

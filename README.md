@@ -1,4 +1,8 @@
 # crossWordPuzzle
+Update 12/7/2016
+- Added a real-time checking function for creation of new group
+- Allowed for adding of users to group in grant user page
+
 Update 11/7/2016
 - Added .htaccess for redirection to https site and protection
 - Solved some minor bug  
