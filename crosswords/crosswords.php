@@ -59,7 +59,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Master Page</a>
+                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Master Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">

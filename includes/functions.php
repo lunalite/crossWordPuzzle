@@ -282,6 +282,24 @@ function sessionCheckD($mysqli) {
     }
 }
 
+// For available groups into select box
+function groupCheckD($mysqli) {
+
+    $query = "SELECT * FROM ".$GLOBALS['classGroup'];
+
+    $result = $mysqli->query($query);
+    if (mysqli_num_rows($result) == 0) {
+        echo '<option value=\"NoGroup\">No groups created</option>';
+    }
+    else {
+        while ($row=mysqli_fetch_row($result)) {
+            $tbp = '<option value=\'{"gId" : "'.$row[0].'", 
+                    "groupName" : "'.$row[1].'"}\'>Group '. $row[1].'</option>';           
+            echo $tbp;
+        }
+    }
+}
+
 function userInSession($mysqli){
     $query = "SELECT * FROM ".$GLOBALS['sessionJoin']." WHERE userId = ".$_SESSION['user_id'];
     $result = $mysqli->query($query);
@@ -330,27 +348,32 @@ function gateCheck($mysqli) {
     }
 }
 
-function userCheck($mysqli, $showAll) {
-if ($showAll) {
+function userCheck($mysqli, $showOption) {
+if ($showOption === "all") {
     $query = "SELECT * FROM ".$GLOBALS['members'];
-} else {
+} elseif ($showOption === "user") {
     $query = "SELECT * FROM ".$GLOBALS['members']." WHERE id = ".$_GET['userId'];
+} elseif( $showOption === "group") {
+    $query = "SELECT * FROM ".$GLOBALS['members']." WHERE classGroup = ".$_GET['groupId'];
 }
     $result = $mysqli->query($query);
     while ($row = mysqli_fetch_row($result)) {
         $usertype = '';
-        if ($row[5] == 0) 
+        if ($row[5] == 0) {
             $usertype = 'Normal user';
-        elseif ($row[5] == 1) 
+        } elseif ($row[5] == 1) { 
             $usertype = 'Super user';
-        elseif ($row[5] == 2) 
+        } elseif ($row[5] == 2) {
             $usertype = 'Admin';
+        }
+
+        $groupName = groupReply($mysqli, $row[7], false);
         echo '<tr id="'. $row[0] .'">
                 <td>'.$row[0].'</td>
                 <td>'.$row[1].'</td>
                 <td>'.$row[2].'</td>
                 <td>'.$usertype.'</td>
-                <td>'.$row[7].'</td>
+                <td>'.$groupName.'</td>
                 </tr>';
     }
 }
@@ -398,13 +421,21 @@ function crosswordList($mysqli, $crosswordId, $questionId) {
     }
 }
 
-function groupReply($mysqli, $id) {
-    $query = "SELECT classGroupName FROM groupIDToName WHERE uId = ".$id;
-    $result = $mysqli->query($query);
-    while ($row=mysqli_fetch_row($result)) {
-       echo $row[0];
-    }
+function groupReply($mysqli, $id, $bool) {
+    // $bool true means use uid
+    // $bool false means use gid
 
+    if ($bool === true) {
+      $query = "SELECT classGroupName FROM groupIDToName WHERE uId = ".$id;
+    } else {
+      $query = "SELECT classGroupName FROM groupIDToName WHERE gId = ".$id;
+    }
+      $result = $mysqli->query($query);
+
+      while ($row=mysqli_fetch_row($result)) {
+         return $row[0];
+    }
+    
 }
 
 function esc_url($url) {
@@ -470,7 +501,7 @@ switch(role_check($mysqli)) {
       }
     echo htmlentities($_SESSION['username']);
     echo ' of Group ';
-    groupReply($mysqli, $_SESSION['user_id']); 
+    echo groupReply($mysqli, $_SESSION['user_id'], true); 
     }
     echo '&emsp;';
 }

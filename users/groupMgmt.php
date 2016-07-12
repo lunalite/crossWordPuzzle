@@ -4,9 +4,9 @@
     
     sec_session_start();
     
-    $userID = $_GET['userId'];
-    if (!is_numeric($userID)) {
-        echo "Please enter a numeric ID.";
+    $groupID= $_GET['groupId'];
+    if (!is_numeric($groupID)) {
+        echo "Please enter a group ID.";
         echo "<a href='javascript:history.go(-1)'>Click here to go back.</a>";
         exit;
     }
@@ -17,7 +17,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Xword Grant page</title>
+        <title>REP Crossword Group Management page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <!-- Bootstrap core JavaScript-->
@@ -33,7 +33,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Grant User Page</a>
+                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Group management Page</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -46,7 +46,7 @@
 
                         <?php loginNavBarAction($mysqli); ?>
 
-                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
+                        <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                         </div>
 
                     </div><!--/.navbar-collapse -->
@@ -59,8 +59,15 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
-
-                        <table id="userList" class="table table-striped table-hover">
+                      <h3> Group 
+                      <?php 
+                      $query = "SELECT * FROM ".$GLOBALS['classGroup']." WHERE id = ".$groupID;
+                      $result = $mysqli->query($query);
+                      while ($row = mysqli_fetch_row($result)) {
+                         echo $row[1];
+                      } ?> 
+                      </h3>
+                        <table id="groupList" class="table table-striped table-hover">
                             <thead>
                             <tr>
                                 <th>User ID</th>
@@ -72,43 +79,11 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    userCheck($mysqli, "user");
+                                    userCheck($mysqli, "group");
                                 ?>
                             </tbody>
                         </table>
-                        <br>
 
-<?php  if ($_GET['mgmt'] !== "true") : ?>
-<form style='display: inline;' action="./passwordChange.php" method="POST">
-    <input type="hidden" name="userId" value="<?php echo $_GET['userId'];?>">
-    <input type="submit" class="btn btn-danger btn-sm" value="Change password">
-</form>  
-<form style='display: inline;' action="./grantUser.php?userId=2" method="GET">
-    <input type="hidden" name="userId" value="<?php echo $_GET['userId'];?>">
-    <input type="hidden" name="mgmt" value="true">
-    <input type="submit" class="btn btn-danger btn-sm" value="Manage group">
-</form>
-<?php else : ?>
-<form style='display: inline;' action="includes/groupUserAdd.php" method="POST" id="groupAdd">
-    <select name="groupId" form="groupAdd">
-       <?php
-        groupCheckD($mysqli);
-       ?>
-    </select>
-    <input type="hidden" name="userId" value="<?php echo $_GET['userId'];?>">
-    <input type="submit" class="btn btn-danger btn-sm" value="Add to group">
-</form> 
-<?php endif; ?>
-                        <br>
-                        <h3>Change permissions:</h3>
-                        <form action="../includes/changePermissions.php" id="changePermissions" method="POST">
-                            <select name="permId" form="changePermissions">
-                                <option value='{"id": <?php echo $userID?> ,"permissions":0}'>Normal user</option>
-                                <option value='{"id": <?php echo $userID?> ,"permissions":1}'>Super user</option>
-                                <option value='{"id": <?php echo $userID?> ,"permissions":2}'>Admin</option>
-                            </select>
-                            <input type="submit" class="btn btn-danger btn-sm" name="changePermissions" value="Change Permission">
-                        </form>
 
                     </div>
                 </div>

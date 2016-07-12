@@ -57,17 +57,6 @@
                         <li><a href="./crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                         <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
                         <li><a href="./users/users.php" style="color:white;">Users</a></li>
-                                                    <!--
-                                                <li class="dropdown">
-                                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                                                    <ul role="menu" class="dropdown-menu">
-                                                        <li><a href="#">Inbox</a></li>
-                                                        <li><a href="#">Drafts</a></li>
-                                                        <li><a href="#">Sent Items</a></li>
-                                                        <li class="divider"></li>
-                                                        <li><a href="#">Trash</a></li>
-                                                    </ul>
-                                                </li> -->
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
@@ -124,12 +113,13 @@
                         </form>
 
                         <?php else : ?>
-                        <form action="#" id="changeGroup" method="post">
+                        <form action="includes/sessionGroupChange.php" id="changeGroup" method="post">
                             <select name="classGroup" form="changeGroup">
                                 <?php
-                                    sessionCheckD($mysqli);
+                                    groupCheckD($mysqli);
                                 ?>
                             </select>
+                            <input type="hidden" name="sessId" value="<?php echo $_GET['sessId'];?>">
                             <input type="submit" class="btn btn-primary btn-sm" name="changeGroup" value="Change Group">
                             <?php endif; ?>
                     </div>
