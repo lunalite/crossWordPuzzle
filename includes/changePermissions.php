@@ -43,4 +43,7 @@ if ($perm === 2) {
             echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";
         }
     }
+
+// Changing the session variable
+$_SESSION['permissions'] = $perm;
 ?>

@@ -57,49 +57,33 @@
         </style>
     </head>
     <body>
-
-        <?php if ((login_check($mysqli) == true) && role_check($mysqli) != 1) : ?>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <!-- Only for admins and super users -->
+        <?php if ((login_check($mysqli) == true) && role_check($mysqli) != 0) : ?>
+        <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Master Score Page</a>
+                    <a class="navbar-brand" href="./index.php" style="color:white;">REP Crossword Master Score Page</a>
                 </div>
+                <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="./crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                    <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
-                </ul>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <div class="navbar-right navbar-form" style="color:white;">
-
-
-                        <?php if ((login_check($mysqli) == true)) : ?>
-                        Logged in as
-                        <?php
-                            if (role_check() == 0)
-                                echo htmlentities('normal_user ');
-                            elseif (role_check() == 1)
-                                echo htmlentities('super_user ');
-                            elseif (role_check() == 2)
-                                echo htmlentities('admin ');
-                            echo htmlentities($_SESSION['username']);
-
-                        ?> of Group 
-                        <?php groupReply($mysqli, $_SESSION['user_id']); ?>
-    
-                        &emsp;
-                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
+                    <ul class="nav navbar-nav">
+                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
+                        <li><a href="../users/users.php" style="color:white;">Users</a></li>
+                    </ul>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <div class="navbar-right navbar-form" style="color:white;">
+                            <?php loginNavBarAction($mysqli);?>
+                            <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
+                        </div>
                     </div>
-
-                    <?php elseif ((login_check($mysqli) == FALSE)) : endif; ?>
-                </div><!--/.navbar-collapse -->
-            </div>
+                </div>
             </div>
         </nav>
 
