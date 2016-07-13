@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 13/7/2016
+- Users belonging to a particular group can only view sessions created for that group.
+
 Update 12/7/2016
 - Added a real-time checking function for creation of new group
 - Allowed for adding of users to group in grant user page

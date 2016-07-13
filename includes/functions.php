@@ -198,13 +198,22 @@ function debugPermissionCheck($mysqli) {
 // For checking of available sessions into table
 function availSessionCheck($mysqli) {
 
-    if (isset($_GET['sessId'])) {
-        $catQ = "sessId = ". $_GET[sessId];
-    } else {
-        $catQ = "online != 0";
-    }
+  if ($_SESSION['permissions'] == 0) {
+    $groupCheckQuery = "SELECT classGroup FROM ".$GLOBALS['members']." WHERE id = ".$_SESSION['user_id'];
+    $groupCheckResult = $mysqli->query($groupCheckQuery);
+    $groupCheckRow = mysqli_fetch_row($groupCheckResult); 
+    $catQ = "classGroupOpen = ".$groupCheckRow[0];    
+    
+  } else {
+      if (isset($_GET['sessId'])) {
+          $catQ = "sessId = ". $_GET[sessId];
+      } else {
+          $catQ = "online != 0";
+      }
+  }
 
     $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE ".$catQ;
+
     $result = $mysqli->query($query);
 
     if (mysqli_num_rows($result) == 0) {
@@ -223,8 +232,16 @@ function availSessionCheck($mysqli) {
                     <td>'.$online.'</td>';
 
             // For displaying classGroup the session is opened to
-            if ($_SESSION['permissions'] === 1|2) {
-                $tbp = $tbp . '<td>'.$row[4].'</td>';
+            if ($_SESSION['permissions'] == 1 || $_SESSION['permissions'] == 2) {
+                $innerGroupQuery = "SELECT * FROM ".$GLOBALS['classGroup']." WHERE id = ".$row[4];
+                $innerGroupResult= $mysqli->query($innerGroupQuery );
+                if (mysqli_num_rows($innerGroupResult) == 0) {
+                    $tbp = $tbp.'<td>Not assigned to a group yet</td>';
+                } else {
+                    while ($innerGroupRow= mysqli_fetch_row($innerGroupResult)) {
+                        $tbp = $tbp . '<td>'.$innerGroupRow[1].'</td>';
+                    }
+                }
             }
 
             $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in 
@@ -232,6 +249,7 @@ function availSessionCheck($mysqli) {
 
             $innerResult = $mysqli->query($innerQuery);
             if (mysqli_num_rows($innerResult) == 0) {
+
                 $tbp = $tbp . '<td> No teams </td></tr>';
             }
             else {
@@ -259,10 +277,19 @@ function availSessionCheck($mysqli) {
 // For available sessions into select box
 function sessionCheckD($mysqli) {
 
-    if (isset($_GET['sessId'])) {
-        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessId = ". $_GET[sessId];
+    if ($_SESSION['permissions'] == 0) {
+        $groupCheckQuery = "SELECT classGroup FROM ".$GLOBALS['members']." WHERE id = ".$_SESSION['user_id'];
+        $groupCheckResult = $mysqli->query($groupCheckQuery);
+        $groupCheckRow = mysqli_fetch_row($groupCheckResult); 
+        $catQ = " AND classGroupOpen = ".$groupCheckRow[0];
     } else {
-        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0";
+        $catQ = "";
+    }
+
+    if (isset($_GET['sessId'])) {
+        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessId = ". $_GET[sessId].$catQ;
+    } else {
+        $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0".$catQ;
     }
 
     $result = $mysqli->query($query);
@@ -421,6 +448,7 @@ function crosswordList($mysqli, $crosswordId, $questionId) {
     }
 }
 
+// Checks for classGroupName given a userID or a groupID
 function groupReply($mysqli, $id, $bool) {
     // $bool true means use uid
     // $bool false means use gid

@@ -72,6 +72,14 @@ CREATE TABLE IF NOT EXISTS `questionAnswered` (
 PRIMARY KEY (sessId, QnsId)
 )
 
+CREATE TABLE IF NOT EXISTS `studentHistory` (
+`sessId` int(11) REFERENCES sessionstart(sessId),
+`userId` int(11) REFERENCES sessionstart(userId),
+`time_elapsed` timestamp,
+`qnStats` varchar(255),
+PRIMARY KEY(sessId, userId)
+)
+
 CREATE VIEW sessionTimeStart AS
 SELECT sessId, MAX(TIME_ADDED) AS TIME_STARTED
 FROM sessionStart

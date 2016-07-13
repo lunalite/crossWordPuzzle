@@ -49,20 +49,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="./index.php" style="color:white;">REP Crossword Master Page</a>
+                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Master Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="./crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
+                        <li><a href=".//crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                         <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
                         <li><a href="./users/users.php" style="color:white;">Users</a></li>
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
-
                             <?php loginNavBarAction($mysqli);?>
-
                             <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                         </div>
                     </div>
@@ -79,7 +77,8 @@
                             <input type="submit" class="btn btn-primary btn-sm" value="Change Password">
                         </form>
 
-                        To create sessions, go to the <a href="./crosswords/crosswordView.php">viewCrossword</a> section.
+                        To create sessions, go to the <a href="./crosswords/crosswordView.php">viewCrossword</a> section.<br>
+                        To assign create session to a group, click on the following table. <br>
                         <!-- The available sessions section -->
                         <h3>Available sessions</h3>
                         <table id="sessionsOnline" class="table table-striped">

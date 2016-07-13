@@ -27,9 +27,6 @@
                     var url = "./grantUser.php?userId=" + this.id;
                     window.location.href = url;
                 });
-$('#userList').DataTable( {
-    data: data
-} );
             });
             
         </script>
@@ -46,23 +43,10 @@ $('#userList').DataTable( {
                         <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                         <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
                         <li><a href="#" style="color:white;">Users</a></li>
-                                                    <!--
-                                                            <li class="dropdown">
-                                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                                                                <ul role="menu" class="dropdown-menu">
-                                                                    <li><a href="#">Inbox</a></li>
-                                                                    <li><a href="#">Drafts</a></li>
-                                                                    <li><a href="#">Sent Items</a></li>
-                                                                    <li class="divider"></li>
-                                                                    <li><a href="#">Trash</a></li>
-                                                                </ul>
-                                                            </li> -->
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli); ?>
-
                         <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                         </div>
 
@@ -70,8 +54,6 @@ $('#userList').DataTable( {
                 </div>
             </div>
         </nav>
-
-<!-- Only for admins -->
 
         <div class="jumbotron">
             <div class="container">
