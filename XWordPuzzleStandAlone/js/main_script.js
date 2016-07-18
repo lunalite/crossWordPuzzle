@@ -1,3 +1,6 @@
+// Added the jQuery ready document function for AJAX purposes
+$(function() {
+
 // Declaration of all variables
     var pixelSize=10;
 	var pixelSizeY=15;
@@ -15,8 +18,9 @@
 	var NUM_COLS = 30;
 	var NUM_ROWS = 30;
 	var tileCellWidth=c.width/NUM_COLS;
-	if (c.height < c.width )
-		c.height= tileCellWidth*NUM_ROWS;
+	if (c.height < c.width ) {
+	    c.height= tileCellWidth*NUM_ROWS;
+        }
 	var Tilepadding=1;
 	var tileWidth=tileCellWidth-Tilepadding;
 	var mouseX=0;
@@ -25,20 +29,16 @@
 	var questionList=[];
 	var answerList=[];
 	var tileCodeList=[];
-	//var title=prompt("Please enter the title of the puzzle");
 	var noOfFields=6;
 	var attempts = [];    
-    var answered = []; // 0 - not answered / answered wrongly 1 - answered correctly
+        var answered = []; // 0 - not answered / answered wrongly 1 - answered correctly
 	var noOfQuestions=0;
 	var startTime=new Date();
 	//var audio = new Audio('music.wav');
 	//audio.play();
 	var title="Accounting";
-	//sessionStorage.removeItem('answered');
-	//sessionStorage.removeItem('attempts');
 	var bonus=0;
-	
-	window.alert(1);
+        var qStack = {"cat1":"testVal1", "cat2":"testVal2", "cat3":"testVal3"}; //qStack to store the number of correct answers, etc. in array before transforming into jquery
 
 // function to obtain session storage information
 // Note that it is one-off storage of data. Closing of session will cause data to be gone
@@ -65,11 +65,6 @@
                 answered.push(0);   
             }
         }
-		/*var url2="../phpretrieval/includes/getScore.php";
-				jQuery.getJSON(url2, function (data) {
-					console.log("Received "+data);
-					document.getElementById("score").innerHTML = "Score: "+data;
-				});*/
     }
 
 
@@ -297,17 +292,16 @@
 		
 	function stateChange() {
 		setTimeout(function () {
-		window.location.replace("includes/deleteSessions.php");
+		//window.location.replace("includes/deleteSessions.php");
 		}, 5000);
 	}
-	function stateChange2() {
-		setTimeout(function () {
-		var endTime=new Date();
-		var timeTaken=(endTime-startTime)/1000;
-		console.log("Took "+timeTaken);
-		addTime(timeTaken);
-        console.log('addtime');
-		}, 1000);
+
+        // Check time by subtracting from initial starting time to get time elapsed.
+	function timeCheck() {
+            var endTime=new Date();
+            var timeTaken=(endTime-startTime)/1000;
+            console.log("Took "+timeTaken);
+            return timeTaken;
 	}
   
 	  function checkAnswer(word,tileID){
@@ -316,27 +310,21 @@
             console.log('qns id ' + tile.qns_id);
 			console.log("Answer is "+correctAnswer);
             console.log(word);
+
             // Checking mechanism
-			if (correctAnswer==word) {
-            //    var url2="../phpretrieval/includes/getScore.php";
-				//jQuery.getJSON(url2, function (data) {
-				//	console.log("Received "+data);
-			//		document.getElementById("score").innerHTML = "Score: "+data;
-			//	});
+            if (correctAnswer==word) {
+
                 // Change answered array for that qn to 1 and store it
 			    answered[tile.qns_id] = 1;
-				noOfQuestions--;
+		            noOfQuestions--;
 			    storeData();
-
-                // Scores are only added to the first person who answered correctly
 			    addScore(tile.qns_id);
 			    console.log('score added: ' + scoreAdded(tile.qns_id));
-                // Once all answers are answered correctly, call for 
-                
 
-				if (noOfQuestions==0)
-					exitGame();
-				return true;
+                // Once all answers are answered correctly, call for                 
+		if (noOfQuestions==0)
+		    exitGame();
+		    return true;
                 }
 
 			else {
@@ -360,7 +348,8 @@
 		 sessionStorage.removeItem('attempts');
 		  alertify.alert("The Game Has ended!");
 		  stateChange();
-		  stateChange2();
+		  timeCheck();
+              historise();
 	  }
   
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
@@ -430,32 +419,6 @@
 	getTitle();
 
 
-/************ AJAX implementation for scoring purposes ************/
-var xmlHTTP = createXMLhttpRequestObject();
-
-function createXMLhttpRequestObject() {
-    var xmlHTTP;
-
-    if (window.ActiveXObject) {
-        try {
-            xmlHTTP = new ActiveXObject("Microsoft.XMLHTTML");
-        } catch(e) {
-            xmlHTTP = false;
-        }
-    } else {
-        try {
-            xmlHTTP = new XMLHttpRequest();
-        } catch(e) {
-            xmlHTTP = false;
-        }
-    }
-
-    if (!xmlHTTP)
-        alert("can't create Object!");
-    else
-        return xmlHTTP;
-}
-
 function scoreAdded(qid) {
     // Check number of attempts;
     var att = attempts[qid];
@@ -478,19 +441,11 @@ function scoreAdded(qid) {
 }
 
 function addScore(qid) {
-    if (xmlHTTP.readyState == 0 || xmlHTTP.readyState == 4) {
-        xmlHTTP.open("GET", "./includes/addScore.php?score=" + scoreAdded(qid) + "&qid=" + qid, true);
-        xmlHTTP.onreadystatechange = handleServerResponse;
-        xmlHTTP.send(null); //null for $_GET responses.
-    } 
-}
-
-function addTime(time) {
-       $.ajax({
+    $.ajax({
             type: "POST",
             datatype: 'json',
-            url: "includes/addFinalScore.php",
-            data: { time:time },
+            url: "./includes/addScore.php",
+            data: {"qid": qid, "score": scoreAdded(qid), "time": timeCheck()},
             cache: false,
             success: function (data) {
                 console.log(data);
@@ -498,17 +453,18 @@ function addTime(time) {
        });
 }
 
-
-function handleServerResponse() {
-    if (xmlHTTP.readyState == 4) {
-        if (xmlHTTP.status == 200 ) {
-            xmlResponse = xmlHTTP.responseXML;
-            xmlDocumentElement = xmlResponse.documentElement;
-            message = xmlDocumentElement.firstChild.data;
-            console.log(message);
-        } else {
-        alert('something went wrong');
-        }
-    }
+function historise() {
+    $.ajax({
+            type: "POST",
+            datatype: 'json',
+            url: "./includes/historise.php",
+            data: {"qStack": qStack, "time": timeCheck()},
+            cache: false,
+            success: function (data) {
+                console.log(data);
+            }
+       });
 }
+
+});
 

@@ -10,6 +10,7 @@
   $sessionStart = "sessionStart";
   $questionAnswered = "questionAnswered";
   $classGroup = "classGroup";
+  $studentHistory = "studentHistory";
   
   /* Session names
   ** $_SESSION['user_id']

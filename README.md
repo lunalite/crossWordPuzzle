@@ -1,4 +1,13 @@
 # crossWordPuzzle
+Update 18/7/2016
+- Resolved the live time update on the score list
+- Changed HTTPRequest to ajax of jQuery
+- Deleted addFinalScore.php and addTime.php since everything is implemented in addScore.php now
+- Added the sessionHistory SQL that will record stats for users and historise.php for addition to respective table
+
+Update 17/7/2016
+- Added auto mode for Xword
+
 Update 13/7/2016
 - Users belonging to a particular group can only view sessions created for that group.
 
