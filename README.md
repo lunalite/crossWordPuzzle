@@ -4,6 +4,7 @@ Update 18/7/2016
 - Changed HTTPRequest to ajax of jQuery
 - Deleted addFinalScore.php and addTime.php since everything is implemented in addScore.php now
 - Added the sessionHistory SQL that will record stats for users and historise.php for addition to respective table
+- Solved some bugs regarding time and stuff not being saved after closing browser
 
 Update 17/7/2016
 - Added auto mode for Xword

@@ -19,7 +19,16 @@
         <script src="css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="css/js/ie10-viewport-bug-workaround.js"></script>
-        
+        <script>
+          $(function () {
+            $('#leaveSession').click(function () {
+              sessionStorage.removeItem('startTime');
+              sessionStorage.removeItem('answered');
+              sessionStorage.removeItem('attempts');
+              sessionStorage.removeItem('noOfQuestions');
+            });
+          });
+      </script>
     </head>
 
     <body>
@@ -81,13 +90,11 @@
 
                         <?php else : ?>
                         You have joined a session. Please wait for the gate to open...  <br>
-                        Click <a href="./includes/leaveSession.php">here</a> to leave the session.
+                        Click <a href="./includes/leaveSession.php" id="leaveSession">here</a> to leave the session.
                         <?php endif; ?>
 
                         <script>
                         //********* HERE IS THE LIVE GATE PUSH SYSTEM ********
-                        Pusher.logToConsole = true;
-            
                         var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
                             cluster: 'ap1',
                             encrypted: true

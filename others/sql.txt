@@ -75,7 +75,7 @@ PRIMARY KEY (sessId, QnsId)
 CREATE TABLE IF NOT EXISTS `studentHistory` (
 `sessId` int(11) REFERENCES sessionstart(sessId),
 `userId` int(11) REFERENCES sessionstart(userId),
-`time_elapsed` timestamp,
+`time_elapsed` int(11),
 `qnStats` varchar(255),
 PRIMARY KEY(sessId, userId)
 )

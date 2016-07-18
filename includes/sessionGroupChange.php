@@ -13,7 +13,7 @@
 
         if ($mysqli->query($query) === TRUE) {
             echo "<script>";
-            echo "history.go(-1);";
+            echo "window.location.href='../master.php'";
             echo "</script>";
         } else {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
