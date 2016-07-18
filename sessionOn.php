@@ -31,7 +31,7 @@
     <title>Session adding Page</title>
   </head>
   <body>
-    <p>Click <a href="javascript: window.history.go(-1)">here</a> to go back.</p>
+    <p>Click <a href="./master.php">here</a> to go back.</p>
   </body>
 </html>
 
