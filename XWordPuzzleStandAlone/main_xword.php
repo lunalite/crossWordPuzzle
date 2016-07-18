@@ -59,7 +59,7 @@
     <body>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-3 col-lg-2 col-sm-push-9 col-lg-push-10">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-sm-push-9 col-md-push-10 col-lg-push-10">
                     <nav class="navbar navbar-default navbar-fixed-side">
                         <div class="container">
 
@@ -89,7 +89,7 @@
                         </div>
                     </nav>
                 </div>
-                <div class="col-sm-9 col-lg-10 col-sm-pull-3 col-lg-pull-2">
+                <div class="col-sm-9 col-md-10 col-lg-10 col-sm-pull-3 col-md-pull-0 col-lg-pull-2">
 
                     <!-- your page content -->
                     <script src="lib/alertify.min.js"></script>
@@ -98,6 +98,6 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/main_script.js"></script>
+        <script type="text/javascript" src="js/main_script.js?<?php echo time(); ?>"></script>
     </body>
 </html>

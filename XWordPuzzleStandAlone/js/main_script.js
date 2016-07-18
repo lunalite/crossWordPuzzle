@@ -37,6 +37,8 @@
 	//sessionStorage.removeItem('answered');
 	//sessionStorage.removeItem('attempts');
 	var bonus=0;
+	
+	window.alert(1);
 
 // function to obtain session storage information
 // Note that it is one-off storage of data. Closing of session will cause data to be gone
@@ -93,6 +95,7 @@
 		this.qns_id=qns_id;
 		this.intersected=false;
 		this.master=false;
+		this.drawn = false;
 		//Each tile is given a unique id starting from 0, traversing each column before going to the next row	
 	};
 	
@@ -142,7 +145,8 @@
 					noOfQuestions++;
 		            createTilesFromString(tileCodeList[i], answerList[i]);
 		        }				
-
+		DrawEmptyTiles();
+		DrawNumbers();
                 recallStorage(size);
                 console.log('Saved attempts are: ' + attempts);
                 console.log('Saved answered are: ' + answered);
@@ -162,6 +166,21 @@
 	 function printTiles(){
 		//for (b=0;b<tiles.length;b++)
 			//console.log(tiles[b]);
+	 }
+	 
+	  function DrawEmptyTiles(){
+		for (b=0;b<tiles.length;b++){
+			var tile = tiles[b] ;
+			tile.drawFaceDown();
+		}
+	 }
+	 
+	function DrawNumbers(){
+		for (b=0;b<tiles.length;b++){
+			var tile = tiles[b] ;
+			if (tile.master)
+				tile.drawQnsNo();
+		}
 	 }
 	 
 	 function containsTile(id, list) {
@@ -185,17 +204,17 @@
 		//console.log("Length of word is "+ans.length);
 				for(j=0;j<ans.length;j++){
 					//console.log("Now at Tile "+ID1+",with i = "+i);
+					if (containsTile(ID1,tiles)){
+						console.log("Collision detected on Tile: "+ans.charAt(j));
+						var tile=getTileFromId(ID1);
+						tile.intersected=true;
+					}
 					var pos = tileIDtoPos(ID1);
 					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j),i);
 					if (j==0)
 						tile.master=true;
 					//console.log("Inserting character "+ans.charAt(j));
-					tile.drawFaceDown();
-					if (containsTile(ID1,tiles)){
-						console.log("Collision detected on Tile: "+ans.charAt(j));
-						getTileFromId(ID1).intersected=true;
-						tile.intersected=true;
-					}
+					//tile.drawFaceDown();
 					tiles.push(tile);
 					if (diff>=NUM_ROWS) //Go Down
 						ID1+=NUM_ROWS;
@@ -385,15 +404,17 @@
 		ctx.rect(this.x,this.y, this.width,this.width);
 		ctx.fillStyle = "white";
 		ctx.fill();
-		if (this.master == true ){
-			ctx.beginPath();
-			ctx.fillStyle = "black";
-			var size=tileCellWidth/4;
-			ctx.font=size+"pt Arial";
-			ctx.fillText(this.qns_id,this.x,(this.y+(tileWidth)),tileWidth);
-			ctx.fill();
-		}
+
 	};
+	
+	Tile.prototype.drawQnsNo = function() {
+		ctx.beginPath();
+		ctx.fillStyle = "black";
+		var size=tileCellWidth/4;
+		ctx.font=size+"pt Arial";
+		ctx.fillText((this.qns_id+1),this.x,(this.y+(tileWidth)),tileWidth);
+		ctx.fill();
+	}
 	
 	Tile.prototype.drawAns = function() { //Function to draw the tile
 		ctx.beginPath();

@@ -57,4 +57,3 @@ RewriteRule ^(.*)$ https://www.repXword.com/$1 [R,L]
 	RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
 	RewriteRule .* – [F,L]
 </IfModule>
-
