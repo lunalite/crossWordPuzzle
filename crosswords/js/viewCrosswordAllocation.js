@@ -37,6 +37,7 @@ var pixelSize=10;
 	//sessionStorage.removeItem('attempts');
 	var bonus=0;
 	console.log("Received ID"+crosswordId);
+	
 
 // function to store information into session
 	
@@ -77,8 +78,7 @@ var pixelSize=10;
 					noOfQuestions++;
 		            createTilesFromString(tileCodeList[i], answerList[i]);
 		        }			
-				for (z=0;z<answerList.length;z++)
-					wordToTiles(answerList[z]);		
+				DrawTiles();		
 		    });	
      }
 	 
@@ -91,9 +91,14 @@ var pixelSize=10;
 	 }
 	 */
 
-	 function printTiles(){
-		//for (b=0;b<tiles.length;b++)
-			//console.log(tiles[b]);
+	 function DrawTiles(){
+		for (b=0;b<tiles.length;b++){
+			var tile = tiles[b] ;
+			tile.drawFaceDown();
+			tile.drawAns();
+			if(tile.master)
+				tile.drawQnsNo();
+		}
 	 }
 	 
 	 function containsTile(id, list) {
@@ -116,18 +121,33 @@ var pixelSize=10;
 		//console.log("Difference is "+diff);
 		//console.log("Length of word is "+ans.length);
 				for(j=0;j<ans.length;j++){
-					//console.log("Now at Tile "+ID1+",with i = "+i);
+					console.log("Now at Tile "+ID1+",filling with char "+ ans.charAt(j));
+					if (containsTile(ID1,tiles)){
+						console.log("Collision detected on Tile: "+ans.charAt(j));
+						var tile=getTileFromId(ID1);
+						tile.intersected=true;
+						if (j==0){
+							tile.master=true;
+							tile.qns_id=i;
+							//tile.drawFaceDown();
+							}
+						if (diff>=NUM_ROWS) //Go Down
+							ID1+=NUM_ROWS;
+						else if (diff>0) //Go Right
+							ID1++;
+						else if (diff<=-NUM_ROWS)
+							ID1+=NUM_ROWS;
+						else if (diff < 0)
+							ID1--;
+						continue;
+					}
 					var pos = tileIDtoPos(ID1);
 					var tile =new Tile(pos[0]*tileCellWidth,pos[1]*tileCellWidth,ID1,ans.charAt(j),i);
 					if (j==0)
 						tile.master=true;
+					tile.char = ans.charAt(j);
 					//console.log("Inserting character "+ans.charAt(j));
-					tile.drawFaceDown();
-					if (containsTile(ID1,tiles)){
-						console.log("Collision detected on Tile: "+ans.charAt(j));
-						getTileFromId(ID1).intersected=true;
-						tile.intersected=true;
-					}
+					//tile.drawFaceDown();
 					tiles.push(tile);
 					if (diff>=NUM_ROWS) //Go Down
 						ID1+=NUM_ROWS;
@@ -138,7 +158,7 @@ var pixelSize=10;
 					else if (diff < 0)
 						ID1--;
 				}
-				printTiles();
+				
 		}
 	
 	function posToTileID(x,y){		//Convert Mouse Click position to ID of the tile clicked
@@ -203,15 +223,16 @@ var pixelSize=10;
 		ctx.rect(this.x,this.y, this.width,this.width);
 		ctx.fillStyle = "white";
 		ctx.fill();
-		if (this.master == true ){
-			ctx.beginPath();
-			ctx.fillStyle = "black";
-			var size=tileCellWidth/4;
-			ctx.font=size+"pt Arial";
-			ctx.fillText(this.qns_id,this.x,(this.y+(tileWidth)),tileWidth);
-			ctx.fill();
-		}
 	};
+	
+	Tile.prototype.drawQnsNo = function() {
+		ctx.beginPath();
+		ctx.fillStyle = "black";
+		var size=tileCellWidth/4;
+		ctx.font=size+"pt Arial";
+		ctx.fillText((this.qns_id+1),this.x,(this.y+(tileWidth)),tileWidth);
+		ctx.fill();
+	}
 	
 	Tile.prototype.drawAns = function() { //Function to draw the tile
 		ctx.beginPath();

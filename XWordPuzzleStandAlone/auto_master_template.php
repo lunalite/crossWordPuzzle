@@ -1,11 +1,10 @@
 <?php
     include_once '../includes/db_connect.php';
     include_once '../includes/functions.php';
-    
     sec_session_start();
-    
     $id=$_GET["id"];
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,7 +33,7 @@
         </style>
     </head>
     <body>
-        <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?>
+            <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -48,8 +47,7 @@
                             <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                     </div>
 
-                    <?php elseif ((login_check($mysqli) == FALSE)) : endif; ?>
-                </div><!--/.navbar-collapse -->
+                </div><!-- /.navbar-collapse -->
             </div>
         </nav>
 
@@ -91,7 +89,7 @@
                         <script type="text/javascript">
                             var crosswordId = "<?php echo $id ?>";
                         </script>
-                        <script type="text/javascript" src="js/auto_script.js">
+                        <script type="text/javascript" src="js/auto_script.js?<?php echo time(); ?>">
                         </script>
 
                     </div>
@@ -120,4 +118,3 @@
         ?>
     </body>
 </html>
-

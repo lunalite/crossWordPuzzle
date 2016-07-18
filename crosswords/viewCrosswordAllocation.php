@@ -51,7 +51,7 @@
         <script type="text/javascript">
                             var crosswordId = "<?php echo $id ?>";
         </script>
-        <script type="text/javascript" src="js/viewCrosswordAllocation.js">
+        <script type="text/javascript" src="js/viewCrosswordAllocation.js?<?php echo time(); ?>">
         </script>
 
         <!--**********************************************************************-->

@@ -5,7 +5,7 @@
 	var ctx = c.getContext("2d");
 	var screenWidth=window.innerWidth;
 	var screenHeight=window.innerHeight;
-	c.width = screenWidth*0.6;
+	c.width = screenWidth*0.5;
     	c.height = c.width;
 	var NUM_COLS = 30;
 	var NUM_ROWS = 30;
@@ -38,9 +38,7 @@
 	var title="";
 	var desc="";
 	var botMode=false;
-	
-	console.log("TileCellWidth is "+tileCellWidth);
-	
+		
 	function undo(){
 		console.log("Stack before undo is now "+actionStack+"\n"+ansStack+"\n"+tileCodeStack);
 		if (actionStack.length <= 0)
@@ -134,6 +132,7 @@
 	}
 	
 	function autobomb(tileid){
+		var dirStack=[];
 		reset();
 		var allocatedAnswers=[];
 		var allocatedTiles=[];
@@ -146,7 +145,8 @@
 		tempList=answerList.slice();
 		tempList=shuffle(tempList);
 		while (tempList.length>0){
-			if (counter == 100){
+			counter++;
+			if (counter >= 2*tempList.length){
 				var r = confirm("Failed to allocate all answers! Retry with a different configuration?");
 				if (r == true) {
 					var newID=Math.floor((Math.random() * area));
@@ -158,40 +158,51 @@
 			}
 			console.log(tempList.length+" remaining");
 			var toBeInserted=String(tempList.splice(0,1));
+			var found = false;
 			//window.alert("Array is now "+tempList+" after removing "+toBeInserted);
 			answerSelected=toBeInserted;
 			console.log("Now trying to insert "+toBeInserted);
 			if (allocatedAnswers.length>0){
 					for (j=0;j<allocatedAnswers.length;j++){
-						if (inputDirection=="horizontal" && (j%2!=0))
+						// Loop through all the already allocated answers
+						/*if (inputDirection=="horizontal" && (j%2!=0))
 							continue;
 						if (inputDirection=="vertical" && (j%2==0))
-							continue;
+							continue;*/
 						var toInsertAgainst = allocatedAnswers[j];
+						//window.alert("Detected that tile "+ansStack[j]+" is "+dirStack[j]);
+						if (dirStack[j] == "horizontal")
+							inputDirection="vertical";
+						else
+							inputDirection="horizontal";
+						//window.alert("Comparing "+toBeInserted+" against "+allocatedAnswers[j]+" by inserting in the direction: "+inputDirection); 
 						console.log("Inserting against "+toInsertAgainst);
 						tileid=allocatedTiles[j];
-						for (l=0;l<toBeInserted.length;l++){
+						for (l=0;l<toBeInserted.length;l++){ //Loop through each char of word to be inserted
+							console.log("STUCK IN THIS LOOP");
 							var temp=tileid;
-							var found=false;
-							for (k=0;k<toInsertAgainst.length;k++){
+							var moveToNextAllocatedAns=false;
+							for (k=0;k<toInsertAgainst.length;k++){ // Check through each char against each char of word to insert against
 								console.log("trying to insert "+toBeInserted.charAt(l)+" of "+toBeInserted+" against " +toInsertAgainst+" at tile "+tileid);
 								if (wordToTiles(toBeInserted,tileid)){
+									dirStack.push(inputDirection);
+									ansStack.push(answerSelected);
+									tileCodeStack.push(currentEncodedID);
+									actionStack.push(0);
 									counter=0;
 									//window.alert(toBeInserted+" inserted!");
 									j=100;
 									l=100;
 									allocatedAnswers.push(toBeInserted);
 									allocatedTiles.push(tileid);
-									toggleDirection();
+									//toggleDirection();
 									found=true;
 									break;
 								}
 								else{
-									if ( (k == (toInsertAgainst.length-1)) && (l == (toBeInserted.length-1))) {
-										//window.alert("RECYCLING "+toBeInserted);
-										tempList.push(toBeInserted);
-										found=true;
-										j=100;
+									if ( (k == (toInsertAgainst.length-1)) && (l == (toBeInserted.length-1))) { //if all combinations have been reached for the current allocated answer
+										moveToNextAllocatedAns=true;
+										l=100;
 										break;
 									}
 									if (inputDirection == "horizontal")
@@ -200,33 +211,40 @@
 										tileid++;
 								}
 							}
-							if (found)
+							if (moveToNextAllocatedAns)
 								break;
 							if (inputDirection == "horizontal")
 								tileid = --temp;
 							else
 								tileid = temp - NUM_COLS ;
 							if (tileid <0 || tileid > (area-1)){
-								j=100;
 								l=100;
-								//window.alert("RECYCLING "+toBeInserted+" because tileID is "+tileid);
-								tempList.push(toBeInserted);
 							}
 								
 						}
 					}
+					//window.alert("ALL COMBINATIONS EXHAUSTED");
 					console.log("RECYCLING");
+					if (!found){
+						//window.alert("RECYCLING "+toBeInserted+" because tileID is "+tileid+" when trying to insert against "+toInsertAgainst);
+						tempList.push(toBeInserted);
+					}
 				}
 			else{
 				console.log("INITIATING "+tileid+","+toBeInserted)
+				dirStack.push(inputDirection);
 				wordToTiles(toBeInserted,tileid);
+				ansStack.push(answerSelected);
+				tileCodeStack.push(currentEncodedID);
+				actionStack.push(0);
 				allocatedAnswers.push(toBeInserted);
 				allocatedTiles.push(tileid);
-				toggleDirection();
+				//toggleDirection();
 			}
-			counter++;
+
 		}
 		botMode=false;
+		answerSelected="";
 		alert("Found a possible configuration!");
 	}
 	
@@ -239,7 +257,7 @@
     
     function getAnswers(){
 		console.log("Getting data");
-		var url="../../phpretrieval/includes/qnOutput.php";
+		var url="../phpretrieval/includes/qnOutput.php";
 		jQuery.getJSON(url, { crosswordId: crosswordId }, function (data) {
 		    // ... handle response as above
 
@@ -269,10 +287,11 @@
 				else
 					inputDirection="horizontal";
 				answerSelected=ans;
-				wordToTiles(ans.replace(/\s/g,''),tileID1);
-				inputDirection=temp;
-				var index=questionList.indexOf(ans);
-				questionList.splice(index, 1);
+				if(wordToTiles(ans.replace(/\s/g,''),tileID1)){
+					inputDirection=temp;
+					var index=questionList.indexOf(ans);
+					questionList.splice(index, 1);
+				}
 		        }
 		    }
 		    console.log("Answer list formed: " + questionList);
@@ -313,6 +332,9 @@
 	var Tile = function(x, y,id) { //Class Declaration for Tile Object
 		this.x = x;
 		this.y = y;
+		this.first=false;
+		this.last=false;
+		this.direction=""
 		this.width = tileWidth;
 		this.char='';
 		this.id=id;
@@ -331,7 +353,7 @@
 			questionList.splice(index, 1);
 			populate(questionList);
 			if (questionList.length == 0)
-				header.innerHTML = 'You have allocated all the answers. Click Save to submit the Puzzle';
+				header.innerHTML = 'You have allocated all the answers. Click ee to submit the Puzzle';
 		}
 	}
 	
@@ -462,6 +484,84 @@
 		}
   }
   
+  	 function checkAdjacent(word,tileID){
+  	 	if (inputDirection == "horizontal"){	//Check for adjaceny X
+			for ( i=0; i < word.length ; i++){
+				if (i==0 && (((tileID-1)%NUM_ROWS) != 0)){
+					console.log("1st");
+					var tile=tiles[tileID-1];
+					if (tile != null)
+						if(tile.char != '')
+							return true;
+				}
+				else if (i==(word.length-1) && (((tileID+i+1)%NUM_COLS) != 0)){
+					console.log("last");
+					var tile=tiles[tileID+i+1];
+					if (tile != null)
+						if(tile.char != '')
+							return true;
+				}
+				var ID1=tileID+i-NUM_COLS;
+				var ID2=tileID+i+NUM_COLS;
+				console.log("IDS are "+ID1+" and "+ID2);
+				var tile1=tiles[ID1];
+				var tile2=tiles[ID2];
+				if (tile1 != null && tile2 != null)
+					console.log("Detected tile "+tile1.char+" of direction "+ tile1.direction +",of last"+tile1.last+ " and "+tile2.char+" of direction "+tile2.direction+",of last "+tile2.last);
+				if (tile1 != null)
+					if (					
+						(tile1.last && tile1.direction == "vertical") || (
+						tile1.direction == "horizontal" && tileID>(NUM_COLS-1)
+						)					
+					)
+						return true;
+				if (tile2 != null)
+					if (
+						(tile2.first && tile2.direction == "vertical") || (
+						 tile2.direction == "horizontal" && tileID<=(area-1-NUM_COLS)
+						)
+					)
+						return true;				
+			}					
+		}
+		 else if (inputDirection == "vertical"){	
+			for ( i=0; i < word.length*NUM_ROWS ; i+=NUM_ROWS){	
+				if (i==0 && tileID>(NUM_COLS-1)){
+					console.log("1st");
+					var tile=tiles[tileID-NUM_ROWS];
+					if (tile != null)
+						if(tile.char != '')
+							return true;
+				}
+				else if (i==((word.length-1)*NUM_ROWS) && (tileID+i)<=(area-1-NUM_COLS)){
+					var tile=tiles[tileID+i+NUM_ROWS];
+					if (tile != null)
+						if(tile.char != '')
+							return true;
+				}
+				var ID1=tileID+i-1;
+				var ID2=tileID+i+1;	
+				var tile1=tiles[ID1];
+				var tile2=tiles[ID2];
+				if (tile1 != null && tile2 != null)
+					console.log("Detected tile "+tile1.char+" of direction "+ tile1.direction + " and "+tile2.char+" of direction "+tile2.direction);
+				if (tile1 != null)
+					if (
+						(tile1.last && tile1.direction == "horizontal") || (
+						 tile1.direction == "vertical" && (tileID%NUM_ROWS) != 0)
+					 )
+						return true
+				if (tile2 != null)
+					if (
+						(tile2.first && tile2.direction == "horizontal") || ( 
+						tile2.direction == "vertical" && ((tileID+1)%NUM_ROWS) != 0)
+					)
+						return true;				
+			}					
+		}
+		return false;
+	}
+  
 	 function checkCollisionX(word,tileID){	//Check for collision of the same letters in the horizontal direction
 		for ( i=0; i < word.length ; i++){
 			var tile=tiles[tileID+i];
@@ -501,7 +601,12 @@
 		}
 	}
 	
-	function wordToTiles(word,tileID){		//Insert a word entered by the user into the appropriate tiles
+	function wordToTiles(word,tileID){	
+		var bool=checkAdjacent(word,tileID);
+		console.log(word+" failed the test: "+bool);
+		if (bool && botMode){
+			return false;
+		}
 		if (tileID<0 || tileID > (area-1))
 			return false;
 		var tileID1="";var tileID2="";
@@ -514,6 +619,11 @@
 			for ( i=0; i < length ; i++){
 				var tile=tiles[tileID+i];
 				tile.qns=answerList.indexOf(answerSelected);
+				tile.direction=inputDirection;
+				if (i==0)
+					tile.first=true;
+				else if (i == (length-1))
+					tile.last=true;
 				//console.log("Current tile "+tile.char+" is at "+tile.x+","+tile.y);
 				var len=tile.char.length;
 				//console.log(len);
@@ -554,6 +664,11 @@
 			for ( i=0; i < length ; i++){
 				var tile=tiles[tileID+i*NUM_ROWS];
 				tile.qns=answerList.indexOf(answerSelected);
+				tile.direction=inputDirection;
+				if (i==0)
+					tile.first=true;
+				else if (i == (length-1))
+					tile.last=true;
 				//console.log("Current tile "+tile.char+" is at "+tile.x+","+tile.y);
 				//console.log(tile.char.length);
 				if (tile.char.length > 0){
@@ -607,8 +722,8 @@
 		ctx.fillStyle = "white";
 		ctx.fill();
 		ctx.fillStyle = "black";
-		ctx.font = "bold 10pt Courier";
-		ctx.fillText(this.char,this.x+(tileWidth/2),(this.y+(tileWidth/2)),tileWidth);
+		ctx.font = "bold "+0.6*tileCellWidth+"pt Courier";
+		ctx.fillText(this.char,this.x+(tileWidth/4),(this.y+(tileWidth/1.5)),tileWidth);
 	};
 	
 	function initTiles(){
