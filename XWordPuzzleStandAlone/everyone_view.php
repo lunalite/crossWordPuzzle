@@ -5,6 +5,7 @@
     sec_session_start();
     
     $id=$_GET["id"];
+
 ?>
 <html>
     <head>
@@ -22,8 +23,6 @@
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
             $(function () {
-            
-                console.log('test');
                 //********* HERE IS THE LIVE SCORE UPDATE SYSTEM ********
             
                 var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
@@ -70,27 +69,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Score Page</a>
+                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword User Score Page</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli);?>
-
                         <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                     </div>
-
-                    <?php elseif ((login_check($mysqli) == FALSE)) : ?>
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <input type="text" placeholder="Email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-success">Sign in</button>
-                    </form>
-                    <?php endif; ?>
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>
