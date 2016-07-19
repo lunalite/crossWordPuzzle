@@ -1,7 +1,7 @@
 # crossWordPuzzle
 Update 19/7/2016
-- Increase randomization of auto function in crossword                                                                                   - Crossword auto function bug fixes
- 
+- Increased randomization of auto function
+- Auto function bug fixes
 
 Update 19/7/2016
 - Changed time_elapsed in studentHistory table to int(11) type, and changed qnStats to varchar(9000) to store more values
