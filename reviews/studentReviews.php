@@ -3,6 +3,8 @@
     include_once '../includes/functions.php';
     
     sec_session_start();
+
+    $user_id = $_GET['userId'];
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +20,23 @@
         <script src="../css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
+        
+        <script>
+            $(function () {
+                $("#userList").on("click", "tbody tr", function (e) {
+                    if (sessionStorage.getItem("sessId") === this.id) {
+                        var url = "studentReviews.php?";
+                        window.location.href = url;
+                        sessionStorage.removeItem("sessId");
+                    } else {
+                        sessionStorage.setItem("sessId", this.id);
+                        var url = "./studentReviews.php?userId=" + this.id;
+                        window.location.href = url;
+                    }
+                });
+            });
+            
+        </script>
 
     </head>
     <body>
@@ -40,23 +59,10 @@
                     <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
                     <li><a href="./reviews.php" style="color:white;">Reviews</a></li>
                     <li><a href="../users/users.php" style="color:white;">Users</a></li>
-                    <!--
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="#">Inbox</a></li>
-                            <li><a href="#">Drafts</a></li>
-                            <li><a href="#">Sent Items</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Trash</a></li>
-                        </ul>
-                    </li> -->
                 </ul>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli); ?>
-
                         <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                     </div>
                 </div>
@@ -69,7 +75,50 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-6 col-md-8 col-md-offset-2">
+                        
+                        <!-- Users -->
+                        <h3>All users</h3>
+                        <table id="userList" class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>User type</th>
+                                <th>Group</th>
+                            </tr>
+                            </thead>
+                            <tbody style="cursor: pointer;">
+                                <?php
+                                    if (!isset($user_id)) {
+                                      userCheck($mysqli, "all");
+                                    } else {
+                                      userCheck($mysqli, "user");
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
 
+<?php if(isset($user_id)) : ?>
+                        <!-- Users Score page -->
+                        <h3>All recorded sessions</h3>
+                        <table id="userList" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Session ID</th>
+                                <th>Time taken</th>
+                                <th>question</th>
+                                <th>Answered</th>
+                                <th>Attempts</th>
+                            </tr>
+                            </thead>
+                            <tbody style="cursor: pointer;">
+                                <?php
+                                      historyCheck($mysqli);
+                                ?>
+                            </tbody>
+                        </table>
+<?php endif; ?>
                     </div>
                 </div>
             </div>

@@ -338,25 +338,7 @@ function userInSession($mysqli){
         return TRUE;
         }
 }
-/*
-function sessionUserCheck($mysqli) {
-    $query = "SELECT * FROM ".$GLOBALS['sessionJoin']." WHERE sessid = 
-    (SELECT sessId FROM ".$GLOBALS['sessionJoin']." WHERE userId = " . $_SESSION['user_id'] . ")";
-    $result = $mysqli->query($query);
-    if (mysqli_num_rows($result) == 0) {
-        echo '<tr><td>Some error happened.</td></tr>';
-    }
-    else {
-        while ($row=mysqli_fetch_row($result)) {
-            $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id = " . $row[1];
-            $innerResult = $mysqli->query($innerQuery);
-            $innerRow=mysqli_fetch_row($innerResult);
-            $tbp = '<tr><td>' . $innerRow[0] . '</td></tr>';
-            echo $tbp;
-        }
-    }
-}
-*/
+
 function gateCheck($mysqli) {
     $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessid = " . $_SESSION['sess_id'];
     $result = $mysqli->query($query);
@@ -414,6 +396,52 @@ function groupCheck($mysqli) {
                 <td>'.$row[1].'</td>
                 </tr>';
     }
+}
+
+function historyCheck($mysqli) {
+  $query = "SELECT * FROM ".$GLOBALS['studentHistory']." WHERE userId = ".$_GET['userId'];
+  $result = $mysqli->query($query);
+  while ($row = mysqli_fetch_row($result)) {
+
+    $qAA = json_decode(($row[3]), true);
+    $count = count($qAA);
+echo $count;
+        echo '<tr id="'. $row[0] .'">
+                <td rowspan="'.$count.'">'.$row[0].'</td>
+                <td rowspan="'.$count.'">'.$row[2].'</td>';
+        $firstItr = true;
+        while ($count > 0) {
+
+$att = 0;
+$ans = "";
+$col = "";
+switch ($qAA[$count-1]['attempts']) {
+  case 0: $att = First; break;
+  case 1: $att = Second; break;
+  case 2: $att = "Over"; break; 
+} 
+
+switch ($qAA[$count-1]['answered']) {
+  case 0: $ans = "wrong"; $col="danger"; break;
+  case 1: $ans = "right"; $col="success"; break;
+}
+
+          if ($firstItr) {
+            $subtr = $count+1;
+            $firstItr = false;
+            echo '<td class="'.$col.'">'.($subtr-$count).'</td>
+                  <td class="'.$col.'">'.$ans.'</td>
+                  <td class="'.$col.'">'.$att .'</td></tr>';
+          } else {
+          echo '<tr class="'.$col.'"><td>'.($subtr-$count).'</td>
+                <td>'.$ans .'</td>
+                <td>'.$att .'</td></tr>';
+
+          }
+                $count --;
+        }
+  }
+
 }
 
 function crosswordList($mysqli, $crosswordId, $questionId) {
@@ -532,4 +560,10 @@ switch(role_check($mysqli)) {
     echo groupReply($mysqli, $_SESSION['user_id'], true); 
     }
     echo '&emsp;';
+}
+
+function remove_utf8_bom($text) {
+    $bom = pack('H*','EFBBBF');
+    $text = preg_replace("/^$bom/", '', $text);
+    return $text;
 }
