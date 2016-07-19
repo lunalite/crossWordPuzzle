@@ -1,4 +1,9 @@
 # crossWordPuzzle
+Update 19/7/2016
+- Changed time_elapsed in studentHistory table to int(11) type, and changed qnStats to varchar(9000) to store more values
+- Changed storage for studentHistory to UTF-8 for qnStats
+- Added basic student Review
+
 Update 18/7/2016
 - Resolved the live time update on the score list
 - Changed HTTPRequest to ajax of jQuery

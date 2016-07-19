@@ -10,7 +10,7 @@
     $time = $_POST['time'];
     $userId = $_SESSION['user_id'];
     
-    $historiseQuery = "INSERT INTO ".$GLOBALS['studentHistory']." VALUES ($sessId, $userId, $time, '$qStackJson')";
+    $historiseQuery = "INSERT INTO ".$GLOBALS['studentHistory']." VALUES ($sessId, $userId, $time, $qStackJson)";
 
     if ($mysqli->query($historiseQuery) === TRUE) {
         echo 'successful in entering data to studentHistory';

@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `studentHistory` (
 `sessId` int(11) REFERENCES sessionstart(sessId),
 `userId` int(11) REFERENCES sessionstart(userId),
 `time_elapsed` int(11),
-`qnStats` varchar(255),
+`qnStats` varchar(9000) **** use utf-8****,
 PRIMARY KEY(sessId, userId)
 )
 

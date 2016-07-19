@@ -74,7 +74,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
                         <?php loginNavBarAction($mysqli);?>
-                        <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
+                        <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                     </div>
                 </div><!--/.navbar-collapse -->
             </div>

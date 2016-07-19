@@ -1,0 +1,1 @@
+UPDATE crosswordpuzzles SET TileCode ='00500500' WHERE Answer = 'RETAINEDEARNINGS' AND CrosswordID =11UPDATE crosswordpuzzles SET TileCode ='00750495' WHERE Answer = 'INCOMESTATEMENT' AND CrosswordID =11
