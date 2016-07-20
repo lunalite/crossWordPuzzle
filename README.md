@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 20/7/2016
+-Changed instruction for master template
+
 Update 19/7/2016
 - Increased randomization of auto function
 - Auto function bug fixes
