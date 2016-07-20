@@ -1,6 +1,7 @@
 # crossWordPuzzle
-Update 20/7/2016
--Changed instruction for master template
+Update 19/7/2016
+- Updates instruction for master template
+- Removed link to go back in the page to view crossword
 
 Update 19/7/2016
 - Increased randomization of auto function
