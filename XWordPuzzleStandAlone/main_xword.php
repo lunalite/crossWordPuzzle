@@ -66,10 +66,13 @@
                 <div class="col-sm-3 col-md-2 col-lg-2 col-sm-push-9 col-md-push-10 col-lg-push-10">
                     <nav class="navbar navbar-default navbar-fixed-side">
                         <div class="container">
-
-                            <div class="navbar-header">
-                                <a id="title" class="navbar-brand">HELLO</a>
+                            <div style="display: inline">
+                                <form action="../user.php">
+                                <span id="title" style="margin:5px">HELLO</span>
+                                    <input type="submit" class="btn btn-primary btn-sm" value="Leave puzzle">
+                                </form>
                             </div>
+
                             <div class="collapse navbar-collapse">
                                 <h3>Scores</h3>
                             </div>
