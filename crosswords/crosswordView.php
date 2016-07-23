@@ -42,6 +42,7 @@
                 for (var i = 0; i < parsedData.length; i++) {
                   var type = "";
                   var title = "";
+		console.log(parsedData[i].notAssignedYet);
                   if (parsedData[i].notAssignedYet) {
                     type = "danger";
                     title = "'This crossword has not been assigned yet.'";

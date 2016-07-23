@@ -90,7 +90,7 @@
                                     <td>Rank</td>
                                     <td>User</td>
                                     <td>Score</td>
-                                    <td>Time</td>
+                                    <td>Time(secs)</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -105,14 +105,14 @@
                     </nav>
                 </div>
                 <div class="col-sm-9 col-md-10 col-lg-10 col-sm-pull-3 col-md-pull-0 col-lg-pull-2">
-                <div class = "qna">
-			<p id="currentQuestion">Your question will appear here when you select one of the tiles to answer</p>
+                <div style="position: fixed;width: 82% ;" class = "qna">
+			<p  style="height : 5%;" id="currentQuestion">Your question will appear here when you select one of the tiles to answer</p>
 			<input  style="width: 50%;" id="userAnswer" class="userAnswer"  onkeydown = "if (event.keyCode == 13)
 	                    userAnswers()"></input>
 			<input type="submit" class="btn btn-primary btn-sm" name="Answer!" value="Answer!" onclick="userAnswers()">
 		</div>
                     <script src="lib/alertify.min.js"></script>
-                    <div class="canvas"><canvas id="myCanvas">
+                    <div class="canvas" style="margin:4% 0 0;"><canvas id="myCanvas">
         Your browser does not support the HTML5 canvas tag.</canvas></div>
                   <script src="js/main_script.js?<?php echo time(); ?>"></script>
                 </div>
