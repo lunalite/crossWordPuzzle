@@ -41,6 +41,8 @@
   var startTime;
   var tileSelected = 0 ;
   var currentQns = "NIL";
+  
+  clearStorage();
 
   // function to obtain session storage information
   // Note that it is one-off storage of data. Closing of session will cause data to be gone
@@ -220,7 +222,7 @@
     //console.log("Difference is "+diff);
     //console.log("Length of word is "+ans.length);
     for (j = 0; j < ans.length; j++) {
-      //console.log("Now at Tile "+ID1+",with i = "+i);
+      console.log("Now at Tile "+ID1+",with i = "+i+" for qns id "+answerList.indexOf(ans));
       if (containsTile(ID1, tiles)) {
         //console.log("Collision detected on Tile: " + ans.charAt(j));
         var tile = getTileFromId(ID1);
@@ -260,22 +262,25 @@
   }
 
   function getPosition(e) {
+    console.log("Rect.left is "+rect.left+" while rect.top is "+rect.top);
     var scrollTop = $(window).scrollTop();
     var scrollRight = $(window).scrollLeft(); //Function called when a tile is clicked
+    console.log("Detected scrolled up "+scrollTop+" and scrollRight "+scrollRight);
     mouseX = e.clientX + scrollRight - rect.left;
     mouseY = e.clientY + scrollTop - rect.top;
-    //console.log("X " + mouseX);
-    //console.log("Y" + mouseY);
+    console.log("raw X " + e.clientX);
+    console.log("raw Y" +  e.clientY);
     tileSelected = posToTileID(mouseX, mouseY);
+    console.log("Selected Tile: " + tileSelected);
     var tile = getTileFromId(tileSelected);
-    //console.log(tile.char);
+    console.log(tile.char);
     if (tile.intersected) {
       alertify.alert("Pick a non intersecting tile!");
       return;
     }
     var question = questionList[tile.qns_id];
     currentQns = question ;
-    console.log("Selected Tile: " + tileSelected);
+
 
     // Check if number of attempts exceeded 2 times
     if (attempts[tile.qns_id] > 1) {
@@ -286,7 +291,6 @@
       // If question is unanswered or 1 attempt remains, do this      
     } else {
       document.getElementById("currentQuestion").innerHTML=question;
-      rect = c.getBoundingClientRect();
       document.getElementById("userAnswer").focus();
       document.getElementById("userAnswer").select();
       /*alertify.prompt(question, function (e, word) {
@@ -447,7 +451,7 @@
       if (tile.qns_id == qns_id) {
         tile.char = word[tracker++];
         tile.drawAns();
-        //console.log("Drawn on tile " + tile.char);
+        console.log("Drawn on tile " + tile.char+" of ID "+tile.id);
       }
     }
   }
