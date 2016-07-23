@@ -34,9 +34,7 @@
       foreach($data as $key => $value) {
         if($data[$key]['crosswordId'] == $rowForCrosswordValidity['crosswordID']) {
           $data[$key]['notAssignedYet'] = TRUE;
-        } else {
-          $data[$key]['notAssignedYet'] = FALSE;
-        }
+        } 
       }    
     }
     echo json_encode($data);

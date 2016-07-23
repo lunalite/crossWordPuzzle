@@ -5,7 +5,7 @@
     sec_session_start();
     
     $id=$_GET["id"];
-
+    echo '<script>var sessId = '.$id.'</script>';
 ?>
 <html>
     <head>
@@ -30,7 +30,7 @@
                     encrypted: true
                 });
             
-                var channelT = pusher.subscribe('channel_1');
+                var channelT = pusher.subscribe(sessId.toString());
                 channelT.bind('correctAnswer', function (data) {
             
                     updatedScore = data.updatedScore;

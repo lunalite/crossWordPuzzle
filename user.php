@@ -3,6 +3,7 @@
     include_once './includes/functions.php';
     
     sec_session_start();
+    echo '<script>var sessId = '.$_SESSION['sess_id'].'</script>';
 ?>
 <!DOCTYPE html>
 <html>
@@ -94,19 +95,20 @@
                         <?php endif; ?>
 
                         <script>
-                        //********* HERE IS THE LIVE GATE PUSH SYSTEM ********
-                        var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
+                          //********* HERE IS THE LIVE GATE PUSH SYSTEM ********
+                          console.log(sessId);
+                          var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
                             cluster: 'ap1',
                             encrypted: true
-                        });
-            
-                        var channelT = pusher.subscribe('channel_1');
-                        channelT.bind('gateOpen', function (data) {
+                          });
+
+                          var channelT = pusher.subscribe(sessId.toString());
+                          channelT.bind('gateOpen', function (data) {
                             if (data.gateStatus == 'open') {
-                                alert('Gate is ' + data.gateStatus);
-                                window.location.href="XWordPuzzleStandAlone/main_xword.php";
+                              alert('Gate is ' + data.gateStatus);
+                              window.location.href = "XWordPuzzleStandAlone/main_xword.php";
                             }
-                        });
+                          });
                         </script>
 
                     </div>

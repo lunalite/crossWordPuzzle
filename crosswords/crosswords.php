@@ -13,22 +13,18 @@
         <title>REP Crossword Master Page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
-        <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="../css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
-
             $(function () {
                 var xWordListRes = $('#crosswordList');
                 var xWordSearch = $('#crosswordSearch');
             
                 xWordSearch.keyup(function () {
                     var searchid = $(this).val();
-                    // console.log(searchid);
-            
                     $.ajax({
                         type: "POST",
                         datatype: 'json',
@@ -36,20 +32,16 @@
                         data: { searchQ: searchid },
                         cache: false,
                         success: function (data) {
-                             //console.log(data);
                             $("#result").html(data).show();
                         }
                     });
                 });
             });
-            
         </script>
 
     </head>
     <body>
         <?php if ((login_check($mysqli) == true) && role_check($mysqli) != 0) : ?>
-
-
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -67,31 +59,16 @@
                         <li><a href="#" style="color:white;">Crosswords</a></li>
                         <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
                     <li><a href="../users/users.php" style="color:white;">Users</a></li>
-                            <!--
-                        <li class="dropdown">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">Inbox</a></li>
-                                <li><a href="#">Drafts</a></li>
-                                <li><a href="#">Sent Items</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Trash</a></li>
-                            </ul>
-                        </li> -->
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
-
                        <?php loginNavBarAction($mysqli); ?>
-
                         <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                         </div>
                     </div>
                 </div>
             </div>
         </nav>
-
-
         <div class="jumbotron">
             <div class="container">
                 <div class="row">

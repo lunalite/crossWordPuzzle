@@ -47,7 +47,7 @@
 
                     $data['updatedScore'] = $updatedScore;
                     $data['userName'] = $username;
-                    $pusher->trigger('channel_1', 'correctAnswer', $data);
+                    $pusher->trigger((string)$sessId, 'correctAnswer', $data);
                     //******* end live score push *******
                 } else {
                     echo "Error with inserting query to ".$GLOBALS['questionAnswered'];

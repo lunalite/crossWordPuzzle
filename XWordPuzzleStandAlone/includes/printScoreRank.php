@@ -33,13 +33,15 @@
     }
     
     $rank = 1;
+
+
     
     foreach ($data as $argv) {
         echo "<tr id=\"".$argv['username']."\"> 
                 <td>$rank</td> 
                 <td class=\"teamR\">".$argv['username']."</td> 
                 <td class=\"scoreR\">".$argv['scores']."</td> 
-                <td class=\"TimeR\">".$argv['Time']."</td> 
+                <td class=\"TimeR\">".gmdate('i:s',(int)$argv['Time'])."</td> 
                 </tr>";
         $rank++;
     }

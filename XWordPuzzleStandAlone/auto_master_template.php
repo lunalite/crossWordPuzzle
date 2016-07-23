@@ -14,7 +14,6 @@
         <title>REP Crossword Assignment Page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
-        <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="../css/js/bootstrap.min.js"></script>
