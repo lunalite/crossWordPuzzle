@@ -57,7 +57,7 @@
             );
     
             $data['gateStatus'] = 'open';
-            $pusher->trigger('channel_1', 'gateOpen', $data);
+            $pusher->trigger((string)$sessId, 'gateOpen', $data);
             //******* end live gate push *******  
             }
         }

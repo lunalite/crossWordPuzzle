@@ -1,3 +1,10 @@
+<?php 
+    include_once '../includes/db_connect.php';
+    include_once '../includes/functions.php';
+    
+    sec_session_start();    
+    echo '<script>var sessId = '.$_SESSION['sess_id'].'</script>';
+?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -28,35 +35,36 @@
             
         </style>
         <script>
-            $(function () {
-                            
-                //********* HERE IS THE LIVE SCORE UPDATE SYSTEM ********
-                //Pusher.logToConsole = true;
-            
-                var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
-                    cluster: 'ap1',
-                    encrypted: true
-                });
-            
-                var channelT = pusher.subscribe('channel_1');
-                channelT.bind('correctAnswer', function (data) {
-					console.log("Updating....");
-                    updatedScore = data.updatedScore;
-                    userName = data.userName;
-                    //document.getElementById("score").innerHTML = "Score: " + updatedScore;
-            
-                    $.ajax({
-                        type: "POST",
-                        datatype: 'json',
-                        url: "./includes/printScoreRank.php",
-                        cache: false,
-                        success: function (data) {
-                            $("#scoreList").find("tbody").html(data);
-                            $('#scoreList').find('#' + userName).css("background-color", "FFF000");
-                        }
-                    });
-                });
+          $(function () {
+
+            //********* HERE IS THE LIVE SCORE UPDATE SYSTEM ********
+            //Pusher.logToConsole = true;
+            console.log(sessId);
+            var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
+              cluster: 'ap1',
+              encrypted: true
             });
+
+            var channelT = pusher.subscribe(sessId.toString());
+            
+            channelT.bind('correctAnswer', function (data) {
+              console.log("Updating....");
+              updatedScore = data.updatedScore;
+              userName = data.userName;
+              //document.getElementById("score").innerHTML = "Score: " + updatedScore;
+
+              $.ajax({
+                type: "POST",
+                datatype: 'json',
+                url: "./includes/printScoreRank.php",
+                cache: false,
+                success: function (data) {
+                  $("#scoreList").find("tbody").html(data);
+                  $('#scoreList').find('#' + userName).css("background-color", "FFF000");
+                }
+              });
+            });
+          });
         </script>
     </head>
 

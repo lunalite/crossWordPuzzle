@@ -13,15 +13,12 @@
         <title>REP Crossword Addition page</title>
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
-        <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="../css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
-
-
             $(function () {
                 var xWordInputList = $('#question2BI').find('tbody');
                 var xWordInput = $('#questions');

@@ -4,6 +4,7 @@
     
     sec_session_start();
     $id=$_GET["id"];
+    echo '<script>var sessId = '.$id.'</script>';
 ?>
 <html>
     <head>
@@ -21,7 +22,7 @@
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
             $(function () {
-            
+            console.log(sessId);
                 //********* HERE IS THE LIVE SCORE UPDATE SYSTEM ********
             
                 var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
@@ -29,7 +30,8 @@
                     encrypted: true
                 });
             
-                var channelT = pusher.subscribe('channel_1');
+                var channelT = pusher.subscribe(sessId.toString());
+                
                 channelT.bind('correctAnswer', function (data) {
             
                     updatedScore = data.updatedScore;
