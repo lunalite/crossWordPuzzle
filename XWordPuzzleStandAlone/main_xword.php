@@ -12,6 +12,9 @@
         <link rel="stylesheet" href="themes/alertify.default.css" id="toggleCSS" />
         <title>REP Crossword Main Game</title>
         <style>
+            .qna{
+            	background-color: #FFE7D8;
+            }
             .alertify-log-custom {
                     background: blue;
                 }
@@ -91,14 +94,18 @@
                     </nav>
                 </div>
                 <div class="col-sm-9 col-md-10 col-lg-10 col-sm-pull-3 col-md-pull-0 col-lg-pull-2">
-
-                    <!-- your page content -->
+                <div class = "qna">
+			<p id="currentQuestion">Your question will appear here when you select one of the tiles to answer</p>
+			<input  style="width: 50%;" id="userAnswer" class="userAnswer"  onkeydown = "if (event.keyCode == 13)
+	                    userAnswers()"></input>
+			<input type="submit" class="btn btn-primary btn-sm" name="Answer!" value="Answer!" onclick="userAnswers()">
+		</div>
                     <script src="lib/alertify.min.js"></script>
                     <div class="canvas"><canvas id="myCanvas">
         Your browser does not support the HTML5 canvas tag.</canvas></div>
+                  <script src="js/main_script.js?<?php echo time(); ?>"></script>
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/main_script.js?<?php echo time(); ?>"></script>
     </body>
 </html>

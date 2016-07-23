@@ -42,9 +42,6 @@
     <body>
     <!-- This page can be viewed by both super users and admin -->
     <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?>
-    <div class="container">
-	    <a href="javascript:history.back()">Click Here to go back</a>
-    </div>
                    <script src="lib/alertify.min.js"></script>
                    <div class="canvas"><canvas id="myCanvas">
         Your browser does not support the HTML5 canvas tag.</canvas></div>

@@ -1,5 +1,5 @@
 // Added the jQuery ready document function for AJAX purposes
-$(function () {
+
 
   // Declaration of all variables
   var pixelSize = 10;
@@ -39,9 +39,19 @@ $(function () {
   var bonus = 0;
   var qStack = []; //qStack to store the number of correct answers, etc. in array before transforming into jquery
   var startTime;
+  var tileSelected = 0 ;
+  var currentQns = "NIL";
 
   // function to obtain session storage information
   // Note that it is one-off storage of data. Closing of session will cause data to be gone
+  
+  function clearStorage(){
+ 	    localStorage.removeItem('startTime');
+	    localStorage.removeItem('answered');
+	    localStorage.removeItem('attempts');
+	    localStorage.removeItem('noOfQuestions');
+  }
+  
   function recallStorage(size) {
     attemptsData = JSON.parse(localStorage.getItem('attempts'));
     answeredData = JSON.parse(localStorage.getItem('answered'));
@@ -102,6 +112,7 @@ $(function () {
     this.drawn = false;
     //Each tile is given a unique id starting from 0, traversing each column before going to the next row	
   };
+  
 
   function getTitle() {
     var url2 = "includes/getTitle.php";
@@ -255,7 +266,7 @@ $(function () {
     mouseY = e.clientY + scrollTop - rect.top;
     //console.log("X " + mouseX);
     //console.log("Y" + mouseY);
-    var tileSelected = posToTileID(mouseX, mouseY);
+    tileSelected = posToTileID(mouseX, mouseY);
     var tile = getTileFromId(tileSelected);
     //console.log(tile.char);
     if (tile.intersected) {
@@ -263,18 +274,22 @@ $(function () {
       return;
     }
     var question = questionList[tile.qns_id];
+    currentQns = question ;
     console.log("Selected Tile: " + tileSelected);
 
     // Check if number of attempts exceeded 2 times
     if (attempts[tile.qns_id] > 1) {
       alertify.error("You have exceeded the number of attempts for this question!");
-
       // Check if question is answered correctly. If it is, do nothing
     } else if (answered[tile.qns_id] == 1) {
 
       // If question is unanswered or 1 attempt remains, do this      
     } else {
-      alertify.prompt(question, function (e, word) {
+      document.getElementById("currentQuestion").innerHTML=question;
+      rect = c.getBoundingClientRect();
+      document.getElementById("userAnswer").focus();
+      document.getElementById("userAnswer").select();
+      /*alertify.prompt(question, function (e, word) {
         if (e) {
           word = word.toUpperCase();
           word = word.replace(/\s/g, '');
@@ -286,12 +301,45 @@ $(function () {
             wordToTiles(word);
             alertify.success("CORRECT!");
           }
-          else
-            alertify.error("WRONG!");
+          else{
+            	alertify.error("WRONG!");      		
+            }
         }
-      }, "");
+      }, "");*/
 
     }
+  }
+  
+  function userAnswers(){
+  	if (currentQns == "NIL"){
+  		alertify.error("Select a tile first!");
+  		return ;
+  	}
+  	var userAnswer=document.getElementById("userAnswer").value;
+  	if (userAnswer.length == 0){
+  		alertify.error("Please enter an answer!");
+  		return ;
+  	}
+  	userAnswer = userAnswer.toUpperCase();
+        userAnswer = userAnswer.replace(/\s/g, '');
+	console.log("USER ENTERED "+userAnswer);
+          var correct = checkAnswer(userAnswer, tileSelected);
+
+          if (correct) {
+            // Write down the words onto the tiles
+            wordToTiles(userAnswer);
+            alertify.success("CORRECT!");
+             document.getElementById("userAnswer").value='';
+            document.getElementById("currentQuestion").innerHTML="Great !";
+            currentQns = "NIL";
+          }
+          else{
+           	 alertify.error("WRONG!");
+           	 if (attempts[questionList.indexOf(currentQns)] > 1) {
+            		currentQns = "NIL" ;	
+            		document.getElementById("currentQuestion").innerHTML="You have exceeded the number of attempts for this question!";
+            	}   
+            }
   }
 
   function getTileFromId(tileID) {
@@ -457,6 +505,7 @@ $(function () {
         return 99;
     }
   }
+  
 
   function addScore(qid) {
     $.ajax({
@@ -483,6 +532,4 @@ $(function () {
       }
     });
   }
-
-});
 

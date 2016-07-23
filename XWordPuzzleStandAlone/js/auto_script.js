@@ -38,7 +38,7 @@
 	var title="";
 	var desc="";
 	var botMode=false;
-		
+	
 	function undo(){
 		console.log("Stack before undo is now "+actionStack+"\n"+ansStack+"\n"+tileCodeStack);
 		if (actionStack.length <= 0)
@@ -131,13 +131,14 @@
 		  return array;
 	}
 	
-	function autobomb(tileid){
+	function autobomb(){
 		var dirStack=[];
 		reset();
 		var allocatedAnswers=[];
 		var allocatedTiles=[];
 		var a=0;
-		var tileid=50;
+		var tileid=Math.floor((Math.random() * area));
+		var originalDirection = inputDirection ; 
 		inputDirection="vertical";
 		botMode=true;
 		var counter=0;
@@ -147,10 +148,10 @@
 		while (tempList.length>0){
 			counter++;
 			if (counter >= 2*tempList.length){
+				inputDirection = originalDirection ;
 				var r = confirm("Failed to allocate all answers! Retry with a different configuration?");
 				if (r == true) {
-					var newID=Math.floor((Math.random() * area));
-					autobomb(newID);
+					autobomb();
 					return ;
 				} else {
 				    return ;
@@ -231,15 +232,19 @@
 					}
 				}
 			else{
-				console.log("INITIATING "+tileid+","+toBeInserted)
-				dirStack.push(inputDirection);
-				wordToTiles(toBeInserted,tileid);
-				ansStack.push(answerSelected);
-				tileCodeStack.push(currentEncodedID);
-				actionStack.push(0);
-				allocatedAnswers.push(toBeInserted);
-				allocatedTiles.push(tileid);
-				//toggleDirection();
+				if (wordToTiles(toBeInserted,tileid)){
+					console.log("INITIATING "+tileid+","+toBeInserted)
+					dirStack.push(inputDirection);
+					ansStack.push(answerSelected);
+					tileCodeStack.push(currentEncodedID);
+					actionStack.push(0);
+					allocatedAnswers.push(toBeInserted);
+					allocatedTiles.push(tileid);
+					counter=0;
+					//toggleDirection();
+					}
+				else
+					tempList.push(toBeInserted);
 			}
 
 		}
@@ -353,7 +358,7 @@
 			questionList.splice(index, 1);
 			populate(questionList);
 			if (questionList.length == 0)
-				header.innerHTML = 'You have allocated all the answers. Click ee to submit the Puzzle';
+				header.innerHTML = 'You have allocated all the answers. Click "Save" to submit the Puzzle. Click "Save as" to save the puzzle as a new one.';
 		}
 	}
 	
