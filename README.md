@@ -5,6 +5,8 @@ Update 23/7/2016
 - Added danger color for those crosswords not assigned yet
 - fixed sensitivity issue
 - make question/answer bar's position fixed on top
+- Changed the problem with channels by conferring them all to sessionID instead
+- Edited time format to min:seconds
 
 Update 19/7/2016
 - Changed time_elapsed in studentHistory table to int(11) type, and changed qnStats to varchar(9000) to store more values
