@@ -9,23 +9,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>REP Crossword View page
-    </title>
+    <title>REP Crossword View page</title>
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/jumbotron.css" rel="stylesheet">
     <script src="https://js.pusher.com/3.1/pusher.min.js">
     </script>
     <!-- Bootstrap core JavaScript-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-    </script>
-    <script src="../css/js/bootstrap.min.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../css/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../css/js/ie10-viewport-bug-workaround.js">
-    </script>
+    <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
     <!-- jquery code for listing of puzzles -->
     <script>
-      
       $(function () {
         var xWordListRes = $('#crosswordList');
         var xWordSearch = $('#crosswordSearch');
@@ -36,9 +31,7 @@
             type: "POST",
             datatype: 'json',
             url: "includes/listOfCrosswordAvail.php",
-            data: {
-              searchQ: searchid }
-            ,
+            data: { searchQ: searchid },
             cache: false,
             success: function (data) {
               var parsedData = JSON.parse(data);
@@ -47,11 +40,20 @@
                 xWordResult.append("<tr><td colspan='4'>No such ID OR Wrong Command</td></tr>");
               }
               else {
-                for (var i = 0; i < parsedData.length; i ++) {
-                  xWordResult.append("<tr id="+parsedData[i].crosswordId+"><td>"+parsedData[i].crosswordId+
-                                     "<td>"+parsedData[i].PuzzleName+"</td>"+
-                                     "<td>"+parsedData[i].crosswordDescription+"</td>"+
-                                     "<td>"+parsedData[i].TIME_ADDED+"</td>"+
+                for (var i = 0; i < parsedData.length; i++) {
+                  var type = "";
+                  var title = "";
+                  if (parsedData[i].notAssignedYet) {
+                    type = "danger";
+                    title = "'This crossword has not been assigned yet.'";
+                  } else {
+                    type = "success";
+                    title = "'This crossword is good to go.'";
+                  }
+                  xWordResult.append("<tr class=" + type + " title = " + title + " id=" + parsedData[i].crosswordId + "><td>" + parsedData[i].crosswordId +
+                                     "<td>" + parsedData[i].PuzzleName + "</td>" +
+                                     "<td>" + parsedData[i].crosswordDescription + "</td>" +
+                                     "<td>" + parsedData[i].TIME_ADDED + "</td>" +
                                      "</tr>");
                 }
               }
@@ -62,18 +64,18 @@
                          );
         xWordSearch.trigger("keyup");
         // Allows for viewing of puzzles, questions and answers
-          $("#crosswordList").on("click", "tbody tr", function(e) {
-            if (sessionStorage.getItem("crosswordViewId") === this.id) {
-              var url = "crosswordView.php?";
-              window.location.href = url;
-              sessionStorage.removeItem("crosswordViewId");
-            }
-            else {
-              sessionStorage.setItem("crosswordViewId", this.id);
-              var url = "crosswordView.php?crosswordId=" + this.id;
-              window.location.href = url;
-            }
+        $("#crosswordList").on("click", "tbody tr", function (e) {
+          if (sessionStorage.getItem("crosswordViewId") === this.id) {
+            var url = "crosswordView.php?";
+            window.location.href = url;
+            sessionStorage.removeItem("crosswordViewId");
           }
+          else {
+            sessionStorage.setItem("crosswordViewId", this.id);
+            var url = "crosswordView.php?crosswordId=" + this.id;
+            window.location.href = url;
+          }
+        }
                                 );
       }
        );
@@ -206,19 +208,14 @@
               }
             ?>
             <hr>
-            <h3>Created crosswords
-            </h3>
+            <h3>Created crosswords</h3>
             <table id="crosswordList" class="table table-striped table-hover">
               <thead>
               <tr>
-                <th>Crossword ID
-                </th>
-                <th>Puzzle Name
-                </th>
-                <th>Crossword Description
-                </th>
-                <th>Time Added
-                </th>
+                <th>Crossword ID</th>
+                <th>Puzzle Name</th>
+                <th>Crossword Description</th>
+                <th>Time Added</th>
               </tr>
               </thead>
               <tbody style="cursor: pointer;" id="result">

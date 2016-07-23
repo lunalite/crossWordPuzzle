@@ -1,6 +1,8 @@
 # crossWordPuzzle
 Update 23/7/2016
 - Add a leave puzzle button for users
+- Removed Change Password on main page since you can change the password from User page
+- Added danger color for those crosswords not assigned yet
 
 Update 19/7/2016
 - Changed time_elapsed in studentHistory table to int(11) type, and changed qnStats to varchar(9000) to store more values

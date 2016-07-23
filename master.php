@@ -73,9 +73,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
-                        <form action="passwordChange.php">
-                            <input type="submit" class="btn btn-primary btn-sm" value="Change Password">
-                        </form>
 
                         To create sessions, go to the <a href="./crosswords/crosswordView.php">viewCrossword</a> section.<br>
                         To assign create session to a group, click on the following table. <br>
