@@ -41,8 +41,6 @@
   var startTime;
   var tileSelected = 0 ;
   var currentQns = "NIL";
-  
-  clearStorage();
 
   // function to obtain session storage information
   // Note that it is one-off storage of data. Closing of session will cause data to be gone

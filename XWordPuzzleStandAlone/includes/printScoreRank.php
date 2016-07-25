@@ -17,18 +17,21 @@
 		while ($row = $result->fetch_assoc()) {
 			$data[] = $row;
 		}
-    
     for ($x=0;$x<count($data);$x++){
     	
     	while ($x>0){
-    		if ($data[$x]['scores'] > $data[$x-1]['scores']){
+    		if (
+    			($data[$x]['scores'] > $data[$x-1]['scores']) ||
+    			( ($data[$x]['scores'] == $data[$x-1]['scores']) && ($data[$x]['Time'] < $data[$x-1]['Time']))
+    		){
     			$tmp = $data[$x-1];
     			$data[$x-1] = $data[$x] ;
     			$data[$x] = $tmp;
     			$x -- ;
     		}
-    		else
+    		else{
     			break;
+    		}
     	}
     }
     

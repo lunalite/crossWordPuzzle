@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 24/7/2016
+- Added sorting of users in leaderboard according to time, given that scores are the same
+
 Update 23/7/2016
 - Add a leave puzzle button for users
 - Removed Change Password on main page since you can change the password from User page
