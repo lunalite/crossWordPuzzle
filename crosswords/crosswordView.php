@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>REP Crossword View page</title>
-    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/jumbotron.css" rel="stylesheet">
     </script>
     <!-- Bootstrap core JavaScript-->
@@ -208,19 +208,7 @@
               }
             ?>
             <hr>
-            <h3>Created crosswords</h3>
-            <table id="crosswordList" class="table table-striped table-hover">
-              <thead>
-              <tr>
-                <th>Crossword ID</th>
-                <th>Puzzle Name</th>
-                <th>Crossword Description</th>
-                <th>Time Added</th>
-              </tr>
-              </thead>
-              <tbody style="cursor: pointer;" id="result">
-              </tbody>
-            </table>
+            
             <!-- Command section -->
             <h3>Commands
             </h3>

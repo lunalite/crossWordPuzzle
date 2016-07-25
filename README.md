@@ -1,4 +1,8 @@
 # crossWordPuzzle
+Update 25/7/2016
+- Trying to reduce file size to reduce latency through minimising CSS bootstrap file.
+- Reordered the Master.php page, adding the selection procedures.
+
 Update 24/7/2016
 - Added sorting of users in leaderboard according to time, given that scores are the same
 

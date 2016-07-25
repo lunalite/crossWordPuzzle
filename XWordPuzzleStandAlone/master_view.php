@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>REP Crossword Master Score page</title>
-        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->

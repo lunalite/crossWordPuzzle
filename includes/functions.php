@@ -488,6 +488,41 @@
       }
   }
   
+  function listOfCrosswordAvail($mysqli) {
+    
+    $queryList = "SELECT * FROM ".$GLOBALS['crosswordMaster'];
+    $resultList = $mysqli->query($queryList);
+  
+    if (mysqli_num_rows($resultList) == 0) {
+      echo "<tr><td colspan='4'>No existing crossword listed</td></tr>";
+    } else {
+      $data = array();
+      $queryForCrosswordValidity = "SELECT DISTINCT crosswordID FROM ".$GLOBALS['crosswordPuzzles'].
+                                    " WHERE TileCode = 'Not Assigned yet'";
+      $resultForCrosswordValidity = $mysqli->query($queryForCrosswordValidity);
+      while ($rowForCrosswordValidity = mysqli_fetch_row($resultForCrosswordValidity)) {
+        array_push($data, $rowForCrosswordValidity[0]);
+      }
+
+      while ($rowList=mysqli_fetch_row($resultList)) {
+        $type = "";
+        $title = "";
+        if (in_array($rowList[0], $data, TRUE)) {
+          $type = "danger";
+          $title = "Crossword is not fully assigned.";
+        } else {
+          $type = "success";
+          $title = "Crossword is fully assigned.";
+        }
+        echo "<tr class='".$type."' title = '".$title."' id=".$rowList[0].">
+              <td>".$rowList[0]."</td>
+              <td>".$rowList[1]."</td>
+              <td>".$rowList[2]."</td>
+              <td>".$rowList[3]."</td></tr>";
+      }
+    }
+  }
+
   // Checks for classGroupName given a userID or a groupID
   function groupReply($mysqli, $id, $bool) {
       // $bool true means use uid
