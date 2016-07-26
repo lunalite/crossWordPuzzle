@@ -196,14 +196,15 @@
   }
   
   // For checking of available sessions into table
-  function availSessionCheck($mysqli) {
-  
+  function availSessionCheck($mysqli) {  
+    $groupTb = "";
+
     if ($_SESSION['permissions'] == 0) {
       $groupCheckQuery = "SELECT classGroup FROM ".$GLOBALS['members']." WHERE id = ".$_SESSION['user_id'];
       $groupCheckResult = $mysqli->query($groupCheckQuery);
       $groupCheckRow = mysqli_fetch_row($groupCheckResult); 
       $catQ = "classGroupOpen = ".$groupCheckRow[0];    
-  
+
     } else {
         if (isset($_GET['sessId'])) {
             $catQ = "sessId = ". $_GET[sessId];
@@ -225,10 +226,10 @@
                   $online = 'Yes';
               elseif ($row[2] == 2) 
                   $online = 'Started';
-              $tbp = '<tr id = "'.$row[0].'">
-                      <td>'.$row[0].'</td>
+              $tableFormat = '<tr id= "'.$row[0].'">';
+              $tbp = '<td>'.$row[0].'</td>
                       <td>'.$row[3].'</td>
-                      <td>'.$row[1].'</td>
+                      <td></td><td></td>
                       <td>'.$online.'</td>';
   
               // For displaying classGroup the session is opened to
@@ -236,10 +237,10 @@
                   $innerGroupQuery = "SELECT * FROM ".$GLOBALS['classGroup']." WHERE id = ".$row[4];
                   $innerGroupResult= $mysqli->query($innerGroupQuery );
                   if (mysqli_num_rows($innerGroupResult) == 0) {
-                      $tbp = $tbp.'<td>Not assigned to a group yet</td>';
+                      $groupTb = '<td>Not assigned</td>';
                   } else {
                       while ($innerGroupRow= mysqli_fetch_row($innerGroupResult)) {
-                          $tbp = $tbp . '<td>'.$innerGroupRow[1].'</td>';
+                        $groupTb = '<td>'.$innerGroupRow[1].'</td>';
                       }
                   }
               }
@@ -250,25 +251,25 @@
               $innerResult = $mysqli->query($innerQuery);
               if (mysqli_num_rows($innerResult) == 0) {
   
-                  $tbp = $tbp . '<td> No teams </td></tr>';
+                  $teamTb = '<td> No teams </td></tr>';
               }
               else {
-                  $tbp = $tbp . '<td>';
+                  $teamTb = '<td>';
                   $notEnd = false;
                   while ($innerRow=mysqli_fetch_row($innerResult)) {
   
                        // For beautifying the data shown
                        if ($notEnd) {
-                           $tbp = $tbp . ', ';
+                           $teamTb = $teamTb . ', ';
                        }
-                       $tbp = $tbp . $innerRow[0];
+                       $teamTb = $teamTb . $innerRow[0];
                        $notEnd = true;
                   }
-                  $tbp = $tbp . '</td></tr>';
+                  $teamTb = $teamTb.'</td></tr>';
   
               }
   
-              echo $tbp;
+              echo $tableFormat.$groupTb.$tbp.$teamTb;
           }
       }
   }

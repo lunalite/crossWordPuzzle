@@ -1,4 +1,11 @@
 # crossWordPuzzle
+Update 26/7/2016
+- Updating Master.php page, done with crossword selection
+- Added links for Add Crosswords to crosswordAddition.php.
+- Edited crosswordView.php and reordered it.
+- Added sessionView.php
+- There is still bug with creation of sessions.
+
 Update 25/7/2016
 - Trying to reduce file size to reduce latency through minimising CSS bootstrap file.
 - Reordered the Master.php page, adding the selection procedures.

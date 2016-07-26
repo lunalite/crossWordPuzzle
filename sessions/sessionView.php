@@ -15,25 +15,72 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="../css/js/bootstrap.min.js"></script>
     <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
-            
     <script>
-        $(function () {
-            $("#availSessionList").on("click", "tr", function (e) {
-                if ($(this).find("td").attr("sessId") == -1) {
-                    e.preventDefault();
-                } else if (sessionStorage.getItem("sessId") === this.id) {
-                    var url = "master.php?";
-                    window.location.href = url;
-                    sessionStorage.removeItem("sessId");
-                } else {
-                    sessionStorage.setItem("sessId", this.id);
-                    var url = "master.php?sessId=" + this.id;
-                    window.location.href = url;
-                }
-            });
-        });
-    </script>
+      $(function() {
+        var sessionOptions = $('#sessionOptions');
+        var availSession = $('#availSessionList');
+        var storedSelections = [];
 
+        sessionOptions.find('td').hover(
+          function() {
+            $(this).addClass("active");
+          }, 
+          function() {
+            $(this).removeClass("active");
+          });
+
+          sessionOptions.find("td").click(function () {
+            if (storedSelections.length == 0) {
+              console.log("No selections!");
+              alert('Please select a session!');
+            } else {
+              if(this.id === "startSession") {
+console.log('taka');
+$.ajax({
+  method: "POST",
+  url: "./includes/sessionStart.php",
+  data: {sessId: storedSelections[0], online: $('[id="'+storedSelections[0]+'"] td:nth-child(6)').html()},
+  success: function(data) {
+    console.log(data);
+  }
+});
+              } else if (this.id === "deleteSession") {
+console.log('b');
+              } else if (this.id === "viewResults") {
+console.log('c');
+              }
+            }
+          });
+
+        availSession.find("tr").click(function () {
+            var selection = $(this);
+            var selectionId = selection.attr("id");
+            var rowSelection = $("[id=" + selectionId + "]");
+
+            if (storedSelections.length == 0) {
+              storedSelections.push(selection.attr("id"));
+              rowSelection.addClass("info");
+              rowSelection.prop("title", "Selected crossword.");
+
+            } else {
+              var index = storedSelections.indexOf(String(selectionId));
+              if (index > -1) {
+                storedSelections.splice(index, 1);
+                rowSelection.removeClass("info");
+
+              } else {
+                var removeSelection = storedSelections.pop();
+                $("[id=" + removeSelection + "]").removeClass("info");
+                storedSelections.push(selection.attr("id"));
+                rowSelection.addClass("info");
+                rowSelection.prop("title", "Selected crossword.");
+              }
+            }
+          });
+
+
+      });
+    </script>
   </head>
 
   <body>
@@ -42,21 +89,21 @@
     <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
           <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword View Page
           </a>
         </div>
         <!-- Collection of nav links, forms, and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li>
-              <a href="./crosswords.php" style="color:white;">Sessions</a>
-            </li>
-            <li>
-              <a href="../reviews/reviews.php" style="color:white;">Performance</a>
-            </li>
-            <li>
-              <a href="../users/users.php" style="color:white;">Users</a>
-            </li>
+            <li><a href="#" style="color:white;">Sessions</a></li>
+            <li><a href="../reviews/reviews.php" style="color:white;">Performance</a></li>
+            <li><a href="../users/users.php" style="color:white;">Users</a></li>
           </ul>
           <div id="navbar" class="navbar-collapse collapse">
             <div class="navbar-right navbar-form" style="color:white;">
@@ -68,20 +115,31 @@
         </div>
       </div>
     </nav>
+
     <div class="jumbotron">
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-10 col-md-offset-1">
+            <div class="col-md-6 col-md-offset-3">
+            <table class="table table-bordered table-responsive" id="sessionOptions">
+            <caption style="font-size:30px;" class="text-center">My sessions</caption>
+              <tr>
+                <td style="cursor: pointer; width: 33%" id="startSession">Start</td>
+                <td style="cursor: pointer; width: 33%" id="deleteSession">Delete</td>
+                <td style="cursor: pointer; width: 33%" id="viewResults">View results</td>
+              </tr>
+            </table>
+            </div>
             <!-- The available sessions section -->
-              <h3>Available sessions</h3>
               <table id="sessionsOnline" class="table table-striped">
                   <thead>
                   <tr>
+                      <th>Group name</th>
                       <th>Session ID</th>
                       <th>Crossword ID</th>
-                      <th>Crossword Description</th>
+                      <th>Available From</th>
+                      <th>End time</th>
                       <th>Online</th>
-                      <th>Open for classGroup</th>
                       <th>Teams joined</th>
                   </tr>
               </thead>
@@ -91,29 +149,6 @@
                       ?>
                   </tbody>
               </table>
-
-                <!-- For showing of start and delete sessions -->
-                <?php if (!isset($_GET['sessId'])) : ?>
-                <form action="includes/sessionStart.php" id="startSession" method="post">
-                    <select name="sessId" form="startSession">
-                        <?php
-                            sessionCheckD($mysqli);
-                        ?>
-                    </select>
-                    <input type="submit" class="btn btn-primary btn-sm" name="startSession" value="Start Session">
-                    <input type="submit" class="btn btn-primary btn-sm" name="deleteSession" value="Delete Session">
-                </form>
-
-                <?php else : ?>
-                <form action="includes/sessionGroupChange.php" id="changeGroup" method="post">
-                    <select name="classGroup" form="changeGroup">
-                        <?php
-                            groupCheckD($mysqli);
-                        ?>
-                    </select>
-                    <input type="hidden" name="sessId" value="<?php echo $_GET['sessId'];?>">
-                    <input type="submit" class="btn btn-primary btn-sm" name="changeGroup" value="Change Group">
-                    <?php endif; ?>
 
           </div>
         </div>

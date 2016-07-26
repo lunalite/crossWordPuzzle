@@ -1,31 +1,26 @@
 <?php
-    include_once 'db_connect.php';
-    include_once 'functions.php';
-    require('Pusher.php');
+    include_once '../../includes/db_connect.php';
+    include_once '../../includes/functions.php';
+    require('../../includes/Pusher.php');
     
     sec_session_start();
 
     // set variables
-    $arr = json_decode($_POST['sessId'], true);
-    $sessId = $arr['sessId'];
-    $online = $arr['online'];
+    $sessId = $_POST['sessId'];
+    $online = $_POST['online'];
 
     $_SESSION['sess_id'] = $sessId;
-
-    //Check to see what button is pressed
-    if (isset($_POST['startSession'])) {  
-
-        //Check for all users who joined the Xword
-        //Opens the gate for users to enter   
-        
-    
-        if ($online == 1) {
+echo json_encode($online == "yes");
+        if ($online === "yes") {
             $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = ".$sessId;
-
             $result = $mysqli->query($sql);
-            if (mysqli_num_rows($result) == 0) {
-                echo 'No teams Fjoined';
+//            if (mysqli_num_rows($result) == 0) {
+                echo json_encode('No teams joined');
             }
+/*   
+
+
+
             else {
                 while ($row=mysqli_fetch_row($result)) {
                     $userId = $row[0];
@@ -33,7 +28,7 @@
                     (' . $sessId . ', '. $userId . ')';
 
                     if ($mysqli->query($ins) === TRUE) {
-                        header('Refresh: 3; url=../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
+                        header('Refresh: 3; url=../../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
                         echo "Gate is open. Redirecting in 3...";
                         } 
                     else {
@@ -67,6 +62,5 @@
     }
     elseif (isset($_POST['deleteSession'])) {
         include_once '../XWordPuzzleStandAlone/includes/deleteCreatedSession.php';
-    }
-    else {}
+*/
 ?>

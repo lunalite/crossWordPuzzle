@@ -19,62 +19,93 @@
       <script>
         $(function () {
           var availCrosswordResult = $('#availCrosswordResult');
+          var crosswordOptions = $('#crosswordOptions');
+          var storedSelections = [];
+          var dangerSelections = [];
 
-          $('#crosswordOptions').find("td").click(function () {
-            console.log(this);
+          crosswordOptions.find("td").hover(
+          function() {
+            $(this).addClass("active");
+          }, 
+          function() {
+            $(this).removeClass("active");
+          });
+
+          crosswordOptions.find("td").click(function () {
+            if(this.id === "addCrosswords") {
+              window.location.href="./crosswords/crosswordAddition.php";
+
+            } else if (this.id === "CRUD") {
+              if (storedSelections.length == 0) {
+                console.log("No selections!");
+                alert('Please select a crossword!');
+              } else {
+                console.log(storedSelections[0]);
+                var url = "./crosswords/crosswordView.php?crosswordId="+storedSelections[0];
+                window.location.href=url;
+              }
+
+            } else if (this.id === "sessionCreate") {
+              if (storedSelections.length == 0) {
+                console.log("No selections!");
+                alert('Please select a crossword!');
+              } else {
+                console.log(storedSelections[0]);
+                var url = "./sessions/includes/sessionCreate.php?crosswordId="+storedSelections[0];
+                window.location.href=url;
+              }
+
+            } else if (this.id === "copyShare") {
+              console.log('ccce');
+            }
           });
 
           availCrosswordResult.find("tr").click(function () {
             var selection = $(this);
-            var storedSelection = [];
-            var dangerSelections = {};
             var selectionId = selection.attr("id");
             var rowSelection = $("[id=" + selectionId + "]");
 
-            if (sessionStorage.crosswordSelection) {
-              storedSelection = JSON.parse(sessionStorage.getItem("crosswordSelection"));
-              var index = storedSelection.indexOf(String(selectionId));
-
-              if (index > -1) {
-                storedSelection.splice(index, 1);
-                var found = false;
-                for (var i = 0; i < storedSelection.length; i++) {
-                  if (storedSelection[i].id == selectionId) {
-                    found = true;
-                    rowSelection.addClass("danger");
-                    storedSelection.splice(i);
-                    break;
-                  }
-                }
-                rowSelection.removeClass("info");
-              } else {
-                dangerCheck(rowSelection, storedSelection, selectionId);
-                storedSelection.push(selection.attr("id"));
-                rowSelection.addClass("info");
-              }
-            } else {
-              dangerCheck(rowSelection, storedSelection, selectionId);
-              storedSelection.push(selection.attr("id"));
+            if (storedSelections.length == 0) {
+              storedSelections.push(selection.attr("id"));
               rowSelection.addClass("info");
-            }
-            sessionStorage.setItem("crosswordSelection", JSON.stringify(storedSelection));
-            console.log(sessionStorage.getItem("crosswordSelection"));
+              rowSelection.prop("title", "Selected crossword.");
+              dangerRemoval(rowSelection, selectionId);
 
+            } else {
+              var index = storedSelections.indexOf(String(selectionId));
+              if (index > -1) {
+                storedSelections.splice(index, 1);
+                rowSelection.removeClass("info");
+                rowSelection.prop("title", "Crossword is fully assigned.");
+                dangerAdd(selectionId);
+
+              } else {
+                var removeSelection = storedSelections.pop();
+                $("[id=" + removeSelection + "]").removeClass("info");
+                dangerAdd(removeSelection);
+                dangerRemoval(rowSelection, selectionId);
+                storedSelections.push(selection.attr("id"));
+                rowSelection.addClass("info");
+                rowSelection.prop("title", "Selected crossword.");
+              }
+            }
           });
 
-          function dangerCheck(rowSelection, storedSelection, selectionId) {
+          function dangerRemoval(rowSelection, selectionId) {
             if (rowSelection.hasClass("danger")) {
-              storedSelection.push({
-                id: selectionId
-              });
+              dangerSelections.push(selectionId);
               rowSelection.removeClass("danger");
             }
           }
-
-          window.onbeforeunload = function () {
-            sessionStorage.removeItem("crosswordSelection");
-            return '';
-          };
+          
+          function dangerAdd(removeSelection) {
+            var dangerKey = dangerSelections[0];
+              if(dangerKey == removeSelection) {
+                $("[id=" + removeSelection + "]").addClass("danger");
+                dangerSelections.pop();
+                $("[id=" + removeSelection + "]").prop("title", "Crossword is not fully assigned.");
+              }
+            }
 
         });
       </script>
@@ -85,12 +116,18 @@
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                     <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Master Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="./crosswords/crosswords.php" style="color:white;">Sessions</a></li>
+                        <li><a href="./sessions/sessionView.php" style="color:white;">Sessions</a></li>
                         <li><a href="./reviews/reviews.php" style="color:white;">Performance</a></li>
                         <li><a href="./users/users.php" style="color:white;">Users</a></li>
                     </ul>
@@ -108,13 +145,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
-                        <table class="table table-bordered" id="crosswordOptions">
-                          <caption class="text-center">My Crosswords</caption>
+                        <table class="table table-bordered table-responsive" id="crosswordOptions">
+                          <caption style="font-size:30px;" class="text-center">My Crosswords</caption>
                             <tr style="cursor: pointer;">
-                              <td>Add Crosswords</td>
-                              <td>View/Edit/Delete</td>
-                              <td>Create Sessions</td>
-                              <td>Share/Copy</td>
+                              <td id="addCrosswords">Add Crosswords</td>
+                              <td id="CRUD">View/Edit/Delete</td>
+                              <td id="sessionCreate">Create Sessions</td>
+                              <td id="copyShare">Share/Copy</td>
                             </tr>
                         </table>
 
