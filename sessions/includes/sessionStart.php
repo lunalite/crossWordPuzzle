@@ -8,59 +8,48 @@
     // set variables
     $sessId = $_POST['sessId'];
     $online = $_POST['online'];
-
     $_SESSION['sess_id'] = $sessId;
-echo json_encode($online == "yes");
-        if ($online === "yes") {
-            $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = ".$sessId;
-            $result = $mysqli->query($sql);
-//            if (mysqli_num_rows($result) == 0) {
-                echo json_encode('No teams joined');
-            }
-/*   
 
+    if ($online === "Yes") {
+      $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = ".$sessId;        
+      $result = $mysqli->query($sql);
+      if (mysqli_num_rows($result) == 0) {
+          echo json_encode('No teams joined');
 
-
-            else {
-                while ($row=mysqli_fetch_row($result)) {
-                    $userId = $row[0];
-                    $ins = 'INSERT INTO '.$GLOBALS['sessionStart'].' (sessId,userId) VALUES 
+      } else {
+        while ($row=mysqli_fetch_row($result)) {
+          $userId = $row[0];
+          $ins = 'INSERT INTO '.$GLOBALS['sessionStart'].' (sessId,userId) VALUES 
                     (' . $sessId . ', '. $userId . ')';
+          if ($mysqli->query($ins) === TRUE) {
+              echo json_encode("Gate is open. Directing you to the score page...");
+              } 
+          else {
+              echo json_encode("Error: " . $ins . "<br>" . $mysqli->error);
+          }
+        }
+        // Open gate for users after finishing the update of database
+        $sql2 = 'UPDATE '.$GLOBALS['availableSessions'].' SET online = 2 WHERE sessId = ' . $sessId;
+        $mysqli->query($sql2);
 
-                    if ($mysqli->query($ins) === TRUE) {
-                        header('Refresh: 3; url=../../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
-                        echo "Gate is open. Redirecting in 3...";
-                        } 
-                    else {
-                        echo "Error: " . $ins . "<br>" . $mysqli->error;
-                    }
-                }
-            // Open gate for users after finishing the update of database
-            $sql2 = 'UPDATE '.$GLOBALS['availableSessions'].' SET online = 2 WHERE sessId = ' . $sessId;
-            $mysqli->query($sql2);
-
-            $options = array(
-                'cluster' => 'ap1',
-                'encrypted' => true
-                );
-
-            $pusher = new Pusher(
-                'bcaaf0a9f48c5ad4601b',
-                '1a369dc87032c00dfb10',
-                '216167',
-                $options
+        $options = array(
+            'cluster' => 'ap1',
+            'encrypted' => true
             );
+
+        $pusher = new Pusher(
+            'bcaaf0a9f48c5ad4601b',
+            '1a369dc87032c00dfb10',
+            '216167',
+            $options
+        );
     
-            $data['gateStatus'] = 'open';
-            $pusher->trigger((string)$sessId, 'gateOpen', $data);
-            //******* end live gate push *******  
-            }
+        $data['gateStatus'] = 'open';
+        $pusher->trigger((string)$sessId, 'gateOpen', $data);
+        //******* end live gate push *******  
         }
-        elseif ($online == 2) {
-            header('Refresh: 0; url=../XWordPuzzleStandAlone/master_view.php?id='.$sessId);
-        }
-    }
-    elseif (isset($_POST['deleteSession'])) {
-        include_once '../XWordPuzzleStandAlone/includes/deleteCreatedSession.php';
-*/
+
+      } elseif ($online === "Started") {
+          echo json_encode("Started. Directing you to the score page...");
+      }
 ?>

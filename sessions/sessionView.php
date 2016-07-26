@@ -16,67 +16,73 @@
     <script src="../css/js/bootstrap.min.js"></script>
     <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
     <script>
-      $(function() {
+      $(function () {
         var sessionOptions = $('#sessionOptions');
         var availSession = $('#availSessionList');
         var storedSelections = [];
 
         sessionOptions.find('td').hover(
-          function() {
+          function () {
             $(this).addClass("active");
-          }, 
-          function() {
+          },
+          function () {
             $(this).removeClass("active");
           });
 
-          sessionOptions.find("td").click(function () {
-            if (storedSelections.length == 0) {
-              console.log("No selections!");
-              alert('Please select a session!');
-            } else {
-              if(this.id === "startSession") {
-console.log('taka');
-$.ajax({
-  method: "POST",
-  url: "./includes/sessionStart.php",
-  data: {sessId: storedSelections[0], online: $('[id="'+storedSelections[0]+'"] td:nth-child(6)').html()},
-  success: function(data) {
-    console.log(data);
-  }
-});
-              } else if (this.id === "deleteSession") {
-console.log('b');
-              } else if (this.id === "viewResults") {
-console.log('c');
-              }
+        sessionOptions.find("td").click(function () {
+          if (storedSelections.length == 0) {
+            console.log("No selections!");
+            alert('Please select a session!');
+          } else {
+            if (this.id === "startSession") {
+              $.ajax({
+                method: "POST",
+                url: "./includes/sessionStart.php",
+                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html() },
+                success: function (data) {
+                  dataParsed = JSON.parse(data);
+                  if (dataParsed == "No teams joined") {
+                    alert(dataParsed);
+                  } else {
+                    alert(dataParsed);
+                    var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
+                    window.location.href = reUrl;
+                  }
+                }
+              });
+            } else if (this.id === "deleteSession") {
+              console.log('b');
+            } else if (this.id === "viewResults") {
+              console.log('c');
             }
-          });
+          }
+        });
 
         availSession.find("tr").click(function () {
-            var selection = $(this);
-            var selectionId = selection.attr("id");
-            var rowSelection = $("[id=" + selectionId + "]");
+          var selection = $(this);
+          var selectionId = selection.attr("id");
+          var rowSelection = $("[id=" + selectionId + "]");
 
-            if (storedSelections.length == 0) {
+          if (storedSelections.length == 0) {
+            storedSelections.push(selection.attr("id"));
+            rowSelection.addClass("info");
+            rowSelection.prop("title", "Selected crossword.");
+
+          } else {
+            var index = storedSelections.indexOf(String(selectionId));
+            if (index > -1) {
+              storedSelections.splice(index, 1);
+              rowSelection.removeClass("info");
+
+            } else {
+              var removeSelection = storedSelections.pop();
+              $("[id=" + removeSelection + "]").removeClass("info");
               storedSelections.push(selection.attr("id"));
               rowSelection.addClass("info");
               rowSelection.prop("title", "Selected crossword.");
-
-            } else {
-              var index = storedSelections.indexOf(String(selectionId));
-              if (index > -1) {
-                storedSelections.splice(index, 1);
-                rowSelection.removeClass("info");
-
-              } else {
-                var removeSelection = storedSelections.pop();
-                $("[id=" + removeSelection + "]").removeClass("info");
-                storedSelections.push(selection.attr("id"));
-                rowSelection.addClass("info");
-                rowSelection.prop("title", "Selected crossword.");
-              }
             }
-          });
+          }
+        });
 
 
       });
@@ -89,12 +95,12 @@ console.log('c');
     <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+          <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
           <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword View Page
           </a>
         </div>
@@ -121,34 +127,34 @@ console.log('c');
         <div class="row">
           <div class="col-xs-12 col-md-10 col-md-offset-1">
             <div class="col-md-6 col-md-offset-3">
-            <table class="table table-bordered table-responsive" id="sessionOptions">
-            <caption style="font-size:30px;" class="text-center">My sessions</caption>
-              <tr>
-                <td style="cursor: pointer; width: 33%" id="startSession">Start</td>
-                <td style="cursor: pointer; width: 33%" id="deleteSession">Delete</td>
-                <td style="cursor: pointer; width: 33%" id="viewResults">View results</td>
-              </tr>
-            </table>
+              <table class="table table-bordered table-responsive" id="sessionOptions">
+                <caption style="font-size:30px;" class="text-center">My sessions</caption>
+                <tr>
+                  <td style="cursor: pointer; width: 33%" id="startSession">Start</td>
+                  <td style="cursor: pointer; width: 33%" id="deleteSession">Delete</td>
+                  <td style="cursor: pointer; width: 33%" id="viewResults">View results</td>
+                </tr>
+              </table>
             </div>
             <!-- The available sessions section -->
-              <table id="sessionsOnline" class="table table-striped">
-                  <thead>
-                  <tr>
-                      <th>Group name</th>
-                      <th>Session ID</th>
-                      <th>Crossword ID</th>
-                      <th>Available From</th>
-                      <th>End time</th>
-                      <th>Online</th>
-                      <th>Teams joined</th>
-                  </tr>
+            <table id="sessionsOnline" class="table table-striped">
+              <thead>
+              <tr>
+                <th>Group name</th>
+                <th>Session ID</th>
+                <th>Crossword ID</th>
+                <th>Available From</th>
+                <th>End time</th>
+                <th>Online</th>
+                <th>Teams joined</th>
+              </tr>
               </thead>
-                  <tbody id="availSessionList" style="cursor: pointer;">
-                      <?php
-                          availSessionCheck($mysqli);
-                      ?>
-                  </tbody>
-              </table>
+              <tbody id="availSessionList" style="cursor: pointer;">
+                <?php
+                  availSessionCheck($mysqli);
+                ?>
+              </tbody>
+            </table>
 
           </div>
         </div>

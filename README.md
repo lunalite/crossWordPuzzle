@@ -4,7 +4,8 @@ Update 26/7/2016
 - Added links for Add Crosswords to crosswordAddition.php.
 - Edited crosswordView.php and reordered it.
 - Added sessionView.php
-- There is still bug with creation of sessions.
+- creation of session is done.
+- Bug with session starting
 
 Update 25/7/2016
 - Trying to reduce file size to reduce latency through minimising CSS bootstrap file.
