@@ -4,8 +4,10 @@
   sec_session_start();
   if ((login_check($mysqli) == true) && (role_check($mysqli) != 0)) {
   
-    $q     = $_GET['crosswordId'];
-    $query = "SELECT crosswordDescription FROM " . $GLOBALS['crosswordMaster'] . " WHERE crosswordId = " . $q;
+    $crosswordId = $_POST['crosswordOption'];
+    $parsed = JSON_decode($_POST['groupOptions'], true);
+    $groupId = $parsed["gId"];
+    $query = "SELECT crosswordDescription FROM " . $GLOBALS['crosswordMaster'] . " WHERE crosswordId = " . $crosswordId ;
     $result = $mysqli->query($query);
     if (mysqli_num_rows($result) == 0) {
       echo 'No such crosswordID';
@@ -13,7 +15,7 @@
       $arr = mysqli_fetch_row($result);
       $des = '\'' . $arr[0] . '\'';
   
-      $sql = "INSERT INTO ".$GLOBALS['availableSessions']." (description, online, crosswordID) VALUES ($des, 1, $q)";
+      $sql = "INSERT INTO ".$GLOBALS['availableSessions']." (description, online, crosswordID, classGroupOpen) VALUES ($des, 1, $crosswordId, $groupId)";
   
       if ($mysqli->query($sql) === TRUE) {
         header('Refresh: 3; url=../../master.php');

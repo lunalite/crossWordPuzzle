@@ -20,8 +20,8 @@
         $(function () {
           var availCrosswordResult = $('#availCrosswordResult');
           var crosswordOptions = $('#crosswordOptions');
-          var storedSelections = [];
           var dangerSelections = [];
+          var storedSelections = [];
 
           crosswordOptions.find("td").hover(
           function() {
@@ -37,28 +37,23 @@
 
             } else if (this.id === "CRUD") {
               if (storedSelections.length == 0) {
-                console.log("No selections!");
                 alert('Please select a crossword!');
               } else {
-                console.log(storedSelections[0]);
                 var url = "./crosswords/crosswordView.php?crosswordId="+storedSelections[0];
                 window.location.href=url;
               }
 
             } else if (this.id === "sessionCreate") {
               if (storedSelections.length == 0) {
-                console.log("No selections!");
                 alert('Please select a crossword!');
               } else {
-                console.log(storedSelections[0]);
-                var url = "./sessions/includes/sessionCreate.php?crosswordId="+storedSelections[0];
-                window.location.href=url;
+                $('#groupOptions').slideToggle("fast")
               }
 
             } else if (this.id === "copyShare") {
               console.log('ccce');
             }
-          });
+          });                
 
           availCrosswordResult.find("tr").click(function () {
             var selection = $(this);
@@ -107,6 +102,11 @@
               }
             }
 
+          $('#sessionForm').submit(function() {
+            $('input#crosswordOption').val(storedSelections [0]);
+            return true;
+          });
+
         });
       </script>
     </head>
@@ -154,6 +154,16 @@
                               <td id="copyShare">Share/Copy</td>
                             </tr>
                         </table>
+                        <div id="groupOptions" style="display:none">
+                        <form id="sessionForm" action="./sessions/includes/sessionCreate.php" method="POST">
+                            <select name="groupOptions" form="sessionForm" id="sessionOptions">
+                              <?php groupCheckD($mysqli); ?>
+                            </select>
+                            <input type="hidden" name="crosswordOption" id="crosswordOption">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Create Session" onClick="createSession()">
+                        </form>
+                        </div>
+
 
                         <table id="crosswordList" class="table table-striped table-hover">
                           <thead>

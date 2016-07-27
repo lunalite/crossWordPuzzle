@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 27/7/2016
+- Added group add for session created at master page
+
 Update 26/7/2016
 - Updating Master.php page, done with crossword selection
 - Added links for Add Crosswords to crosswordAddition.php.
