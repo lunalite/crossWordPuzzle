@@ -13,7 +13,7 @@
             $sql2 = "DELETE FROM ".$GLOBALS['crosswordMaster']." WHERE CrosswordID = ".$crosswordId;
 
             if ($mysqli->query($sql2) === TRUE) {
-                header('Location: ../crosswordView.php');
+                header('Location: ../../master.php');
                 echo "Crossword master db ID and questions deleted successfully. <br>";
             }
             else {echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";}

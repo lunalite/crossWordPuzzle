@@ -52,7 +52,6 @@
               });
 
             } else if (this.id === "deleteSession") {
-console.log('sending..');
               $.ajax({
                 method: "POST",
                 url: "./includes/sessionDelete.php",
