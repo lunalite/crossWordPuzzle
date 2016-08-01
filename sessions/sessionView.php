@@ -50,8 +50,20 @@
                   }
                 }
               });
+
             } else if (this.id === "deleteSession") {
-              console.log('b');
+console.log('sending..');
+              $.ajax({
+                method: "POST",
+                url: "./includes/sessionDelete.php",
+                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html() },
+                success: function (data) {
+                  dataParsed = JSON.parse(data);
+                  alert(dataParsed);
+                  location.reload();
+                }
+              });
+
             } else if (this.id === "viewResults") {
               console.log('c');
             }

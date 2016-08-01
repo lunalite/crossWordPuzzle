@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 1/8/2016
+- Fixed the session Deletion function
+
 Update 27/7/2016
 - Added group add for session created at master page
 
