@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 4/8/2016
+- Added reset password function
+
 Update 1/8/2016
 - Fixed the session Deletion function
 

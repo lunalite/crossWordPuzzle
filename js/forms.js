@@ -89,9 +89,9 @@ function regformhash(form, uid, email, password, conf) {
     return true;
 }
 
-function passwordformhash(form, password, conf) {
+function passwordformhash(form, password, conf, ResetPasswordForm) {
     // Check each field has a value
-    if (password.value == '' || conf.value == '') {
+    if (password.value == '' || conf.value == '' || ResetPasswordForm.value = '') {
         alert('You must provide all the requested details. Please try again');
         return false;
     }
@@ -129,10 +129,13 @@ function passwordformhash(form, password, conf) {
     p.type = "hidden";
     p.value = hex_sha512(password.value);
 
+alert(ResetPasswordForm.value );
+
     // Make sure the plaintext password doesn't get sent. 
     password.value = "";
     conf.value = "";
-
+    ResetPasswordForm.value = "reset Password";
+ 
     // Finally submit the form. 
     form.submit();
     return true;

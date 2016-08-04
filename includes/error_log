@@ -1,0 +1,11 @@
+[04-Aug-2016 14:28:17 UTC] PHP Fatal error:  Call to undefined function sec_session_start() in /home/repprog90/public_html/includes/forgotPass.php on line 5
+[04-Aug-2016 14:28:36 UTC] PHP Fatal error:  Call to a member function bindParam() on a non-object in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:31:04 UTC] PHP Fatal error:  Call to undefined method mysqli_stmt::bindParam() in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:36:09 UTC] PHP Fatal error:  Call to undefined method mysqli_stmt::bindParam() in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:36:13 UTC] PHP Fatal error:  Call to undefined method mysqli_stmt::bindParam() in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:38:05 UTC] PHP Fatal error:  Call to undefined method mysqli_stmt::bindParam() in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:38:07 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:38:27 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:39:51 UTC] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/repprog90/public_html/includes/forgotPass.php on line 21
+[04-Aug-2016 14:51:19 UTC] PHP Fatal error:  Call to undefined function sec_session_start() in /home/repprog90/public_html/includes/resetPass.php on line 5
+[04-Aug-2016 14:52:15 UTC] PHP Fatal error:  Call to undefined function sec_session_start() in /home/repprog90/public_html/includes/resetPass.php on line 5
