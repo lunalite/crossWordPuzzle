@@ -11,7 +11,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>REP Crossword User Management page</title>
-        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -40,8 +40,8 @@
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
+                        <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Performance</a></li>
                         <li><a href="#" style="color:white;">Users</a></li>
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">

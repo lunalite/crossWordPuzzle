@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>REP Xword user page</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/jumbotron.css" rel="stylesheet">
         <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
         <!-- Bootstrap core JavaScript-->
@@ -31,7 +31,6 @@
           });
       </script>
     </head>
-
     <body>
         <?php if ((login_check($mysqli) == true)) : ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -41,9 +40,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli); ?>
-    
                         <a class="btn btn-success" href="includes/logout.php" role="button">Log out</a>
                     </div>
 
@@ -54,33 +51,40 @@
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-6">
+                    <div class="col-xs-12 col-md-8 col-md-offset-2">
                         <h3>Available sessions</h3>
                         <table id="sessionsOnline" class="table table-striped">
+                          <thead>
                             <tr>
                                 <th>Session ID</th>
                                 <th>Crossword ID</th>
-                                <th>Crossword Description</th>
+                                <th>Available From</th>
+                                <th>End time</th>
                                 <th>Online</th>
                                 <th>Teams</th>
                             </tr>
-                            <?php
-                                availSessionCheck($mysqli);
-                            ?>
+                          </thead>
+                          <tbody>
+                            <?php availSessionCheck($mysqli); ?>
+                          </tbody>
                         </table>
 
                         <?php if (!userInSession($mysqli)) : ?>
-
                         <form action="includes/sessionJoin.php" id="sessionJoin" method="post">
-                            <div class="form-group">
-                            <div class="row"><div class="col-xs-12 col-md-8 col-md-offset-2">
-                            <select class="form-control" name="sessionJoin" form="sessionJoin">
-                                <?php
-                                    sessionCheckD($mysqli);
-                                ?>
-                            </select>
-                                </div></div></div>
-                            <input type="submit" class="btn btn-primary btn-sm" name="joinSession" value="Join Session">
+                        <div class="form-group">
+                          <div class="col-xs-12 col-md-8 col-md-offset-2">
+                            <div class="row">
+                              <div class="col-xs-8 col-md-9">
+                                <select class="form-control" name="sessionJoin" form="sessionJoin" style="display: inline-block">
+                                  <?php sessionCheckD($mysqli); ?>
+                                </select>
+                              </div>
+                            
+                       
+                            <div class="col-xs-4 col-md-3">
+                            <input type="submit" class="btn btn-primary btn-sm" name="joinSession" value="Join Session" style="display: inline-block">
+                            </div>
+                            </div></div></div>
                         </form>
 
                         <?php elseif(gateCheck($mysqli)) : ?>
@@ -110,15 +114,18 @@
                             }
                           });
                         </script>
-
-                    </div>
+                   </div>
                 </div>
             </div>
         </div>
-        <div class="container">
-        <div class="row">
-        <hr><p>&copy; 2016 Product of REP</p>
-        </div></div>
+
+    <div class="container">
+      <div class="row">
+        <hr>
+        <p>&copy; 2016 Product of REP
+        </p>
+      </div>
+    </div>
 
 
 

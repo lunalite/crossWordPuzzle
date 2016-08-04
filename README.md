@@ -1,4 +1,22 @@
 # crossWordPuzzle
+Update 1/8/2016
+- Fixed the session Deletion function
+
+Update 27/7/2016
+- Added group add for session created at master page
+
+Update 26/7/2016
+- Updating Master.php page, done with crossword selection
+- Added links for Add Crosswords to crosswordAddition.php.
+- Edited crosswordView.php and reordered it.
+- Added sessionView.php
+- creation of session is done.
+- Bug with session starting
+
+Update 25/7/2016
+- Trying to reduce file size to reduce latency through minimising CSS bootstrap file.
+- Reordered the Master.php page, adding the selection procedures.
+
 Update 24/7/2016
 - Added sorting of users in leaderboard according to time, given that scores are the same
 

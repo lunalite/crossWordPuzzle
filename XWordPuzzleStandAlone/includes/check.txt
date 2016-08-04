@@ -1,1 +1,0 @@
-UPDATE sessionstart SET scores = scores + 10 WHERE userId = 3 AND sessId = 1UPDATE sessionstart SET scores = scores + 10 WHERE userId = 4 AND sessId = 1UPDATE sessionstart SET scores = scores + 10 WHERE userId = 6 AND sessId = 2UPDATE sessionstart SET scores = scores + 10 WHERE userId = 6 AND sessId = 3

@@ -4,7 +4,7 @@
         <meta content="width=device-width" name="viewport">
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/navbar-fixed-side.css" rel="stylesheet" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <link rel="stylesheet" href="themes/alertify.core.css" />

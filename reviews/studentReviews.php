@@ -13,8 +13,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Crossword Review Page</title>
-        <link href="../css/bootstrap.css" rel="stylesheet">
+        <title>REP Crossword Performance</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="../css/js/bootstrap.min.js"></script>
@@ -51,13 +51,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Review Page</a>
+                <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Performance</a>
             </div>
             <!-- Collection of nav links, forms, and other content for toggling -->
             <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                    <li><a href="./reviews.php" style="color:white;">Reviews</a></li>
+                    <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
+                    <li><a href="./reviews.php" style="color:white;">Performance</a></li>
                     <li><a href="../users/users.php" style="color:white;">Users</a></li>
                 </ul>
                 <div id="navbar" class="navbar-collapse collapse">

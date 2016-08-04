@@ -1,41 +1,114 @@
 <?php
     include_once 'includes/db_connect.php';
     include_once 'includes/functions.php';
-    
     sec_session_start();
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>REP Crossword Master Page</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/jumbotron.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="css/js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="css/js/ie10-viewport-bug-workaround.js"></script>
-        <script>
-            $(function () {
-                $("#availSessionList").on("click", "tr", function (e) {
-                    if ($(this).find("td").attr("sessId") == -1) {
-                        e.preventDefault();
-                    } else if (sessionStorage.getItem("sessId") === this.id) {
-                        var url = "master.php?";
-                        window.location.href = url;
-                        sessionStorage.removeItem("sessId");
-                    } else {
-                        sessionStorage.setItem("sessId", this.id);
-                        var url = "master.php?sessId=" + this.id;
-                        window.location.href = url;
-                    }
-                });
-            });
-        </script>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>REP Crossword Master Page</title>
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/jumbotron.css" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="css/js/bootstrap.min.js"></script>
+      <script src="css/js/ie10-viewport-bug-workaround.js"></script>
+      <script>
+        $(function () {
+          var availCrosswordResult = $('#availCrosswordResult');
+          var crosswordOptions = $('#crosswordOptions');
+          var dangerSelections = [];
+          var storedSelections = [];
 
+          crosswordOptions.find("td").hover(
+          function() {
+            $(this).addClass("active");
+          }, 
+          function() {
+            $(this).removeClass("active");
+          });
+
+          crosswordOptions.find("td").click(function () {
+            if(this.id === "addCrosswords") {
+              window.location.href="./crosswords/crosswordAddition.php";
+
+            } else if (this.id === "CRUD") {
+              if (storedSelections.length == 0) {
+                alert('Please select a crossword!');
+              } else {
+                var url = "./crosswords/crosswordView.php?crosswordId="+storedSelections[0];
+                window.location.href=url;
+              }
+
+            } else if (this.id === "sessionCreate") {
+              if (storedSelections.length == 0) {
+                alert('Please select a crossword!');
+              } else {
+                $('#groupOptions').slideToggle("fast")
+              }
+
+            } else if (this.id === "copyShare") {
+              console.log('ccce');
+            }
+          });                
+
+          availCrosswordResult.find("tr").click(function () {
+            var selection = $(this);
+            var selectionId = selection.attr("id");
+            var rowSelection = $("[id=" + selectionId + "]");
+
+            if (storedSelections.length == 0) {
+              storedSelections.push(selection.attr("id"));
+              rowSelection.addClass("info");
+              rowSelection.prop("title", "Selected crossword.");
+              dangerRemoval(rowSelection, selectionId);
+
+            } else {
+              var index = storedSelections.indexOf(String(selectionId));
+              if (index > -1) {
+                storedSelections.splice(index, 1);
+                rowSelection.removeClass("info");
+                rowSelection.prop("title", "Crossword is fully assigned.");
+                dangerAdd(selectionId);
+
+              } else {
+                var removeSelection = storedSelections.pop();
+                $("[id=" + removeSelection + "]").removeClass("info");
+                dangerAdd(removeSelection);
+                dangerRemoval(rowSelection, selectionId);
+                storedSelections.push(selection.attr("id"));
+                rowSelection.addClass("info");
+                rowSelection.prop("title", "Selected crossword.");
+              }
+            }
+          });
+
+          function dangerRemoval(rowSelection, selectionId) {
+            if (rowSelection.hasClass("danger")) {
+              dangerSelections.push(selectionId);
+              rowSelection.removeClass("danger");
+            }
+          }
+          
+          function dangerAdd(removeSelection) {
+            var dangerKey = dangerSelections[0];
+              if(dangerKey == removeSelection) {
+                $("[id=" + removeSelection + "]").addClass("danger");
+                dangerSelections.pop();
+                $("[id=" + removeSelection + "]").prop("title", "Crossword is not fully assigned.");
+              }
+            }
+
+          $('#sessionForm').submit(function() {
+            $('input#crosswordOption').val(storedSelections [0]);
+            return true;
+          });
+
+        });
+      </script>
     </head>
     <body>
         <!-- Only for admins and super users -->
@@ -43,19 +116,19 @@
         <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                     <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Master Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href=".//crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                        <li><a href="./reviews/reviews.php" style="color:white;">Reviews</a></li>
+                        <li><a href="./sessions/sessionView.php" style="color:white;">Sessions</a></li>
+                        <li><a href="./reviews/reviews.php" style="color:white;">Performance</a></li>
                         <li><a href="./users/users.php" style="color:white;">Users</a></li>
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
@@ -68,56 +141,44 @@
             </div>
         </nav>
 
-
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
-
-                        To create sessions, go to the <a href="./crosswords/crosswordView.php">viewCrossword</a> section.<br>
-                        To assign create session to a group, click on the following table. <br>
-                        <!-- The available sessions section -->
-                        <h3>Available sessions</h3>
-                        <table id="sessionsOnline" class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Session ID</th>
-                                <th>Crossword ID</th>
-                                <th>Crossword Description</th>
-                                <th>Online</th>
-                                <th>Open for classGroup</th>
-                                <th>Teams joined</th>
+                        <table class="table table-bordered table-responsive" id="crosswordOptions">
+                          <caption style="font-size:30px;" class="text-center">My Crosswords</caption>
+                            <tr style="cursor: pointer;">
+                              <td id="addCrosswords">Add Crosswords</td>
+                              <td id="CRUD">View/Edit/Delete</td>
+                              <td id="sessionCreate">Create Sessions</td>
+                              <td id="copyShare">Share/Copy</td>
                             </tr>
-                        </thead>
-                            <tbody id="availSessionList" style="cursor: pointer;">
-                                <?php
-                                    availSessionCheck($mysqli);
-                                ?>
-                            </tbody>
+                        </table>
+                        <div id="groupOptions" style="display:none">
+                        <form id="sessionForm" action="./sessions/includes/sessionCreate.php" method="POST">
+                            <select name="groupOptions" form="sessionForm" id="sessionOptions">
+                              <?php groupCheckD($mysqli); ?>
+                            </select>
+                            <input type="hidden" name="crosswordOption" id="crosswordOption">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Create Session" onClick="createSession()">
+                        </form>
+                        </div>
+
+
+                        <table id="crosswordList" class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Crossword ID</th>
+                              <th>Crossword Name</th>
+                              <th>Crossword Description</th>
+                              <th>Time Created</th>
+                            </tr>
+                          </thead>
+                          <tbody style="cursor: pointer;" id="availCrosswordResult">
+                            <?php listOfCrosswordAvail($mysqli); ?>
+                          </tbody>
                         </table>
 
-                        <!-- For showing of start and delete sessions -->
-                        <?php if (!isset($_GET['sessId'])) : ?>
-                        <form action="includes/sessionStart.php" id="startSession" method="post">
-                            <select name="sessId" form="startSession">
-                                <?php
-                                    sessionCheckD($mysqli);
-                                ?>
-                            </select>
-                            <input type="submit" class="btn btn-primary btn-sm" name="startSession" value="Start Session">
-                            <input type="submit" class="btn btn-primary btn-sm" name="deleteSession" value="Delete Session">
-                        </form>
-
-                        <?php else : ?>
-                        <form action="includes/sessionGroupChange.php" id="changeGroup" method="post">
-                            <select name="classGroup" form="changeGroup">
-                                <?php
-                                    groupCheckD($mysqli);
-                                ?>
-                            </select>
-                            <input type="hidden" name="sessId" value="<?php echo $_GET['sessId'];?>">
-                            <input type="submit" class="btn btn-primary btn-sm" name="changeGroup" value="Change Group">
-                            <?php endif; ?>
                     </div>
                 </div>
             </div>
