@@ -91,6 +91,7 @@
                         }
                     ?>
                     <p>If you don't have a login, please <a href="register.php">register</a></p>
+                    <p>If you forgot your password, please <a href="forgotPassword.php">Click here</a></p>
                 </div>
             </div>
 

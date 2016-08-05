@@ -20,20 +20,20 @@
         <script src="css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="css/js/ie10-viewport-bug-workaround.js"></script>
-        <!-- Hashing function -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
         <script>
-           /* $(function () {
-                $('input').keypress(function (e) {
-                    console.log(e.which);
-                    var key = e.which;
-                    if (key == 13)  // the enter key code
-                    {
-                        $('#submission').click();
-                        return false;
-                    }
-                });
-            });*/
-        </script>
+
+$(function() {
+  $('#forgetPassSubmit').submit(function(event) {
+    if(grecaptcha.getResponse().length == 0) {
+      event.preventDefault();
+      alert('Please complete the captcha.');
+      return false;
+    } 
+  });
+});
+
+</script>
     </head>
 
     <body>
@@ -52,8 +52,15 @@
             <div class="container">
                 <div class="col-md-6 col-md-offset-3">
 
-                    <form action="./includes/forgotPass.php" method="POST">
-                      E-mail Address: <input type="text" name="email" size="20" /> <input type="submit" name="ForgotPassword" value=" Request Reset " />
+<form id="forgetPassSubmit" action="./includes/forgotPass.php" method="POST">
+<div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+</div>
+  <div class="g-recaptcha" data-sitekey="6LexyiYTAAAAADo8nNcWQ9FKPQPQBwqiVTKTcm26"></div>
+<br />
+<input type="submit" name="ForgotPassword" class="btn btn-primary" value=" Request Reset " />
                     </form>
 
                 </div>

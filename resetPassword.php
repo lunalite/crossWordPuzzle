@@ -3,7 +3,7 @@
     include_once 'includes/db_connect.php';
     include_once 'includes/functions.php';
     sec_session_start();
-    
+
 ?>
 
 <!DOCTYPE html>
@@ -20,21 +20,21 @@
         <script src="css/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="css/js/ie10-viewport-bug-workaround.js"></script>
-        <!-- Hashing function -->
-        <script type="text/JavaScript" src="./js/sha512.js"></script>
-        <script type="text/JavaScript" src="./js/forms.js"></script>
+        <!-- Hashing function         -->
+        <script src="js/sha512.js"></script>
+        <script src="js/forms1.js"></script>
         <script>
             $(function () {
                 $('input').keypress(function (e) {
-                    console.log(e.which);
                     var key = e.which;
                     if (key == 13)  // the enter key code
                     {
-                        $('#submission').click();
+                        $('#ResetPasswordForm').click();
                         return false;
                     }
                 });
             });
+
         </script>
     </head>
 
@@ -53,19 +53,28 @@
         <div class="jumbotron">
             <div class="container">
                 <div class="col-md-6 col-md-offset-3">
-                    
+
                     <?php echo '
 <form method="POST" name="passwordChange_form" action="./includes/resetPass.php">
-E-mail Address: <input type="text" name="email" size="20" /><br />
-Password: <input type="password" name="password" id="password" /><br>
-Confirm password: <input type="password" name="confirmpwd" id="confirmpwd" /><br>
+<div class="form-group">
+<label for="email">Email address</label>
+<input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" autofocus>
+<small id="emailHelp" class="form-text text-muted">We will never share your email with anyone else.</small>
+</div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="confirmpwd">Confirm Password</label>
+    <input type="password" class="form-control" id="confirmpwd" placeholder="Confirm Password">
+  </div>
+<input type="hidden" name="resetPassword" value="reset" />
 <input type="hidden" name="q" value="';
 if (isset($_GET["q"])) {
 	echo $_GET["q"];
 }
-	echo '" /><input type="button" name="ResetPasswordForm" value="Change password" onclick="return passwordformhash(this.form,
-                                   this.form.password,
-                                   this.form.confirmpwd);" />
+	echo '" /><input type="button" name="ResetPasswordForm" id="ResetPasswordForm" value="Change password" class="btn btn-primary" onclick="return passwordformhash(this.form, this.form.password, this.form.confirmpwd);" />
 </form>';
 
 ?>

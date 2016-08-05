@@ -5,14 +5,17 @@
     sec_session_start();
     
 // Was the form submitted?
-//if (isset($_POST["ResetPasswordForm"])) {
 
 	// Gather the post data
 	$email = $_POST["email"];
 	$hash = $_POST["q"];
 
+        $queryMessage = "SELECT * FROM ".$GLOBALS['members']." WHERE email = '$email'";
+        $result = $mysqli->query($queryMessage);
+        $userExists = mysqli_fetch_assoc($result);
+
 	// Use the same salt from the forgot_password.php file
-	$salt = "498#2D83B631%3800EBD!801600D*7E3CC13";
+	$salt = $userExists["salt"];
 
 	// Generate the reset key
 	$resetkey = hash('sha512', $salt.$email);
@@ -35,27 +38,19 @@
         // Update the password for user
         $sql = "UPDATE ".$GLOBALS['members']." SET password = '" . $password . "', salt = '" . $random_salt .
          "' WHERE email = '" . $email."'";
-echo $sql;
 
-if ($mysqli->query($sql) === TRUE) {
+        if ($mysqli->query($sql) === TRUE) {
             echo "Password changed successfully. Going back in 3 seconds..." . "<br>";
             echo "<script>setTimeout(function(){location.href='../index.php'} , 3000);</script>";
-        }
-        else {
+        }else {
             echo "Error: " . $sql . "<br>" . $mysqli->error . "<br><br>";
         }
 
-			// Update the user's password
-//$queryMessage = "UPDATE ".$GLOBALS['members']." SET password = :password WHERE email = :email";
-//				$query = $mysqli->prepare();
-//				$query->bindParam(':password', $password);
-//				$query->bindParam(':email', $email);
-//				$query->execute();
-//			echo "Your password has been successfully reset.";
+
+			echo "Your password has been successfully reset.";
 		
-	}
-	else
+	}else {
 		echo "Your password reset key is invalid.";
-//}
+        }
 
 ?>
