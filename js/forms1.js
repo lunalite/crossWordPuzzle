@@ -116,7 +116,7 @@ function passwordformhash(form, password, conf) {
     // Make sure the plaintext password doesn't get sent. 
     password.value = "";
     conf.value = "";
-
+ 
     // Finally submit the form. 
     form.submit();
     return true;

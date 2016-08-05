@@ -1,4 +1,11 @@
 # crossWordPuzzle
+Update 5/8/2016
+- Added reCaptcha forgot password function
+- Done with basic password single-use function.
+
+Update 4/8/2016
+- Added reset password function
+
 Update 1/8/2016
 - Fixed the session Deletion function
 

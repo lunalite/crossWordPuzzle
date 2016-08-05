@@ -1,9 +1,10 @@
 <?php
   include_once '../includes/passwordSuccess.php';
+  include_once '../includes/db_connect.php';
   include_once '../includes/functions.php';
   
   sec_session_start();
-  
+
 ?>
 
 <!DOCTYPE html>
@@ -14,11 +15,11 @@
     <script type="text/JavaScript" src="../js/forms.js"></script>
   </head>
   <body>
-    <?php if ((login_chreck($mysqli) == true) && (role_check($mysqli) == 2 ) : ?>
+    <?php if ((login_check($mysqli) == true) && (role_check($mysqli) == 2 )) : ?>
     You are changing password for userID:
     <?php
        echo $_POST['userId']; 
-      $_SESSION['userPW2BC'] = $_POST['userId'];
+       $_SESSION['userPW2BC'] = $_POST['userId'];
     ?>
 
     <form method="post" name="passwordChange_form" action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>">
