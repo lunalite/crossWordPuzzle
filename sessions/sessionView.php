@@ -35,21 +35,7 @@
             alert('Please select a session!');
           } else {
             if (this.id === "startSession") {
-              $.ajax({
-                method: "POST",
-                url: "./includes/sessionStart.php",
-                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html() },
-                success: function (data) {
-                  dataParsed = JSON.parse(data);
-                  if (dataParsed == "No teams joined") {
-                    alert(dataParsed);
-                  } else {
-                    alert(dataParsed);
-                    var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
-                    window.location.href = reUrl;
-                  }
-                }
-              });
+              $('#groupOptions').slideToggle("fast");
 
             } else if (this.id === "deleteSession") {
               $.ajax({
@@ -94,7 +80,33 @@
             }
           }
         });
+         
+          $('#groupOptions #sessionButton').click(function() {
+            $.ajax({
+                method: "POST",
+                url: "./includes/sessionStart.php",
+                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html(), time: $('#timeEnd').val() },
+                success: function (data) {
+                  dataParsed = JSON.parse(data);
+                  if (dataParsed == "No teams joined") {
+                    alert(dataParsed);
+                  } else {
+                    alert(dataParsed);
+                    var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
+                    window.location.href = reUrl;
+                  }
+                }
+              });
+});
 
+$('#timeEnd').keypress(function (e) {
+                    var key = e.which;
+                    if (key == 13)  // the enter key code
+                    {
+                        $('#groupOptions #sessionButton').click();
+                        return false;
+                    }
+                });      
 
       });
     </script>
@@ -146,6 +158,14 @@
                   <td style="cursor: pointer; width: 33%" id="viewResults">View results</td>
                 </tr>
               </table>
+                        <div id="groupOptions" style="display:none">
+                          <label for="timeEnd">End time:</label> *if session has started, just press start session button*
+                          <input type="datetime" name="timeEnd" id="timeEnd" class="form-control" placeholder="mm:ss">
+                            <input type="hidden" name="crosswordOption" id="crosswordOption">
+                            <input type="button" id="sessionButton" class="btn btn-primary btn-sm" value="Start Session">
+                        </div>
+
+
             </div>
             <!-- The available sessions section -->
             <table id="sessionsOnline" class="table table-striped">

@@ -1,4 +1,7 @@
 # crossWordPuzzle
+Update 9/8/2016
+- Added time sequence for puzzle
+
 Update 5/8/2016
 - Added reCaptcha forgot password function
 - Done with basic password single-use function.

@@ -406,10 +406,10 @@
   
       $qAA = json_decode(($row[3]), true);
       $count = count($qAA);
-  echo $count;
+
           echo '<tr id="'. $row[0] .'">
                   <td rowspan="'.$count.'">'.$row[0].'</td>
-                  <td rowspan="'.$count.'">'.$row[2].'</td>';
+                  <td rowspan="'.$count.'">'.gmdate('i:s',(int)$row[2]).' min</td>';
           $firstItr = true;
           while ($count > 0) {
   

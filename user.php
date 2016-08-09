@@ -95,6 +95,7 @@
 
                         <?php else : ?>
                         You have joined a session. Please wait for the gate to open...  <br>
+
                         Click <a href="./includes/leaveSession.php" id="leaveSession">here</a> to leave the session.
                         <?php endif; ?>
 

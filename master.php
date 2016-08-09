@@ -47,7 +47,7 @@
               if (storedSelections.length == 0) {
                 alert('Please select a crossword!');
               } else {
-                $('#groupOptions').slideToggle("fast")
+                $('#groupOptions').slideToggle("fast");
               }
 
             } else if (this.id === "copyShare") {
