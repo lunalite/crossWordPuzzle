@@ -196,85 +196,123 @@
   }
   
   // For checking of available sessions into table
-  function availSessionCheck($mysqli) {  
+  function availSessionCheck($mysqli) {
+    
+    //callForEndTimeCheck($mysqli);
+  
     $groupTb = "";
 
     if ($_SESSION['permissions'] == 0) {
-      $groupCheckQuery = "SELECT classGroup FROM ".$GLOBALS['members']." WHERE id = ".$_SESSION['user_id'];
-      $groupCheckResult = $mysqli->query($groupCheckQuery);
-      $groupCheckRow = mysqli_fetch_row($groupCheckResult); 
-      $catQ = "classGroupOpen = ".$groupCheckRow[0];    
-
+        $groupCheckStmt = $mysqli->prepare("SELECT classGroup FROM ".$GLOBALS['members']." where id = ?");
+        $groupCheckStmt->bind_param("i",$_SESSION['user_id']);
+        if ($groupCheckStmt->execute()) {
+            while ($groupCheckRow = $groupCheckStmt->fetch()) {
+                $catQ = "classGroupOpen = ".$groupCheckRow;    
+            }  
+        }
     } else {
+
         if (isset($_GET['sessId'])) {
             $catQ = "sessId = ". $_GET[sessId];
         } else {
             $catQ = "online != 0";
         }
     }
-  
-      $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE ".$catQ;
-  
-      $result = $mysqli->query($query);
-  
-      if (mysqli_num_rows($result) == 0) {
-          echo '<tr><td colspan="6" sessId="-1">No sessions online.</td></tr>';
-      }
-      else {
-          while ($row=mysqli_fetch_row($result)) {
-              if ($row[2] == 1) 
+
+         $availSessionQuery = "SELECT * FROM ".$GLOBALS['availableSessions']." AVS LEFT JOIN sessionTimeSeries STS on AVS.sessId = STS.sessId WHERE ".$catQ;
+         $availSessionResult = $mysqli->query($availSessionQuery);
+         if ($availSessionResult->num_rows == 0) {
+           echo '<tr><td colspan="7" sessId="-1">No sessions online.</td></tr>';
+         } else {
+
+           while ($availSessionRow= $availSessionResult->fetch_row()) {
+              if ($availSessionRow[2] == 1) {
                   $online = 'Yes';
-              elseif ($row[2] == 2) 
+              } elseif ($availSessionRow[2] == 2) {
                   $online = 'Started';
-              $tableFormat = '<tr id= "'.$row[0].'">';
-              $tbp = '<td>'.$row[0].'</td>
-                      <td>'.$row[3].'</td>
-                      <td></td><td></td>
+              } elseif ($availSessionRow[2] == 3) {
+                  $online = 'Ended';
+              } 
+
+              $startTime = isset($availSessionRow[6]) ? date('Y-m-d H:i:s', $availSessionRow[6])  : null;
+              $endTime = isset($availSessionRow[7]) ? date('Y-m-d H:i:s', $availSessionRow[7])  : null;
+
+              $tableFormat = '<tr id= "'.$availSessionRow[0].'">';
+              $tbp = '<td>'.$availSessionRow[0].'</td>
+                      <td>'.$availSessionRow[3].'</td>
+                      <td>'.$startTime.'</td>
+                      <td>'.$endTime.'</td>
                       <td>'.$online.'</td>';
-  
+
               // For displaying classGroup the session is opened to
               if ($_SESSION['permissions'] == 1 || $_SESSION['permissions'] == 2) {
-                  $innerGroupQuery = "SELECT * FROM ".$GLOBALS['classGroup']." WHERE id = ".$row[4];
-                  $innerGroupResult= $mysqli->query($innerGroupQuery );
-                  if (mysqli_num_rows($innerGroupResult) == 0) {
-                      $groupTb = '<td>Not assigned</td>';
-                  } else {
-                      while ($innerGroupRow= mysqli_fetch_row($innerGroupResult)) {
+                $innerGroupQuery = "SELECT * FROM ".$GLOBALS['classGroup']." WHERE id = $availSessionRow[4]";
+                $innerGroupResult= $mysqli->query($innerGroupQuery);
+                if (mysqli_num_rows($innerGroupResult) == 0) {
+                  $groupTb = '<td>Not assigned</td>';
+                } else {
+                    while ($innerGroupRow= mysqli_fetch_row($innerGroupResult)) {
                         $groupTb = '<td>'.$innerGroupRow[1].'</td>';
-                      }
-                  }
+                    }
+                }
               }
-  
-              $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in 
-              (SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = " . $row[0] . ")";
-  
+
+	      $innerQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in 
+                 (SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = $availSessionRow[0])";
               $innerResult = $mysqli->query($innerQuery);
+           
               if (mysqli_num_rows($innerResult) == 0) {
-  
-                  $teamTb = '<td> No teams </td></tr>';
-              }
-              else {
-                  $teamTb = '<td>';
-                  $notEnd = false;
-                  while ($innerRow=mysqli_fetch_row($innerResult)) {
-  
-                       // For beautifying the data shown
-                       if ($notEnd) {
-                           $teamTb = $teamTb . ', ';
-                       }
-                       $teamTb = $teamTb . $innerRow[0];
-                       $notEnd = true;
+                $teamTb = '<td> No teams </td></tr>';
+              } else {
+                $teamTb = '<td>';
+                $notEnd = false;
+             
+                while ($innerRow=mysqli_fetch_row($innerResult)) {
+                // For beautifying the data shown
+                
+                  if ($notEnd) {
+                    $teamTb = $teamTb . ', ';
                   }
-                  $teamTb = $teamTb.'</td></tr>';
-  
+                  $teamTb = $teamTb . $innerRow[0];
+                  $notEnd = true;
+                }
+                $teamTb = $teamTb.'</td></tr>';
               }
-  
-              echo $tableFormat.$groupTb.$tbp.$teamTb;
-          }
-      }
+            
+           echo $tableFormat.$groupTb.$tbp.$teamTb;
+           }
+         }
+      
   }
-  
-  
+
+  // Change online status if endTime is over
+/*
+  function callForEndTimeCheck($mysqli) {
+    $currentTime = date();
+    
+    $sessionStatusUpdateStmt = 
+
+$stmt = $conn->prepare("INSERT INTO MyGuests (firstname, lastname, email) VALUES (?, ?, ?)");
+$stmt->bind_param("sss", $firstname, $lastname, $email);
+
+// set parameters and execute
+$firstname = "John";
+$lastname = "Doe";
+$email = "john@example.com";
+$stmt->execute();
+
+    $timeCheckQuery = "SELECT sessionEndTime FROM ".$GLOBALS['sessionTimeSeries'].";
+    $timeCheckResult = $mysqli->query($timeCheckQuery);
+    while($timeCheckRow = $timeCheckResult->fetch_row()) {
+      if (time() > strtotime($timeCheckRow )){
+        
+      }
+    }
+
+    
+    
+  } */
+
   // For available sessions into select box
   function sessionCheckD($mysqli) {
   
@@ -290,7 +328,7 @@
       if (isset($_GET['sessId'])) {
           $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessId = ". $_GET[sessId].$catQ;
       } else {
-          $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE online != 0".$catQ;
+          $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE (online = 1 || online = 2) ".$catQ;
       }
   
       $result = $mysqli->query($query);
@@ -341,20 +379,23 @@
   }
   
   function gateCheck($mysqli) {
-      $query = "SELECT * FROM ".$GLOBALS['availableSessions']." WHERE sessid = " . $_SESSION['sess_id'];
+      $query = "SELECT * FROM ".$GLOBALS['sessionJoin']." WHERE userId= " . $_SESSION['user_id'];
       $result = $mysqli->query($query);
       if (mysqli_num_rows($result) == 0) {
-          echo 'Error';
           return FALSE;
       }
       else {
-          while ($row=mysqli_fetch_row($result)) {
-              if ($row[2] == 2) {
-                  return TRUE;
-                  }
-              else
-                  return FALSE;
+          while ($rows = mysqli_fetch_row($result)){
+
+          $innerQuery = "SELECT online FROM ".$GLOBALS['availableSessions']." WHERE sessId = ".$rows[1];
+          $innerRes = $mysqli->query($innerQuery);
+          while ($innerRow = mysqli_fetch_row($innerRes)) {
+       if ($innerRow[0] == 1)    
+         return false;
+       else
+         return true;
           }
+}
       }
   }
   
@@ -615,3 +656,35 @@
       $text = preg_replace("/^$bom/", '', $text);
       return $text;
   }
+
+  function checkSessionTimeExpiry($mysqli) {
+    $checkTimeQuery = "SELECT sessId, sessionEndTime FROM ".$GLOBALS['sessionTimeSeries'];
+    $checkTimeResult = $mysqli->query($checkTimeQuery);
+    $changeStatusStmt = $mysqli->prepare("UPDATE ".$GLOBALS['availableSessions']." SET online = 3 WHERE sessId = ?");
+    while($checkTimeRow = mysqli_fetch_row($checkTimeResult)) {
+      if (time() > $checkTimeRow[1] && $checkTimeRow[1] > 1){
+        $sessId = $checkTimeRow[0];
+        $changeStatusStmt->bind_param("i", $sessId);
+        $changeStatusStmt->execute();
+      }
+    }
+  }
+
+  function checkIfSessionEnded($mysqli) {
+    if(isset($_SESSION['sess_id'])) {
+      $checkQuery = "SELECT online FROM ".$GLOBALS['availableSessions']." WHERE sessId = ".$_SESSION['sess_id'];
+      $result = $mysqli->query($checkQuery);
+      while($row = mysqli_fetch_row($checkQuery)) {
+        if($row[0] == 3) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      header('Location: ../index.php');
+    }
+  }
+
+
+

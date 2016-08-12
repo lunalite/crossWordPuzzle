@@ -48,6 +48,14 @@
                         }
                     });
                 });
+
+              $('#endSession').click(function() {
+                var answer = prompt("Please input 'end' to confirm.");
+                if (answer == "end") {
+	          window.location.href= "./includes/deleteCreatedSession.php";
+	        }
+              });
+
             });
         </script>
         <style>
@@ -70,13 +78,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="./index.php" style="color:white;">REP Crossword Master Score Page</a>
+                    <a class="navbar-brand" href="../index.php" style="color:white;">REP Crossword Master Score Page</a>
                 </div>
                 <!-- Collection of nav links, forms, and other content for toggling -->
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
+                        <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Performance</a></li>
                         <li><a href="../users/users.php" style="color:white;">Users</a></li>
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
@@ -117,7 +125,8 @@
 
         <div class="container">
             <div class="row">
-                <a href="./includes/deleteCreatedSession.php">Click here to go back and end the session</a><br>
+                <a href="../sessions/sessionView.php">Click here to go back to the view session page</a><br>
+                <a style="cursor:pointer" id="endSession">Click here end the session</a><br>
                 <a href="answer_sheet.php">Click here to view answers</a>
             </div>
             <div class="container">

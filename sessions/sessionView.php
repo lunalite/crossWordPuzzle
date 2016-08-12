@@ -2,6 +2,7 @@
   include_once '../includes/db_connect.php';
   include_once '../includes/functions.php';
   sec_session_start();
+  checkSessionTimeExpiry($mysqli);
 ?>
 <!DOCTYPE html>
 <html>
@@ -160,7 +161,7 @@ $('#timeEnd').keypress(function (e) {
               </table>
                         <div id="groupOptions" style="display:none">
                           <label for="timeEnd">End time:</label> *if session has started, just press start session button*
-                          <input type="datetime" name="timeEnd" id="timeEnd" class="form-control" placeholder="mm:ss">
+                          <input type="datetime" name="timeEnd" id="timeEnd" class="form-control" placeholder="dd:hh:mm:ss">
                             <input type="hidden" name="crosswordOption" id="crosswordOption">
                             <input type="button" id="sessionButton" class="btn btn-primary btn-sm" value="Start Session">
                         </div>

@@ -11,8 +11,23 @@
     $_SESSION['sess_id'] = $sessId;
     $time = preg_split("/:/", $_POST['time']);  
     $startTime = time();
-    $endTime = $startTime + ($time[0])*60 + $time[1];
-
+    $timeNum = count($time);
+    switch($timeNum) {
+      case 1: 
+        $endTime = $startTime + $time[0];
+        break;
+      case 2:
+        $endTime = $startTime + ($time[0])*60 + $time[1];
+        break;
+      case 3:
+        $endTime = $startTime + ($time[0])*60*60 + ($time[1])*60 + $time[2];
+        break;
+      case 4:
+        $endTime = $startTime + ($time[0])*60*60*24 + ($time[1])*60*60 + ($time[2])*60 + $time[3];
+        break;
+      default: 
+        break;       
+    }
 
     if ($online === "Yes") {
       $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = ".$sessId;        
@@ -37,7 +52,7 @@
         $mysqli->query($sql2);
 
 
-        $sqlTime = "INSERT INTO ".$GLOBALS['sessionTimeSeries']." (sessId, sessionStartTime, sessionEndTime) VALUES (".$sessId.",".startTime.",".$endTime.")";
+        $sqlTime = "INSERT INTO ".$GLOBALS['sessionTimeSeries']." (sessId, sessionStartTime, sessionEndTime) VALUES (".$sessId.",".$startTime.",".$endTime.")";
         $mysqli->query($sqlTime);
 
         $options = array(

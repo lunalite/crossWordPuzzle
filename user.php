@@ -3,6 +3,7 @@
     include_once './includes/functions.php';
     
     sec_session_start();
+    checkSessionTimeExpiry($mysqli);
     echo '<script>var sessId = '.$_SESSION['sess_id'].'</script>';
 ?>
 <!DOCTYPE html>

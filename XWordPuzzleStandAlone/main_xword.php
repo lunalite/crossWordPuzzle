@@ -1,8 +1,10 @@
 <?php 
     include_once '../includes/db_connect.php';
     include_once '../includes/functions.php';
-    
-    sec_session_start();    
+    sec_session_start();
+    if (checkIfSessionEnded($mysqli)) {
+      echo 'session has ended';
+    }
     echo '<script>var sessId = '.$_SESSION['sess_id'].'</script>';
 ?>
 <html>
