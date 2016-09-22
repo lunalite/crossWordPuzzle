@@ -3,6 +3,7 @@
     include_once './includes/functions.php';
     
     sec_session_start();
+    checkSessionTimeExpiry($mysqli);
     echo '<script>var sessId = '.$_SESSION['sess_id'].'</script>';
 ?>
 <!DOCTYPE html>
@@ -95,6 +96,7 @@
 
                         <?php else : ?>
                         You have joined a session. Please wait for the gate to open...  <br>
+
                         Click <a href="./includes/leaveSession.php" id="leaveSession">here</a> to leave the session.
                         <?php endif; ?>
 
@@ -114,6 +116,20 @@
                             }
                           });
                         </script>
+
+			<div class="row">
+		        <div class="col-xs-12 col-md-12">
+<br>             		<p>
+                        Read the following instructions before commencing on the crossword:<br>
+			•	Click an empty white tile in the crossword grid and a question box will appear.<br>
+			•	Type your answer in the provided box and click Enter.<br>
+			•	Repeat the above steps until you have filled in the entire puzzle grid.<br>
+			•	You have a maximum of two attempts. (3 marks for the first attempt and 2 marks for the 2nd attempt)<br>
+			•	At the end of the game you may check your answers by clicking on the check answers button.<br>
+			
+			(Hyphens, punctuation marks, and spaces between words should not be entered in this crossword) <br>
+			</p>
+			</div></div>
                    </div>
                 </div>
             </div>

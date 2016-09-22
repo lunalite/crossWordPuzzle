@@ -48,23 +48,10 @@ $('#sessionRevs').find("tr").click(function () {
                     <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
                     <li><a href="./reviews.php" style="color:white;">Performance</a></li>
                     <li><a href="../users/users.php" style="color:white;">Users</a></li>
-                    <!--
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="#">Inbox</a></li>
-                            <li><a href="#">Drafts</a></li>
-                            <li><a href="#">Sent Items</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Trash</a></li>
-                        </ul>
-                    </li> -->
                 </ul>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli); ?>
-
                         <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                     </div>
                 </div>
@@ -88,6 +75,7 @@ $('#sessionRevs').find("tr").click(function () {
 </tr>
 </thead>
 <tbody id = "sessionRevs" style="cursor:pointer;">
+
 <?php 
 
 $mainQuery = "SELECT distinct sessId FROM ".$GLOBALS['sessionStart'];

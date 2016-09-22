@@ -42,7 +42,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
                         <li><a href="../reviews/reviews.php" style="color:white;">Performance</a></li>
-                        <li><a href="#" style="color:white;">Users</a></li>
+                        <li><a href="./users.php" style="color:white;">Users</a></li>
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">

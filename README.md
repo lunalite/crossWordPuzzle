@@ -1,4 +1,15 @@
 # crossWordPuzzle
+Update 12/8/2016
+- Finalising the time sequence for sessions, such that it will change to ended after the stipulated time
+- Allow users to join even when session has started.
+
+Update 10/8/2016
+- Added a button for started session to go back to previous page without ending the session.
+- Added a warning button for deleting the session.
+
+Update 9/8/2016
+- Added time sequence for puzzle
+
 Update 5/8/2016
 - Added reCaptcha forgot password function
 - Done with basic password single-use function.

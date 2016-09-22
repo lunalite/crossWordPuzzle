@@ -1,9 +1,7 @@
 <?php
     include_once '../includes/db_connect.php';
     include_once '../includes/functions.php';
-    
     sec_session_start();
-
     $user_id = $_GET['userId'];
 ?>
 
@@ -18,9 +16,7 @@
         <link href="../css/jumbotron.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="../css/js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
-        
         <script>
             $(function () {
                 $("#userList").on("click", "tbody tr", function (e) {
@@ -37,7 +33,6 @@
             });
             
         </script>
-
     </head>
     <body>
     <!-- Only for admins and super users -->
@@ -75,7 +70,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-6 col-md-8 col-md-offset-2">
-                        
                         <!-- Users -->
                         <h3>All users</h3>
                         <table id="userList" class="table table-striped table-hover">

@@ -30,29 +30,26 @@
 
 <!-- Only for admins-->
 <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+                <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Group management Page</a>
+                  <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Group Management Page</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
+                        <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Performance</a></li>
                         <li><a href="./users.php" style="color:white;">Users</a></li>
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli); ?>
-
                         <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                         </div>
 
                     </div><!--/.navbar-collapse -->
                 </div>
             </div>
-
         </nav>
 
         <div class="jumbotron">

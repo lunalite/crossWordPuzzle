@@ -11,6 +11,7 @@
   $questionAnswered = "questionAnswered";
   $classGroup = "classGroup";
   $studentHistory = "studentHistory";
+  $sessionTimeSeries = "sessionTimeSeries";
   
   /* Session names
   ** $_SESSION['user_id']

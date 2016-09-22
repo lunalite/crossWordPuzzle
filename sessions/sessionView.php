@@ -2,6 +2,7 @@
   include_once '../includes/db_connect.php';
   include_once '../includes/functions.php';
   sec_session_start();
+  checkSessionTimeExpiry($mysqli);
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,36 +36,27 @@
             alert('Please select a session!');
           } else {
             if (this.id === "startSession") {
-              $.ajax({
-                method: "POST",
-                url: "./includes/sessionStart.php",
-                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html() },
-                success: function (data) {
-                  dataParsed = JSON.parse(data);
-                  if (dataParsed == "No teams joined") {
-                    alert(dataParsed);
-                  } else {
-                    alert(dataParsed);
-                    var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
-                    window.location.href = reUrl;
-                  }
-                }
-              });
+              $('#groupOptions').slideToggle("fast");
 
             } else if (this.id === "deleteSession") {
-              $.ajax({
-                method: "POST",
-                url: "./includes/sessionDelete.php",
-                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html() },
-                success: function (data) {
-                  dataParsed = JSON.parse(data);
-                  alert(dataParsed);
-                  location.reload();
-                }
-              });
+              var onlineStatus = $('tr[id="' + storedSelections[0] + '"] td:nth-child(6)').html();
+              var jsonObj = { sessId: storedSelections[0], online: onlineStatus };
+              var deleteReply = prompt("Are you sure you want to delete this session? If yes, please type in the session ID.");
+              if (deleteReply === storedSelections[0]) {
+                $.ajax({
+                  method: "POST",
+                  url: "./includes/sessionDelete.php",
+                  data: jsonObj,
+                  success: function (data) {
+                    dataParsed = JSON.parse(data);
+                    alert(dataParsed);
+                    location.reload();
+                  }
+                });
+              }
 
             } else if (this.id === "viewResults") {
-              console.log('c');
+              console.log('Not implemented.');
             }
           }
         });
@@ -94,7 +86,33 @@
             }
           }
         });
+         
+          $('#groupOptions #sessionButton').click(function() {
+            $.ajax({
+                method: "POST",
+                url: "./includes/sessionStart.php",
+                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html(), time: $('#timeEnd').val() },
+                success: function (data) {
+                  dataParsed = JSON.parse(data);
+                  if (dataParsed == "No teams joined") {
+                    alert(dataParsed);
+                  } else {
+                    alert(dataParsed);
+                    var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
+                    window.location.href = reUrl;
+                  }
+                }
+              });
+});
 
+$('#timeEnd').keypress(function (e) {
+                    var key = e.which;
+                    if (key == 13)  // the enter key code
+                    {
+                        $('#groupOptions #sessionButton').click();
+                        return false;
+                    }
+                });      
 
       });
     </script>
@@ -146,6 +164,14 @@
                   <td style="cursor: pointer; width: 33%" id="viewResults">View results</td>
                 </tr>
               </table>
+                        <div id="groupOptions" style="display:none">
+                          <label for="timeEnd">End time:</label> *if session has started, just press start session button*
+                          <input type="datetime" name="timeEnd" id="timeEnd" class="form-control" placeholder="dd:hh:mm:ss">
+                            <input type="hidden" name="crosswordOption" id="crosswordOption">
+                            <input type="button" id="sessionButton" class="btn btn-primary btn-sm" value="Start Session">
+                        </div>
+
+
             </div>
             <!-- The available sessions section -->
             <table id="sessionsOnline" class="table table-striped">

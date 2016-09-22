@@ -171,6 +171,21 @@
     });
   }
 
+  function setTimeoutToGameOver(){
+  	var currentTime = new Date().getTime()/1000 ;
+  	console.log("Current Time is "+currentTime);
+  	var url = "../phpretrieval/includes/getTimeEndFromSessId.php";
+    	jQuery.getJSON(url, function (data) {
+    		console.log("End Time: "+data);
+    		var milliSecondsLeft = (data - currentTime)*1000 ;
+    		console.log("You have "+milliSecondsLeft +" left.");
+    		if (milliSecondsLeft > 0)
+    			setTimeout(function () {exitGame();}, milliSecondsLeft );
+    		else
+    			exitGame();
+    	});
+  }
+
   /*
   function getIDfromStr(str){
   str=str.substring(3);
@@ -483,6 +498,8 @@
 
   };
 
+
+  setTimeoutToGameOver();
   getTiles();
   getTitle();
 
