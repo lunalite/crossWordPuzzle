@@ -14,11 +14,20 @@
 
       if ($mysqli->query($delQuery) === TRUE) {
         echo json_encode('session Deleted.');
+      } else {
+        echo json_encode('session not deleted. Error.');
       }
-
 
     } elseif ($online === "Started") {
       echo json_encode("Deleting a started session will cause instability.");
+    } elseif( $online === "Ended") {
+      $delQuery = "DELETE FROM ".$GLOBALS['availableSessions']." WHERE sessId = ".$sessId;
+
+      if ($mysqli->query($delQuery) === TRUE) {
+        echo json_encode('session Deleted.');
+      } else {
+        echo json_encode('session not deleted. Error.');
+      }
     }
 
 ?>

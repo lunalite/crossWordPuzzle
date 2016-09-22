@@ -39,19 +39,24 @@
               $('#groupOptions').slideToggle("fast");
 
             } else if (this.id === "deleteSession") {
-              $.ajax({
-                method: "POST",
-                url: "./includes/sessionDelete.php",
-                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html() },
-                success: function (data) {
-                  dataParsed = JSON.parse(data);
-                  alert(dataParsed);
-                  location.reload();
-                }
-              });
+              var onlineStatus = $('tr[id="' + storedSelections[0] + '"] td:nth-child(6)').html();
+              var jsonObj = { sessId: storedSelections[0], online: onlineStatus };
+              var deleteReply = prompt("Are you sure you want to delete this session? If yes, please type in the session ID.");
+              if (deleteReply === storedSelections[0]) {
+                $.ajax({
+                  method: "POST",
+                  url: "./includes/sessionDelete.php",
+                  data: jsonObj,
+                  success: function (data) {
+                    dataParsed = JSON.parse(data);
+                    alert(dataParsed);
+                    location.reload();
+                  }
+                });
+              }
 
             } else if (this.id === "viewResults") {
-              console.log('c');
+              console.log('Not implemented.');
             }
           }
         });

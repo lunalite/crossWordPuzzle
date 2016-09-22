@@ -42,10 +42,7 @@ var groupNameV = groupNameJ.val();
 });
 
 function formValidation(data) {
-
-console.log($.type(data));
     removeGlyphClass();
-
   if (data.indexOf("true") >= 0 ) {
     formControlFeedback.addClass('glyphicon-remove');
     hasFeedback.addClass('has-error');
@@ -65,33 +62,20 @@ function removeGlyphClass() {
     </head>
     <body>
         <?php if ((login_check($mysqli) == true) && role_check($mysqli) == 2) : ?> 
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                  <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Group Creation Page</a>
+                  <a class="navbar-brand" href="../master.php" style="color:white;">REP Crossword Group Management Page</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="../crosswords/crosswords.php" style="color:white;">Crosswords</a></li>
-                        <li><a href="../reviews/reviews.php" style="color:white;">Reviews</a></li>
+                        <li><a href="../sessions/sessionView.php" style="color:white;">Sessions</a></li>
+                        <li><a href="../reviews/reviews.php" style="color:white;">Performance</a></li>
                         <li><a href="./users.php" style="color:white;">Users</a></li>
-                                                    <!--
-                                                            <li class="dropdown">
-                                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
-                                                                <ul role="menu" class="dropdown-menu">
-                                                                    <li><a href="#">Inbox</a></li>
-                                                                    <li><a href="#">Drafts</a></li>
-                                                                    <li><a href="#">Sent Items</a></li>
-                                                                    <li class="divider"></li>
-                                                                    <li><a href="#">Trash</a></li>
-                                                                </ul>
-                                                            </li> -->
                     </ul>
                     <div id="navbar" class="navbar-collapse collapse">
                         <div class="navbar-right navbar-form" style="color:white;">
-
                         <?php loginNavBarAction($mysqli); ?>
-
                         <a class="btn btn-success" href="../includes/logout.php" role="button">Log out</a>
                         </div>
 
