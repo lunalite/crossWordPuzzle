@@ -52,7 +52,18 @@
               $('#endSession').click(function() {
                 var answer = prompt("Please input 'end' to confirm.");
                 if (answer == "end") {
-	          window.location.href= "./includes/deleteCreatedSession.php";
+
+                  $.ajax({
+                  method: "POST",
+                  url: "./includes/endSession.php",
+                  data: {sessId: sessId},
+                  success: function (data) {
+                    dataParsed = JSON.parse(data);
+                    alert(dataParsed);
+                  }
+                });
+
+	          //window.location.href= "./includes/deleteCreatedSession.php";
 	        }
               });
 

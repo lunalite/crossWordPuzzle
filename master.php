@@ -161,7 +161,7 @@
                               <?php groupCheckD($mysqli); ?>
                             </select>
                             <input type="hidden" name="crosswordOption" id="crosswordOption">
-                            <input type="submit" class="btn btn-primary btn-sm" value="Create Session" onClick="createSession()">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Create Session">
                         </form>
                         </div>
 

@@ -13,7 +13,11 @@
     <title>REP Crossword Session View page</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/jumbotron.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="./others/jquery-ui-timepicker-addon.css"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="./others/jquery-ui-timepicker-addon.js"></script>
     <script src="../css/js/bootstrap.min.js"></script>
     <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
     <script>
@@ -56,7 +60,13 @@
               }
 
             } else if (this.id === "viewResults") {
-              console.log('Not implemented.');
+          if (storedSelections.length == 0) {
+            console.log("No selections!");
+            alert('Please select a session!');
+          } else {
+            var url = "../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
+            window.location.href=url;
+          }
             }
           }
         });
@@ -88,31 +98,44 @@
         });
          
           $('#groupOptions #sessionButton').click(function() {
-            $.ajax({
-                method: "POST",
-                url: "./includes/sessionStart.php",
-                data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html(), time: $('#timeEnd').val() },
-                success: function (data) {
-                  dataParsed = JSON.parse(data);
-                  if (dataParsed == "No teams joined") {
-                    alert(dataParsed);
-                  } else {
-                    alert(dataParsed);
-                    var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
-                    window.location.href = reUrl;
-                  }
-                }
-              });
-});
 
-$('#timeEnd').keypress(function (e) {
-                    var key = e.which;
-                    if (key == 13)  // the enter key code
-                    {
-                        $('#groupOptions #sessionButton').click();
-                        return false;
+            //Check if the dateTime format is right
+            var timeEnd = $('#timeEnd').val();
+   
+            //TODO: improve on this regex for checking of datetime
+            if(/^([0-1][0-9])\/([0-3][0-9])\/(20[1-9][0-9]) ([0-2][0-9]:[0-5][0-9])$/.test(timeEnd)) {
+
+                $.ajax({
+                    method: "POST",
+                    url: "./includes/sessionStart.php",
+                    data: { sessId: storedSelections[0], online: $('[id="' + storedSelections[0] + '"] td:nth-child(6)').html(), time: timeEnd },
+                    success: function (data) {
+                        dataParsed = JSON.parse(data);
+                        if (dataParsed == "No teams joined") {
+                            alert(dataParsed);
+                        } else {
+                            alert(dataParsed);
+                            var reUrl = "../../XWordPuzzleStandAlone/master_view.php?id=" + storedSelections[0];
+                            window.location.href = reUrl;
+                        }
                     }
-                });      
+                });
+
+            } else {
+                alert("Please input the correct date and time. Else if you are resuming the session, please just fill in any possible time and date.");
+            };
+          }); 
+
+
+          $('#timeEnd').keypress(function (e) {
+              var key = e.which;
+              if (key == 13) {
+                  $('#groupOptions #sessionButton').click();
+                  return false;
+              }
+          });      
+           
+          $('#timeEnd').datetimepicker();
 
       });
     </script>
@@ -165,8 +188,8 @@ $('#timeEnd').keypress(function (e) {
                 </tr>
               </table>
                         <div id="groupOptions" style="display:none">
-                          <label for="timeEnd">End time:</label> *if session has started, just press start session button*
-                          <input type="datetime" name="timeEnd" id="timeEnd" class="form-control" placeholder="dd:hh:mm:ss">
+                            <label for="timeEnd">End time:</label> *if session has started, just press start session button*
+                            <input type="text" name="timeEnd" id="timeEnd" class="form-control">
                             <input type="hidden" name="crosswordOption" id="crosswordOption">
                             <input type="button" id="sessionButton" class="btn btn-primary btn-sm" value="Start Session">
                         </div>

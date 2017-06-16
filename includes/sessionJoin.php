@@ -11,12 +11,12 @@
     $_SESSION['sess_id'] = $sessId;
 
     $user = $_SESSION['user_id'];
-    if ($online == 2) {
-        $sql = "SELECT userId FROM ".$GLOBALS['sessionStart']."WHERE sessId = ".$sessId;
-        $result = $mysqli->query($sql);
-        if (mysqli_num_rows($result) == 0) {
-            header('refresh: 3; url=../user.php');
-            echo 'Did not join before session started. Going back in 3...';
+        if ($online == 2) {
+        $ins = "INSERT INTO ".$GLOBALS['sessionStart']." (sessId,userId) VALUES (" . $sessId . ", ". $user. ")";
+        if ($mysqli->query($ins) === TRUE) {
+            header('Location: ../XWordPuzzleStandAlone/main_xword.php');
+        } else {
+            echo "Error: " . $ins . "<br>" . $mysqli->error;
         }
     }
     elseif ($online == 1) {

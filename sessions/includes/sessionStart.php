@@ -9,25 +9,8 @@
     $sessId = $_POST['sessId'];
     $online = $_POST['online'];
     $_SESSION['sess_id'] = $sessId;
-    $time = preg_split("/:/", $_POST['time']);  
     $startTime = time();
-    $timeNum = count($time);
-    switch($timeNum) {
-      case 1: 
-        $endTime = $startTime + $time[0];
-        break;
-      case 2:
-        $endTime = $startTime + ($time[0])*60 + $time[1];
-        break;
-      case 3:
-        $endTime = $startTime + ($time[0])*60*60 + ($time[1])*60 + $time[2];
-        break;
-      case 4:
-        $endTime = $startTime + ($time[0])*60*60*24 + ($time[1])*60*60 + ($time[2])*60 + $time[3];
-        break;
-      default: 
-        break;       
-    }
+    $endTime= strtotime($_POST['time']);  
 
     if ($online === "Yes") {
       $sql = "SELECT userId FROM ".$GLOBALS['sessionJoin']." WHERE sessId = ".$sessId;        
@@ -73,7 +56,7 @@
         }
 
       } elseif ($online === "Started") {
-          echo json_encode("Started. Directing you to the score page...");
+          echo json_encode("Session started. Directing you to the score page without changing the end date and time...");
       }
 
 ?>
