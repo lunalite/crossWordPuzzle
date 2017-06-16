@@ -90,7 +90,7 @@
 
                         <?php elseif(gateCheck($mysqli)) : ?>
 
-                        <form action="./XWordPuzzleStandAlone/main_xword.php">
+                        <form action="../XWordPuzzleStandAlone/main_xword.php">
                             <input type="submit" class="btn btn-primary btn-sm" value="Resume puzzle">
                         </form>
 

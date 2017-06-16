@@ -40,7 +40,6 @@
           $(function () {
 
             //********* HERE IS THE LIVE SCORE UPDATE SYSTEM ********
-            //Pusher.logToConsole = true;
             console.log(sessId);
             var pusher = new Pusher('bcaaf0a9f48c5ad4601b', {
               cluster: 'ap1',
@@ -49,6 +48,11 @@
 
             var channelT = pusher.subscribe(sessId.toString());
             
+            channelT.bind('gameEnd', function(data) {
+                alert('Game has ' + data.gameStatus);
+                location.reload();
+            });
+
             channelT.bind('correctAnswer', function (data) {
               console.log("Updating....");
               updatedScore = data.updatedScore;

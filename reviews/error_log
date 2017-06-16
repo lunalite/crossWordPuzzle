@@ -1,1 +1,6 @@
 [19-Jul-2016 12:05:17 UTC] PHP Fatal error:  Call to undefined method mysqli::num_rows() in /home/repprog90/public_html/includes/functions.php on line 405
+[22-Sep-2016 09:25:48 UTC] PHP Fatal error:  Call to undefined method mysqli_result::fetchRow() in /home/repprog90/public_html/reviews/sessionReviews.php on line 90
+[22-Sep-2016 09:36:17 UTC] PHP Fatal error:  Call to undefined method mysqli_result::fetchRow() in /home/repprog90/public_html/reviews/sessionReviews.php on line 90
+[22-Sep-2016 09:39:22 UTC] PHP Fatal error:  Call to a member function format() on a non-object in /home/repprog90/public_html/reviews/sessionReviews.php on line 99
+[22-Sep-2016 09:40:11 UTC] PHP Fatal error:  Call to a member function format() on a non-object in /home/repprog90/public_html/reviews/sessionReviews.php on line 99
+[22-Sep-2016 11:26:22 UTC] PHP Fatal error:  Call to undefined function strtitme() in /home/repprog90/public_html/reviews/sessionReviews.php on line 99

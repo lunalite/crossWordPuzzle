@@ -19,14 +19,14 @@
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../css/js/ie10-viewport-bug-workaround.js"></script>
         <script>
-$(function() {
-$('#sessionRevs').find("tr").click(function () {
-                    var url = "sessionReviews.php?sessionId=" + this.id;
-                    window.location.href = url;
-                });
-});
+        $(function() {
+          $('#sessionRevs').find("tr").click(function () {
+            var url = "sessionReviews.php?sessionId=" + this.id;
+            window.location.href = url;
+          });
+        });
 
-</script>
+        </script>
     </head>
     <body>
     <!-- Only for admins and super users -->
@@ -71,6 +71,7 @@ $('#sessionRevs').find("tr").click(function () {
 <tr>
 <th>Session ID</th>
 <th>Time Started</th>
+<th>Time Ended</th>
 <th>Users</th>
 </tr>
 </thead>
@@ -83,19 +84,21 @@ $mainQuery = "SELECT distinct sessId FROM ".$GLOBALS['sessionStart'];
     while ($row = mysqli_fetch_row($result)) {
         $sessionId = $row[0];
 
-// For obtaining maximum time a user started their puzzle
-        $timeQuery = "SELECT TIME_STARTED FROM sessionTimeStart WHERE sessId = ".$sessionId;
+        $timeQuery = "SELECT sessionStartTime, sessionEndTime FROM ".$GLOBALS['sessionTimeSeries']." WHERE sessId = ".$sessionId;
         $timeQueryResult = $mysqli->query($timeQuery);
-        $time = mysqli_fetch_row($timeQueryResult)[0];
+        $timeArr = $timeQueryResult->fetch_row();
+        $timeStart = $timeArr[0];
+        $timeEnd = $timeArr[1];
 
 // For spanning of rows
         $userNumberQuery = "SELECT COUNT(sessId) FROM ".$GLOBALS['sessionStart']." WHERE sessId = ".$sessionId;
         $userNumberResult = $mysqli->query($userNumberQuery);
         $userNumber = mysqli_fetch_row($userNumberResult)[0];
-
+ 
         echo '<tr id="'. $sessionId .'">
                 <td rowspan="'.$userNumber.'">'.$sessionId.'</td>
-                <td rowspan="'.$userNumber.'">'.$time.'</td>';
+                <td rowspan="'.$userNumber.'">'.date("Y-m-d H:i:s",$timeStart).'</td>
+                <td rowspan="'.$userNumber.'">'.date("Y-m-d H:i:s",$timeEnd).'</td>';
 
         $userQuery = "SELECT username FROM ".$GLOBALS['members']." WHERE id in (SELECT userId FROM ".$GLOBALS['sessionStart']." WHERE sessId = 
                      ".$sessionId.")";
